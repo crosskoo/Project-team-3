@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/menu_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/menu_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/menu_guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/menu_guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.80" />
+
+    <Button
+        android:id="@+id/button_pill_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:backgroundTint="#454749"
+        android:text="복약 입력"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@id/menu_guideline4"
+        app:layout_constraintEnd_toEndOf="@id/menu_guideline5"
+        app:layout_constraintBottom_toTopOf="@id/menu_guideline1"/>
+    <Button
+        android:id="@+id/button_pill_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/label_pill_management"
+        android:backgroundTint="#454749"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/menu_guideline4"
+        app:layout_constraintEnd_toEndOf="@id/menu_guideline5"
+        app:layout_constraintTop_toBottomOf="@id/menu_guideline1"/>
+
+    <Button
+        android:id="@+id/button_pressure_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#454749"
+        android:text="@string/text_bp_management"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@id/menu_guideline5"
+        app:layout_constraintStart_toStartOf="@id/menu_guideline4"
+        app:layout_constraintTop_toBottomOf="@id/menu_guideline2" />
+
+    <Button
+        android:id="@+id/button_sugar_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_bs_management"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:backgroundTint="#454749"
+        app:layout_constraintEnd_toEndOf="@id/menu_guideline5"
+        app:layout_constraintStart_toStartOf="@id/menu_guideline4"
+        app:layout_constraintTop_toBottomOf="@id/button_pressure_info" />
+
+    <Button
+        android:id="@+id/button_ble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/ble_text"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:backgroundTint="#454749"
+        app:layout_constraintTop_toBottomOf="@id/button_sugar_info"
+        app:layout_constraintStart_toStartOf="@id/menu_guideline4"
+        app:layout_constraintEnd_toStartOf="@id/menu_guideline5"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

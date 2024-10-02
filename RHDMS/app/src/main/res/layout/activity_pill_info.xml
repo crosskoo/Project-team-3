@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.80" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.93" />"
+
+    <TextView
+        android:id="@+id/pm_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
+        android:text="@string/label_pill_management"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline1"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline3"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline4" />
+
+    <Button
+        android:id="@+id/button_decrease"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#747679"
+        android:textColor="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:text="@string/decrease"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
+        />
+
+    <ToggleButton
+        android:id="@+id/toggle_pill_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/toggle_button_text"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#747679"
+        android:textColorLink="#FFFFFF"
+        android:textOff="@string/toggle_button_month"
+        android:textOn="@string/toggle_button_week"
+        android:checked="true"
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline3"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline4"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
+
+    <Button
+        android:id="@+id/button_increase"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/increase"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#747679"
+        android:textColorLink="#FFFFFF"
+        android:textSize="25sp"
+        android:layout_margin="0dp"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
+        />
+
+    <FrameLayout
+        android:id="@+id/pm_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline3"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline4"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline5"
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline2"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

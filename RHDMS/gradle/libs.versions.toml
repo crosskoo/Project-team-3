@@ -1,0 +1,38 @@
+[versions]
+agp = "8.5.0"
+blessedAndroid = "2.3.4"
+fragment = "1.8.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
+mpandroidchart = "v3.1.0"
+sql2o = "1.6.0"
+mssqlJdbc = "12.7.0.jre11-preview"
+jtds = "1.3.1"
+volley = "1.2.1"
+workRuntime = "2.9.0"
+
+[libraries]
+blessed-android = { module = "com.github.weliem:blessed-android", version.ref = "blessedAndroid" }
+fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
+sql2o = { module = "org.sql2o:sql2o", version.ref = "sql2o" }
+mssql-jdbc = { group = "com.microsoft.sqlserver", name = "mssql-jdbc", version.ref = "mssqlJdbc" }
+jtds = { group = "net.sourceforge.jtds", name = "jtds", version.ref = "jtds" }
+volley = { module = "com.android.volley:volley", version.ref = "volley" }
+work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+
