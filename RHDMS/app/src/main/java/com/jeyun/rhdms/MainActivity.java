@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -29,4 +30,5 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
     }
+    // git commit test 용 주석
 }
