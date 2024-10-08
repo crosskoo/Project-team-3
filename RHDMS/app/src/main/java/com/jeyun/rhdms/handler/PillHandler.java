@@ -16,7 +16,6 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         super();
     }
 
-    // 주에 속하는 데이터 조회
     public List<Pill> getDataInWeek(LocalDate today)
     {
         LocalDate monday = today.with(DayOfWeek.MONDAY);
@@ -45,7 +44,6 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         }
     }
 
-    // 월에 속하는 데이터 조회
     public List<Pill> getDataInMonth(LocalDate today)
     {
         LocalDate first = today.withDayOfMonth(1);
@@ -71,6 +69,55 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         {
             e.printStackTrace();
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Optional<Pill> getData(String id)
+    {
+        String query_format =
+                "SELECT * FROM tb_drug " +
+                        "WHERE ARM_DT = %s " +
+                        "AND SUBJECT_ID = %s;";
+
+        String query = String.format(query_format, id, "1076");
+        System.out.println(query);
+
+        try(Connection con = client.open())
+        {
+            return Optional.of(con.createQuery(query).executeAndFetchFirst(Pill.class));
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public boolean updateData(Pill data)
+    {
+        String query_format =
+                "UPDATE tb_drug " +
+                        "SET TAKEN_ST = '%s', " +
+                        "TAKEN_TM = '%s' " +
+                        "WHERE SUBJECT_ID = '%s' " +
+                        "AND ARM_DT = '%s'";
+
+        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, "1076", data.ARM_DT);
+        System.out.println(query);
+
+        try(Connection con = client.open())
+        {
+            con.createQuery(query).executeUpdate();
+            return true;
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
         }
     }
 
