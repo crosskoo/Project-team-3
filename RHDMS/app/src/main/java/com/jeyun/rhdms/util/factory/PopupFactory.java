@@ -6,4 +6,5 @@ public interface PopupFactory<R>
 {
     R createPopup(String title, String message, DialogInterface.OnClickListener listener);
     R createPopupYN(String title, String message, DialogInterface.OnClickListener... listeners);
+
 }
