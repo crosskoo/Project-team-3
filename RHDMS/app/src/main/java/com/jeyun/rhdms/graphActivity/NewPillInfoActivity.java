@@ -2,9 +2,7 @@ package com.jeyun.rhdms.graphActivity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
-
 import androidx.annotation.Nullable;
-
 import com.jeyun.rhdms.handler.entity.wrapper.PillBox;
 
 public class NewPillInfoActivity extends GraphActivity<PillBox>
