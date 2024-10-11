@@ -6,11 +6,6 @@ import org.sql2o.Sql2o;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * 데이터베이스와 연결하여 주/월 단위로 데이터를 읽어온다.
- * @param <T> Entity (읽을 테이블)
- */
-
 public abstract class DataHandler<T, K>
 {
     private final String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";

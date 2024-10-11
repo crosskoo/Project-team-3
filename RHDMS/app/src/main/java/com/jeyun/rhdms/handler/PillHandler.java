@@ -17,11 +17,6 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         super();
     }
 
-    /**
-     * 현재 날짜를 기준으로 해당 주에 속하는 데이터를 조회한다.
-     * 날짜의 기준은 ARM_DT
-     * @return 해당 주의 복약 데이터
-     */
     public List<Pill> getDataInWeek(LocalDate today)
     {
         LocalDate monday = today.with(DayOfWeek.MONDAY);
@@ -33,8 +28,9 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
         String query_format =
                 "SELECT * FROM tb_drug " +
-                "WHERE CONVERT(varchar, ARM_DT, 112) BETWEEN %s AND %s " +
-                "AND SUBJECT_ID = %s;";
+                        "WHERE CONVERT(varchar, ARM_DT, 112) BETWEEN %s AND %s " +
+                        "AND SUBJECT_ID = %s;";
+
 
         @SuppressLint("DefaultLocale")
         String query = String.format(query_format, startDate, endDate, "1076");
@@ -53,11 +49,6 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         }
     }
 
-    /**
-     * 현재 날짜를 기준으로 해당 월에 속하는 데이터를 조회한다.
-     * 날짜의 기준은 ARM_DT
-     * @return 해당 월의 복약 데이터
-     */
     public List<Pill> getDataInMonth(LocalDate today)
     {
         LocalDate first = today.withDayOfMonth(1);
