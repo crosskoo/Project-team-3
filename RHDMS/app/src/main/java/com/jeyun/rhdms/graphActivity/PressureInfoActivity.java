@@ -14,6 +14,19 @@ public class PressureInfoActivity extends GraphActivity<BloodPack>
         final String type = "21";
 
         title = "혈압 정보";
+        supplier = () -> new BarFragment(type);
+        function = isWeek ->
+        {
+            BloodHandler dh = new BloodHandler(type);
+            List<Blood> dataset =
+                    isWeek ?
+                            dh.getDataInWeek(calendar.timeNow) :
+                            dh.getDataInMonth(calendar.timeNow);
+
+            System.out.println("TEST : " + dataset);
+            if(dataset.isEmpty()) return new BloodPack(new ArrayList<>());
+            return new BloodPack((ArrayList<Blood>) dataset);
+        };
     }
 
     @Override
