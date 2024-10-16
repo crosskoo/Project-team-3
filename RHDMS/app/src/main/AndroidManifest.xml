@@ -79,6 +79,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <!-- 테스트 용 -->
+        <activity android:name=".TestNewPillInfoActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
