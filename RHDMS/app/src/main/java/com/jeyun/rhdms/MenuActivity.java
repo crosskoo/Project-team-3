@@ -11,6 +11,10 @@ import com.jeyun.rhdms.databinding.ActivityMenuBinding;
 import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
 import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
+import com.jeyun.rhdms.util.worker.Inspector;
+import com.jeyun.rhdms.util.worker.MyWorkManager;
+
+import java.util.concurrent.TimeUnit;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -26,7 +30,10 @@ public class MenuActivity extends AppCompatActivity {
 
         setContentView(view);
         initEvents();
+
+        MyWorkManager.schedulePeriodicWork(Inspector.class, getApplicationContext(), 15);
     }
+
 
     private void initEvents()
     {
@@ -35,6 +42,7 @@ public class MenuActivity extends AppCompatActivity {
         binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class));
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
+        binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingsActivity.class)); //설정 관련해서 추가.
     }
 
     private <T> void switchActivity(T cls)
