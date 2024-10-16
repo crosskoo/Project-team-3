@@ -81,14 +81,12 @@
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"/>
 
-    <EditText
+    <TextView
         android:id="@+id/pm_new_pill_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="datetime"
         android:textSize="25sp"
         android:textAlignment="center"
-        android:enabled="false"
         app:layout_constraintTop_toBottomOf="@id/pm_new_pill_date"
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"/>
