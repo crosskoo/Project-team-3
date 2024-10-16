@@ -40,7 +40,7 @@ public class MenuActivity extends AppCompatActivity {
         binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class));
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
-        binding.buttonSettings.setOnClickListener(v -> switchActivity(DeviceSettingsActivity.class)); //설정 관련해서 추가.
+        binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
     }
 
     private <T> void switchActivity(T cls)
