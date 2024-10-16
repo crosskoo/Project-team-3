@@ -48,6 +48,16 @@
         </activity>
 
         <activity
+            android:name=".AppSettingsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".SettingMenuActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".MenuActivity"
             android:screenOrientation="portrait">
         </activity>
