@@ -1,5 +1,6 @@
 package com.jeyun.rhdms;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,7 @@ import com.jeyun.rhdms.databinding.ActivityTestNewPillInfoBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,20 +30,14 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         setContentView(binding.getRoot());
 
         initUI();
-        initEvents();
     }
 
     private void initUI()
     {
-        // 복약 날짜는 기본값으로 오늘 날짜로 세팅 (일단 수정 못함)
-        String currentData = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
-        String year = currentData.substring(0, 4);
-        String month = currentData.substring(4, 6);
-        String day = currentData.substring(6, 8);
-        binding.pmNewPillDate.setText(String.format("%s년 %s월 %s일", year, month, day));
-
         // 복약 상태 드롭다운 리스트 설정
         initSelector();
+        // 이벤트 설정
+        initEvents();
     }
 
     private void initSelector()
@@ -68,6 +64,31 @@ public class TestNewPillInfoActivity extends AppCompatActivity
 
     private void initEvents() // 이벤트 설정 함수
     {
+        // 날짜 뷰 클릭 -> 날짜 선택 창이 열림
+        binding.pmNewPillDate.setOnClickListener(v ->
+        {
+            // 현재 날짜
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            // 날짜 선택 창 화면
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    this,
+                    (view, selectedYear, selectedMonth, selectedDay) ->
+                    {
+                        binding.pmNewPillDate.setText(String.format("%s년 %s월 %s일", selectedYear, selectedMonth + 1, selectedDay));
+                    },
+                    year, month, day);
+            datePickerDialog.show();
+        });
+
+        // 복약 시작 시간 뷰 클릭 -> 시작 시간 선택
+        binding.pmNewPillStartTime.setOnClickListener(v -> showTimePickerDialog(true));
+        // 복약 종료 시간 뷰 클릭 -> 종료 시간 선택
+        binding.pmNewPillEndTime.setOnClickListener(v -> showTimePickerDialog(false));
+
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v ->
         {
@@ -75,28 +96,7 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         });
 
         // 확인 버튼 클릭 -> 복약 정보를 서버에 전송
-        binding.pmNewPillOk.setOnClickListener(v ->
-        {
-            String takenTime = binding.pmNewPillTakenTime.getText().toString();
-            String takenState = binding.pmNewPillSelector.getSelectedItem().toString();
-            String takenDate = binding.pmNewPillDate.getText().toString();
-
-            // 복약 시각과 복약 상태 둘 다 입력 해야 새로운 복약 정보를 DB에 추가할 수 있음.
-            if (takenTime.isEmpty() || takenState.isEmpty())
-            {
-                Toast.makeText(this, "복용한 시간과 복약 상태를 전부 입력해주세요.", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                pill = new Pill();
-                pill.TAKEN_TM = takenTime.replace(":", "");
-                pill.TAKEN_DT = takenDate.replaceAll("[년월일\\s]", "");
-                pill.TAKEN_ST = takenState;
-
-                // 단순 확인용
-                Toast.makeText(this, pill.TAKEN_DT + " | " + pill.TAKEN_TM + " | " + pill.TAKEN_ST, Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.pmNewPillOk.setOnClickListener(v -> transferNewPillInfo());
 
         // 복약 시각 뷰 클릭 -> 시간 선택 다이얼로그 띄움
         binding.pmNewPillTakenTime.setOnClickListener(v ->
@@ -113,5 +113,49 @@ public class TestNewPillInfoActivity extends AppCompatActivity
                     );
             dialog.show();
         });
+    }
+
+    private void showTimePickerDialog(boolean isStartTime)
+    {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                (view, selectedHour, selectedMinute) -> {
+                    String time = String.format(Locale.getDefault(),"%02d:%02d", selectedHour, selectedMinute);
+                    if (isStartTime) {
+                        binding.pmNewPillStartTime.setText(time);
+                    } else {
+                        binding.pmNewPillEndTime.setText(time);
+                    }
+                },
+                0, 0, true);
+        timePickerDialog.show();
+    }
+
+    private void transferNewPillInfo()
+    {
+        String takenDate = binding.pmNewPillDate.getText().toString();
+        String scheduledStartTime = binding.pmNewPillStartTime.getText().toString();
+        String scheduledEndTime = binding.pmNewPillEndTime.getText().toString();
+        String takenTime = binding.pmNewPillTakenTime.getText().toString();
+        String takenState = binding.pmNewPillSelector.getSelectedItem().toString();
+
+        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() || takenTime.isEmpty() || takenState.isEmpty())
+        {
+            Toast.makeText(this, "정보를 전부 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            pill = new Pill();
+            pill.TAKEN_DT = takenDate.replaceAll("[년월일\\s]", "");
+            pill.ARM_ST_TM = scheduledStartTime.replace(":", "");
+            pill.ARM_ED_TM = scheduledEndTime.replace(":", "");
+            pill.TAKEN_TM = takenTime.replace(":", "");
+            pill.TAKEN_ST = takenState;
+
+            // 확인용
+            Toast.makeText(this,
+                    pill.TAKEN_DT + " | " + pill.ARM_ST_TM + " | " + pill.ARM_ED_TM + " | " + pill.TAKEN_TM + " | " + pill.TAKEN_ST,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 }
