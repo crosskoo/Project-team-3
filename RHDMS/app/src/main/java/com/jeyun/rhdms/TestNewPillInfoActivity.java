@@ -7,23 +7,32 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.jeyun.rhdms.bluetooth.NetworkHandler;
 import com.jeyun.rhdms.databinding.ActivityTestNewPillInfoBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.util.factory.TimePickerDialogFactory;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class TestNewPillInfoActivity extends AppCompatActivity
 {
-    private Pill pill;
+    private HashMap<String, Object> newPillInfoMap;
     private ArrayAdapter<String> dataAdapter; // 복약 상태 리스트
     private ActivityTestNewPillInfoBinding binding;
+    private NetworkHandler networkHandler;
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -119,6 +128,8 @@ public class TestNewPillInfoActivity extends AppCompatActivity
 
     private void transferNewPillInfo() // 복약 정보를 서버에 전송
     {
+        newPillInfoMap = new HashMap<String, Object>();
+
         String takenDate = binding.pmNewPillDate.getText().toString();
         String scheduledStartTime = binding.pmNewPillStartTime.getText().toString();
         String scheduledEndTime = binding.pmNewPillEndTime.getText().toString();
@@ -131,17 +142,66 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         }
         else
         {
-            pill = new Pill();
-            pill.TAKEN_DT = takenDate.replaceAll("[년월일\\s]", "");
-            pill.ARM_ST_TM = scheduledStartTime.replace(":", "");
-            pill.ARM_ED_TM = scheduledEndTime.replace(":", "");
-            pill.TAKEN_TM = takenTime.replace(":", "");
-            pill.TAKEN_ST = takenState;
+            newPillInfoMap.put("alarmDate", takenDate.replaceAll("[년월일\\s]", ""));
+            newPillInfoMap.put("closeDate",takenDate.replaceAll("[년월일\\s]", ""));
+            newPillInfoMap.put("state", takenState);
+            newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
+            newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
 
-            // 확인용
-            Toast.makeText(this,
-                    pill.TAKEN_DT + " | " + pill.ARM_ST_TM + " | " + pill.ARM_ED_TM + " | " + pill.TAKEN_TM + " | " + pill.TAKEN_ST,
-                    Toast.LENGTH_LONG).show();
+            HttpPostRequest();
+            Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void HttpPostRequest() { // 새롭게 생성된 복약 데이터를 json 형태로 전송
+        setJsonData();
+        try
+        {
+            URL url = new URL("http://211.229.106.53:8080/restful/pillbox-colct.json");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            String json = NetworkHandler.getJsonStringFromMap(newPillInfoMap);
+            System.out.println("json:" + json);
+
+            try (OutputStream os = conn.getOutputStream())
+            {
+                byte[] input = json.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("ResponseCode:" + responseCode); // 응답 코드 확인
+
+            conn.disconnect();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setJsonData()
+    {
+        String defaultDeviceId = "10071002";
+        String defaultOpenTime = "1145";
+        String defaultCloseTime = "1150";
+        String defaultBeforeWeight = "151";
+        String defaultNowWeight = "80";
+        String defaultSubjectId = "1076";
+        String defaultPaper = "71";
+
+        newPillInfoMap.put("deviceId", defaultDeviceId);
+        newPillInfoMap.put("openTime", defaultOpenTime);
+        newPillInfoMap.put("closeTime", defaultCloseTime);
+        newPillInfoMap.put("beforeWeight", defaultBeforeWeight);
+        newPillInfoMap.put("nowWeight", defaultNowWeight);
+        newPillInfoMap.put("subject_id", defaultSubjectId);
+        newPillInfoMap.put("paper", defaultPaper);
     }
 }
