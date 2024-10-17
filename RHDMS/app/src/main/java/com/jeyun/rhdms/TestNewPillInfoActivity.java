@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.jeyun.rhdms.databinding.ActivityTestNewPillInfoBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
+import com.jeyun.rhdms.util.factory.TimePickerDialogFactory;
+
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,13 +88,20 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         });
 
         // 복약 시작 시간 뷰 클릭 -> 시작 시간 선택
-        binding.pmNewPillStartTime.setOnClickListener(v -> showTimePickerDialog(true));
+        binding.pmNewPillStartTime.setOnClickListener(v -> {
+            TimePickerDialogFactory.showTimePickerDialog(this, time -> {
+                binding.pmNewPillStartTime.setText(time);
+            });
+        });
         // 복약 종료 시간 뷰 클릭 -> 종료 시간 선택
-        binding.pmNewPillEndTime.setOnClickListener(v -> showTimePickerDialog(false));
+        binding.pmNewPillEndTime.setOnClickListener(v -> {
+            TimePickerDialogFactory.showTimePickerDialog(this, time -> {
+                binding.pmNewPillEndTime.setText(time);
+            });
+        });
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
-        binding.pmNewPillCancel.setOnClickListener(v ->
-        {
+        binding.pmNewPillCancel.setOnClickListener(v -> {
             finish();
         });
 
@@ -101,37 +111,13 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         // 복약 시각 뷰 클릭 -> 시간 선택 다이얼로그 띄움
         binding.pmNewPillTakenTime.setOnClickListener(v ->
         {
-            TimePickerDialog dialog = new TimePickerDialog
-                    (
-                            this,
-                            com.google.android.material.R.style.Theme_MaterialComponents_Dialog,
-                            (view, hourOfDay, minute) ->
-                            {
-                                binding.pmNewPillTakenTime.setText(String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute));
-                            },
-                            0, 0, true
-                    );
-            dialog.show();
+            TimePickerDialogFactory.showTimePickerDialog(this, time -> {
+                binding.pmNewPillTakenTime.setText(time);
+            });
         });
     }
 
-    private void showTimePickerDialog(boolean isStartTime)
-    {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-                this,
-                (view, selectedHour, selectedMinute) -> {
-                    String time = String.format(Locale.getDefault(),"%02d:%02d", selectedHour, selectedMinute);
-                    if (isStartTime) {
-                        binding.pmNewPillStartTime.setText(time);
-                    } else {
-                        binding.pmNewPillEndTime.setText(time);
-                    }
-                },
-                0, 0, true);
-        timePickerDialog.show();
-    }
-
-    private void transferNewPillInfo()
+    private void transferNewPillInfo() // 복약 정보를 서버에 전송
     {
         String takenDate = binding.pmNewPillDate.getText().toString();
         String scheduledStartTime = binding.pmNewPillStartTime.getText().toString();
