@@ -22,6 +22,7 @@ import com.jeyun.rhdms.databinding.ActivityMainBinding;
 import com.jeyun.rhdms.util.factory.AlertFactory;
 import com.jeyun.rhdms.util.factory.PopupFactory;
 
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.security.MessageDigest;
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     {
         String id = binding.inputId.getText().toString();
         String password = binding.inputPw.getText().toString();
+        String encryptedPassword = "";
 
         if (id.isEmpty() || password.isEmpty())
         {
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         try
         {
-            String encryptedPassword = encryptPassword(password, id);
+            encryptedPassword = encryptPassword(password, id);
             Toast.makeText(this, "id : " + id + ", pw : " + encryptedPassword, Toast.LENGTH_SHORT).show(); // 확인용
         }
         catch (Exception e)
@@ -161,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "로그인 하는 데 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+
+        getUserInfo(id, encryptedPassword);
     }
 
     private String encryptPassword(@NonNull String password, @NonNull String id) throws Exception // 아이디, 비밀 번호로 해시값 생성
@@ -176,15 +180,20 @@ public class MainActivity extends AppCompatActivity {
         return Base64.getEncoder().encodeToString(hashValue);
     }
 
-    /*
-    private void getUserInfo()
+    private void getUserInfo(String id, String encryptedPassword)
     {
         String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";
         String username = "sa";
         String userpassword = "test1q2w3e@@";
 
         Sql2o client = new Sql2o(url, username, userpassword);
-    }
 
-     */
+        String query_format =
+                "SELECT * FROM lettnemplyrinfo " +
+                        "WHERE EMPLYR_ID = %s " +
+                        "AND PASSWORD = %s;";
+
+        String query = String.format(query_format, id, encryptedPassword);
+        System.out.println(query);
+    }
 }
