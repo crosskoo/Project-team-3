@@ -14,9 +14,25 @@ import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
 import com.jeyun.rhdms.util.worker.Inspector;
 import com.jeyun.rhdms.util.worker.MyWorkManager;
 
+import com.jeyun.rhdms.handler.PillHandler;
+import com.jeyun.rhdms.handler.entity.Pill;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+import android.util.Log;
+
+
 public class MenuActivity extends AppCompatActivity {
 
     private ActivityMenuBinding binding;
+    private LocalDate startDate;
+    private LocalDate lastTakenDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,6 +46,9 @@ public class MenuActivity extends AppCompatActivity {
         initEvents();
 
         MyWorkManager.schedulePeriodicWork(Inspector.class, getApplicationContext(), 15);
+
+        //복약 상태
+        updateAdherenceUI();
     }
 
 
@@ -47,5 +66,82 @@ public class MenuActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(getApplicationContext(), (Class<?>) cls);
         startActivity(intent);
+    }
+
+    //최근 복약 날짜 불러오기
+    private LocalDate getLatestMedicationDate(List<Pill> pills) {
+        LocalDate latestDate = null;
+
+        for (Pill pill : pills) {
+            LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            if (latestDate == null || pillDate.isAfter(latestDate)) {
+                latestDate = pillDate;
+            }
+        }
+
+        return latestDate;
+    }
+    
+    //최근 복약일로부터 30일 분석.
+    private void updateAdherenceUI() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+                PillHandler pillHandler = new PillHandler();
+                List<Pill> pills = new ArrayList<>();
+
+                // Collect data for the past 12 months
+                for (int i = 0; i < 12; i++) {
+                    LocalDate date = LocalDate.now().minusMonths(i);
+                    List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
+                    pills.addAll(monthlyPills);
+                    Log.d("MenuActivity", "Month: " + date.getMonth() + ", Pills: " + monthlyPills.size());
+                }
+
+                LocalDate latestDate = getLatestMedicationDate(pills);
+
+                runOnUiThread(() -> {
+                    if (latestDate != null) {
+                        Log.d("MenuActivity", "Latest Medication Date: " + latestDate.toString());
+
+                        LocalDate startDate = latestDate.minusDays(30);
+                        List<Pill> filteredPills = pills.stream()
+                                .filter(pill -> {
+                                    LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
+                                    return !pillDate.isBefore(startDate) && !pillDate.isAfter(latestDate);
+                                })
+                                .collect(Collectors.toList());
+
+                        Log.d("MenuActivity", "Filtered Pills Count: " + filteredPills.size());
+
+                        int daysAdhered = (int) filteredPills.stream()
+                                .filter(pill -> "TAKEN".equals(pill.TAKEN_ST))
+                                .count();
+
+                        double adherenceRate = ((double) daysAdhered / 30) * 100;
+                        String adherenceMessage;
+
+                        if (adherenceRate >= 80) {
+                            adherenceMessage = "양호";
+                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
+                        } else if (adherenceRate >= 50) {
+                            adherenceMessage = "보통";
+                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
+                        } else {
+                            adherenceMessage = "부족";
+                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
+                        }
+
+                        binding.adherenceTextView.setText(adherenceMessage);
+
+                        String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        binding.lastTakenTextView.setText(lastTakenMessage);
+
+                    } else {
+                        Log.d("MenuActivity", "No medication data available.");
+                        binding.adherenceTextView.setText("데이터 없음");
+                        binding.lastTakenTextView.setText("최근 복용 : 없음.");
+                    }
+                });
+        });
     }
 }
