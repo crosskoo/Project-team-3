@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Path;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,17 +20,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.jeyun.rhdms.databinding.ActivityMainBinding;
+import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.factory.AlertFactory;
 import com.jeyun.rhdms.util.factory.PopupFactory;
 
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 
 import java.security.MessageDigest;
 import java.security.spec.ECField;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,13 +65,11 @@ public class MainActivity extends AppCompatActivity {
         // (추후 수정) 버튼 누를 시 메인 화면으로 이동
         binding.buttonLogin.setOnClickListener(v ->
         {
-            /*
+            // Login();
+
             Intent intent_switch = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(intent_switch);
             finish();
-
-             */
-            Login();
         });
     }
 
@@ -160,11 +163,24 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-            Toast.makeText(this, "로그인 하는 데 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "비밀 번호를 암호화 하는데 실패했습니다.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
-        getUserInfo(id, encryptedPassword);
+        /*
+        Optional<User> optionalUser = getUserInfo(id, encryptedPassword);
+
+        if (optionalUser.isPresent())
+        {
+            User user = optionalUser.get();
+            System.out.println("User EMPLYR_ID : " + user.getEMPLYR_ID() + ", User ORGNZT_ID : " + user.getORGNZT_ID());
+        }
+        else
+        {
+            Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
+        }
+
+         */
     }
 
     private String encryptPassword(@NonNull String password, @NonNull String id) throws Exception // 아이디, 비밀 번호로 해시값 생성
@@ -180,7 +196,8 @@ public class MainActivity extends AppCompatActivity {
         return Base64.getEncoder().encodeToString(hashValue);
     }
 
-    private void getUserInfo(String id, String encryptedPassword)
+    /*
+    private Optional<User> getUserInfo(String id, String encryptedPassword) // 아이디, 비밀번호에 해당하는 데이터 값 찾아오기
     {
         String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";
         String username = "sa";
@@ -188,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
         Sql2o client = new Sql2o(url, username, userpassword);
 
+        ////
         String query_format =
                 "SELECT * FROM lettnemplyrinfo " +
                         "WHERE EMPLYR_ID = %s " +
@@ -195,5 +213,30 @@ public class MainActivity extends AppCompatActivity {
 
         String query = String.format(query_format, id, encryptedPassword);
         System.out.println(query);
+        ////
+
+        String query_format =
+                "SELECT * FROM lettnemplyrinfo " +
+                "WHERE EMPLYR_ID = %s;";
+
+        String query = String.format(query_format, id);
+        System.out.println(query);
+
+        try (Connection con = client.open())
+        {
+            User user =  con.createQuery(query).executeAndFetchFirst(User.class);
+            return Optional.ofNullable(user);
+        }
+        catch (Sql2oException e)
+        {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
+     */
 }
