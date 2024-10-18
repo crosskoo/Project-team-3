@@ -188,13 +188,18 @@ public class TestNewPillInfoActivity extends AppCompatActivity
 
     private void setJsonData()
     {
-        String defaultDeviceId = "10071002";
-        String defaultOpenTime = "1145";
-        String defaultCloseTime = "1150";
-        String defaultBeforeWeight = "151";
-        String defaultNowWeight = "80";
-        String defaultSubjectId = "1076";
-        String defaultPaper = "71";
+        String defaultDeviceId = "10071002"; // 임의의 값
+        String defaultOpenTime = "1145"; // 임의의 값
+        String defaultCloseTime = "1150"; // 임의의 값
+        String defaultBeforeWeight = "151"; // 임의의 값
+        String defaultNowWeight = "80"; // 임의의 값
+        String defaultSubjectId = "1076"; // 임의의 값
+        String defaultPaper = "71"; // 임의의 값
+
+        // 서버 내에서 처리할 값 (테스트 용)
+        String defaultsID = "1076"; // 임의의 값
+        String defaultauthYN = "Y"; // 임의의 값
+        String defaultfgpId = "0000"; // 임의의 값
 
         newPillInfoMap.put("deviceId", defaultDeviceId);
         newPillInfoMap.put("openTime", defaultOpenTime);
