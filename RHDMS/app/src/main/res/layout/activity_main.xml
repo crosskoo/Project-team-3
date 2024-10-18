@@ -68,6 +68,7 @@
         app:layout_constraintTop_toTopOf="@id/main_guideline2"/>
 
     <EditText
+        android:id="@+id/input_pw"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/placeholder_pw"

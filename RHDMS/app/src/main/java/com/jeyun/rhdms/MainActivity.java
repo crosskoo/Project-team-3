@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -20,7 +22,12 @@ import com.jeyun.rhdms.databinding.ActivityMainBinding;
 import com.jeyun.rhdms.util.factory.AlertFactory;
 import com.jeyun.rhdms.util.factory.PopupFactory;
 
+import org.sql2o.Sql2o;
+
+import java.security.MessageDigest;
+import java.security.spec.ECField;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,12 +51,21 @@ public class MainActivity extends AppCompatActivity {
         factory = new AlertFactory(view.getContext());
         checkPermission(); // 권한 승인 여부 확인
 
+        initEvent();
+    }
+
+    private void initEvent()
+    {
         // (추후 수정) 버튼 누를 시 메인 화면으로 이동
         binding.buttonLogin.setOnClickListener(v ->
         {
+            /*
             Intent intent_switch = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(intent_switch);
             finish();
+
+             */
+            Login();
         });
     }
 
@@ -123,4 +139,52 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, permissions, permissions.length);
         }
     }
+
+    private void Login() // 로그인할 데이터 전처리
+    {
+        String id = binding.inputId.getText().toString();
+        String password = binding.inputPw.getText().toString();
+
+        if (id.isEmpty() || password.isEmpty())
+        {
+            Toast.makeText(this, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try
+        {
+            String encryptedPassword = encryptPassword(password, id);
+            Toast.makeText(this, "id : " + id + ", pw : " + encryptedPassword, Toast.LENGTH_SHORT).show(); // 확인용
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "로그인 하는 데 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    private String encryptPassword(@NonNull String password, @NonNull String id) throws Exception // 아이디, 비밀 번호로 해시값 생성
+    {
+        byte[] hashValue = null;
+
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.reset();
+        md.update(id.getBytes());
+
+        hashValue = md.digest(password.getBytes());
+
+        return Base64.getEncoder().encodeToString(hashValue);
+    }
+
+    /*
+    private void getUserInfo()
+    {
+        String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";
+        String username = "sa";
+        String userpassword = "test1q2w3e@@";
+
+        Sql2o client = new Sql2o(url, username, userpassword);
+    }
+
+     */
 }
