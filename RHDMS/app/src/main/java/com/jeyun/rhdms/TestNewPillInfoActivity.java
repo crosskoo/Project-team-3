@@ -148,7 +148,7 @@ public class TestNewPillInfoActivity extends AppCompatActivity
             newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
             newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
 
-            HttpPostRequest();
+            // HttpPostRequest();
             Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
         }
     }
