@@ -10,7 +10,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import org.json.JSONObject;
+
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
+import com.jeyun.rhdms.databinding.ActivityDeviceSettingsBinding;
 
 public class DeviceSettingsActivity extends AppCompatActivity {
 
@@ -21,13 +26,17 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     private RadioGroup volumeGroup;
 
     private Switch alarmEnable1st, alarmEnable2nd, alarmEnable3rd;
-
+    private ActivityDeviceSettingsBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_settings);
+        binding = ActivityDeviceSettingsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
+        // Initialize EditText for pillboxId
         pillboxId = findViewById(R.id.pillbox_id);
+        pillboxId.setText(""); // Set initial query to an empty string
 
         // Initialize buttons
         alarmStartHour1st = findViewById(R.id.alarm_start_hour_1st);
@@ -73,8 +82,13 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSettingsPopup();
-                // sendSettings(); // Uncomment this line to send settings to server once it's ready
+                try {
+                    JSONObject settings = createSettingsJson();
+                    showSendSettingsPopup(settings);
+                    sendSettings(settings);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -95,92 +109,42 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void showSettingsPopup() {
+    private JSONObject createSettingsJson() throws Exception {
+        JSONObject settings = new JSONObject();
+        settings.put("pillboxno", pillboxId.getText().toString());
+
+        settings.put("alarmStart_1st", alarmEnable1st.isChecked() ? getFormattedTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString()) : "");
+        settings.put("alarmEnd_1st", alarmEnable1st.isChecked() ? getFormattedTime(alarmEndHour1st.getText().toString(), alarmEndMinute1st.getText().toString()) : "");
+
+        settings.put("alarmStart_2nd", alarmEnable2nd.isChecked() ? getFormattedTime(alarmStartHour2nd.getText().toString(), alarmStartMinute2nd.getText().toString()) : "");
+        settings.put("alarmEnd_2nd", alarmEnable2nd.isChecked() ? getFormattedTime(alarmEndHour2nd.getText().toString(), alarmEndMinute2nd.getText().toString()) : "");
+
+        settings.put("alarmStart_3rd", alarmEnable3rd.isChecked() ? getFormattedTime(alarmStartHour3rd.getText().toString(), alarmStartMinute3rd.getText().toString()) : "");
+        settings.put("alarmEnd_3rd", alarmEnable3rd.isChecked() ? getFormattedTime(alarmEndHour3rd.getText().toString(), alarmEndMinute3rd.getText().toString()) : "");
+
+        int selectedVolumeId = volumeGroup.getCheckedRadioButtonId();
+        RadioButton selectedVolume = findViewById(selectedVolumeId);
+        if (selectedVolume != null) {
+            settings.put("volume", selectedVolume.getText().toString());
+        }
+
+        return settings;
+    }
+
+    private void showSendSettingsPopup(JSONObject settings) {
         try {
-            JSONObject settings = new JSONObject();
-            settings.put("pillboxno", pillboxId.getText().toString());
-
-            // Check each alarm's enable switch and set times accordingly
-            if (alarmEnable1st.isChecked()) {
-                settings.put("alarmStart_1st", getFormattedTime(alarmStartHour1st.getText().toString(),
-                        alarmStartMinute1st.getText().toString()));
-                settings.put("alarmEnd_1st", getFormattedTime(alarmEndHour1st.getText().toString(),
-                        alarmEndMinute1st.getText().toString()));
-            } else {
-                settings.put("alarmStart_1st", "");
-                settings.put("alarmEnd_1st", "");
-            }
-
-            if (alarmEnable2nd.isChecked()) {
-                settings.put("alarmStart_2nd", getFormattedTime(alarmStartHour2nd.getText().toString(),
-                        alarmStartMinute2nd.getText().toString()));
-                settings.put("alarmEnd_2nd", getFormattedTime(alarmEndHour2nd.getText().toString(),
-                        alarmEndMinute2nd.getText().toString()));
-            } else {
-                settings.put("alarmStart_2nd", "");
-                settings.put("alarmEnd_2nd", "");
-            }
-
-            if (alarmEnable3rd.isChecked()) {
-                settings.put("alarmStart_3rd", getFormattedTime(alarmStartHour3rd.getText().toString(),
-                        alarmStartMinute3rd.getText().toString()));
-                settings.put("alarmEnd_3rd", getFormattedTime(alarmEndHour3rd.getText().toString(),
-                        alarmEndMinute3rd.getText().toString()));
-            } else {
-                settings.put("alarmStart_3rd", "");
-                settings.put("alarmEnd_3rd", "");
-            }
-
-            int selectedVolumeId = volumeGroup.getCheckedRadioButtonId();
-            RadioButton selectedVolume = findViewById(selectedVolumeId);
-            if (selectedVolume != null) {
-                settings.put("volume", selectedVolume.getText().toString());
-            }
-
-            // Show the JSON in a popup dialog
             new AlertDialog.Builder(this)
-                    .setTitle("Settings JSON")
+                    .setTitle("Send Settings JSON")
                     .setMessage(settings.toString(4)) // Pretty print with indentation
                     .setPositiveButton(android.R.string.ok, null)
                     .show();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /*
-    private void sendSettings() {
+    private void sendSettings(JSONObject settings) {
         try {
-            JSONObject settings = new JSONObject();
-            settings.put("pillboxno", pillboxId.getText().toString());
-
-            // Include switch states in JSON
-            settings.put("alarmEnable_1st", alarmEnable1st.isChecked());
-            settings.put("alarmEnable_2nd", alarmEnable2nd.isChecked());
-            settings.put("alarmEnable_3rd", alarmEnable3rd.isChecked());
-
-            settings.put("alarmStart_1st", getFormattedTime(alarmStartHour1st.getText().toString(),
-                                                              alarmStartMinute1st.getText().toString()));
-            settings.put("alarmEnd_1st", getFormattedTime(alarmEndHour1st.getText().toString(),
-                                                            alarmEndMinute1st.getText().toString()));
-
-            settings.put("alarmStart_2nd", getFormattedTime(alarmStartHour2nd.getText().toString(),
-                                                              alarmStartMinute2nd.getText().toString()));
-            settings.put("alarmEnd_2nd", getFormattedTime(alarmEndHour2nd.getText().toString(),
-                                                            alarmEndMinute2nd.getText().toString()));
-
-            settings.put("alarmStart_3rd", getFormattedTime(alarmStartHour3rd.getText().toString(),
-                                                              alarmStartMinute3rd.getText().toString()));
-            settings.put("alarmEnd_3rd", getFormattedTime(alarmEndHour3rd.getText().toString(),
-                                                            alarmEndMinute3rd.getText().toString()));
-
-            int selectedVolumeId = volumeGroup.getCheckedRadioButtonId();
-            RadioButton selectedVolume = findViewById(selectedVolumeId);
-            if (selectedVolume != null) {
-                settings.put("volume", selectedVolume.getText().toString());
-            }
-
             String urlString = "http://211.229.106.53:8080/restful/미정.json";
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -192,16 +156,24 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = settings.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);
-            }
 
-            int responseCode = conn.getResponseCode();
-            System.out.println("Response Code : " + responseCode);
+                int responseCode = conn.getResponseCode();
+
+                // Display response code in an alert dialog
+                new AlertDialog.Builder(this)
+                        .setTitle("Response")
+                        .setMessage("Response Code: " + responseCode)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    */
 
     private String getFormattedTime(String hourStr, String minuteStr) {
         return String.format(Locale.getDefault(), "%02d:%02d",
