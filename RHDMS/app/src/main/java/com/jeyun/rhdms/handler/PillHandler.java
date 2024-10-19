@@ -34,7 +34,6 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
         @SuppressLint("DefaultLocale")
         String query = String.format(query_format, startDate, endDate, "1076");
-        System.out.println(query);
 
         try(Connection con = client.open())
         {
@@ -65,7 +64,6 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
         @SuppressLint("DefaultLocale")
         String query = String.format(query_format, startDate, endDate, "1076");
-        System.out.println(query);
 
         try(Connection con = client.open())
         {
