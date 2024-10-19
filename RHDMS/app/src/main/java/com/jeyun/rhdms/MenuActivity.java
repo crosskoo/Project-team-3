@@ -24,8 +24,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import android.util.Log;
-
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -94,14 +92,13 @@ public class MenuActivity extends AppCompatActivity {
                     LocalDate date = LocalDate.now().minusMonths(i);
                     List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
                     pills.addAll(monthlyPills);
-                    Log.d("MenuActivity", "Month: " + date.getMonth() + ", Pills: " + monthlyPills.size());
+
                 }
 
                 LocalDate latestDate = getLatestMedicationDate(pills);
 
                 runOnUiThread(() -> {
                     if (latestDate != null) {
-                        Log.d("MenuActivity", "Latest Medication Date: " + latestDate.toString());
 
                         LocalDate startDate = latestDate.minusDays(30);
                         List<Pill> filteredPills = pills.stream()
@@ -111,7 +108,7 @@ public class MenuActivity extends AppCompatActivity {
                                 })
                                 .collect(Collectors.toList());
 
-                        Log.d("MenuActivity", "Filtered Pills Count: " + filteredPills.size());
+
 
                         int daysAdhered = (int) filteredPills.stream()
                                 .filter(pill -> "TAKEN".equals(pill.TAKEN_ST))
@@ -119,27 +116,33 @@ public class MenuActivity extends AppCompatActivity {
 
                         double adherenceRate = ((double) daysAdhered / 30) * 100;
                         String adherenceMessage;
+                        int imageResId;
+
 
                         if (adherenceRate >= 80) {
                             adherenceMessage = "양호";
                             binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
+                            imageResId = R.drawable.good;
                         } else if (adherenceRate >= 50) {
                             adherenceMessage = "보통";
                             binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
+                            imageResId = R.drawable.common;
                         } else {
                             adherenceMessage = "부족";
                             binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
+                            imageResId = R.drawable.bad;
                         }
 
                         binding.adherenceTextView.setText(adherenceMessage);
+                        binding.adherenceImageView.setImageResource(imageResId);
+                        binding.adherenceImageView.setVisibility(View.VISIBLE);
 
                         String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         binding.lastTakenTextView.setText(lastTakenMessage);
-
                     } else {
-                        Log.d("MenuActivity", "No medication data available.");
                         binding.adherenceTextView.setText("데이터 없음");
                         binding.lastTakenTextView.setText("최근 복용 : 없음.");
+                        binding.adherenceImageView.setVisibility(View.GONE);
                     }
                 });
         });
