@@ -50,4 +50,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.volley)
+
+    implementation("androidx.core:core:1.9.0")
 }

@@ -23,4 +23,5 @@
     <string name="connect_state">연결 상태</string>
     <string name="connect_standby">기기 연결 대기중...</string>
     <string name="ble_text">실시간 측정</string>
+    <string name="text_setting">설정</string>
 </resources>
