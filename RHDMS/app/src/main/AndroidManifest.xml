@@ -79,6 +79,9 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <receiver android:name=".util.worker.AlarmReceiver"/>
+        <receiver android:name=".util.worker.CancelTodayAlarmReceiver"/>
+
     </application>
 
 </manifest>

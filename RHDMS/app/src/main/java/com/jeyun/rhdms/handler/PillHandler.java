@@ -85,15 +85,14 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
     {
         String query_format =
                 "SELECT * FROM tb_drug " +
-                        "WHERE ARM_DT = %s " +
-                        "AND SUBJECT_ID = %s;";
+                        "WHERE ARM_DT = '%s' " +
+                        "AND SUBJECT_ID = '%s';";
 
         String query = String.format(query_format, id, "1076");
-        System.out.println(query);
 
         try(Connection con = client.open())
         {
-            return Optional.of(con.createQuery(query).executeAndFetchFirst(Pill.class));
+            return Optional.ofNullable(con.createQuery(query).executeAndFetchFirst(Pill.class));
         }
 
         catch (Exception e)
@@ -127,5 +126,14 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static String dateToString(LocalDate date)
+    {
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+
+        return String.format("%d%02d%02d", year, month, day);
     }
 }
