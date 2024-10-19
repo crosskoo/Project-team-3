@@ -13,7 +13,6 @@ public class SettingMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_menu);
 
-        // Setting up buttons for App Setting and Device Setting
         Button appSettingButton = findViewById(R.id.buttonAppSetting);
         Button deviceSettingButton = findViewById(R.id.buttonDeviceSetting);
 
@@ -22,13 +21,11 @@ public class SettingMenuActivity extends AppCompatActivity {
     }
 
     private void goToAppSetting(View view) {
-        // Intent to navigate to App Setting screen
         Intent intent = new Intent(this, AppSettingsActivity.class);
         startActivity(intent);
     }
 
     private void goToDeviceSetting(View view) {
-        // Intent to navigate to Device Setting screen
         Intent intent = new Intent(this, DeviceSettingsActivity.class);
         startActivity(intent);
     }
