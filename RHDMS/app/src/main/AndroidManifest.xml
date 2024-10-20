@@ -67,6 +67,10 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".graphActivity.TestActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".PillListActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -90,6 +94,8 @@
         <activity android:name=".BleActivity"
             android:screenOrientation="portrait">
         </activity>
-
+        <receiver android:name=".util.worker.AlarmReceiver"></receiver>
+        <receiver android:name=".util.worker.CancelTodayAlarmReceiver"></receiver>
     </application>
+
 </manifest>

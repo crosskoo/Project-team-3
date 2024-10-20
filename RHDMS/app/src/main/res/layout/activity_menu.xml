@@ -5,6 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/adherenceImageView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/lastTakenTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_pill_list"/>
+
+    <TextView
+        android:id="@+id/adherenceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:text="Adherence Level"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adherenceImageView"/>
+
+    <TextView
+        android:id="@+id/lastTakenTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/adherenceTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Last Taken: N/A" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/menu_guideline1"
         android:layout_width="wrap_content"
@@ -95,19 +129,6 @@
     <!-- 테스트 용 -->
 
     <Button
-        android:id="@+id/button_Settings"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:backgroundTint="#454749"
-        android:text="@string/text_setting"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@id/menu_guideline5"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/menu_guideline4"
-        app:layout_constraintTop_toBottomOf="@id/button_sugar_info" />
-
-    <Button
         android:id="@+id/button_test_new_pill_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -117,6 +138,17 @@
         app:layout_constraintEnd_toStartOf="@id/menu_guideline5"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/menu_guideline4"
+        app:layout_constraintTop_toBottomOf="@id/button_ble" />
+
+    <Button
+        android:id="@+id/buttonSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="설정"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_ble" />
 
 
