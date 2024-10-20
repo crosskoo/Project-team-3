@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         checkPermission();
     }
 
-    private void checkPermission() // 권환 승인 확인 함수(블루투스 권한, 알림 권한)
+    private void checkPermission() // 권환 승인 확인 함수(블루투스 권한, 알림 권한 등)
     {
         // 안드로이드 12 (API 31) 이상에서 블루투스 권한 승인 여부
         boolean isBluetoothPermissionDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
@@ -70,8 +70,15 @@ public class MainActivity extends AppCompatActivity {
         boolean isNotificationPermissionDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED;
 
-        // 두 권한 중 하나라도 승인이 안 되어 있다면
-        if (isBluetoothPermissionDenied || isNotificationPermissionDenied)
+        // 진동 권한 승인 여부
+        boolean isVibratePermissionDenied = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED;
+
+        // 안드로이드 12 (API 31) 이상에서 정확한 알람 권한 승인 여부
+        boolean isScheduleExactAlarmDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED;
+
+        // 여러 권한 중 하나라도 승인이 안 되어 있다면
+        if (isBluetoothPermissionDenied || isNotificationPermissionDenied || isVibratePermissionDenied || isScheduleExactAlarmDenied)
         {
             AlertDialog alert;
             if (isRequested) // 권한 요청은 전에 했지만 권한 승인이 되지 않은 경우
@@ -114,6 +121,19 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
         {
             permissionsList.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+
+        // 진동 권한 승인이 안되어 있다면
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED)
+        {
+            permissionsList.add(Manifest.permission.VIBRATE);
+        }
+
+        // 안드로이드 12 (API 31) 정확한 알람 권한 승인이 안 되어 있다면
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED)
+        {
+            permissionsList.add(Manifest.permission.SCHEDULE_EXACT_ALARM);
         }
 
         if (!permissionsList.isEmpty()) // 요청할 권한이 있다면

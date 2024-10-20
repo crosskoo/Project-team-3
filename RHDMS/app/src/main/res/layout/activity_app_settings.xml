@@ -26,6 +26,15 @@
         app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_count"
         tools:text="10" />
 
+    <Button
+        android:id="@+id/button_increase_alarm_vibration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_delay"
+        tools:text="1" />
+
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="0dp"
@@ -33,7 +42,7 @@
         android:timePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_delay" />
+        app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_vibration" />
 
     <TimePicker
         android:id="@+id/timePicker2"

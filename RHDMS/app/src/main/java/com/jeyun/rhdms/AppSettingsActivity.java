@@ -35,6 +35,7 @@ public class AppSettingsActivity extends AppCompatActivity {
     private  void initUI(){
         binding.buttonIncreaseAlarmCount.setText(Integer.toString(settingsManager.getAlarmCount()));
         binding.buttonIncreaseAlarmDelay.setText(Integer.toString(settingsManager.getAlarmDelay()));
+        binding.buttonIncreaseAlarmVibration.setText(Integer.toString(settingsManager.getAlarmVibrationLevel()));
 
         int doNotDisturbStartTime = settingsManager.getDoNotDisturbStartTime();
         int doNotDisturbEndTime = settingsManager.getDoNotDisturbEndTime();
@@ -54,6 +55,10 @@ public class AppSettingsActivity extends AppCompatActivity {
         binding.buttonIncreaseAlarmDelay.setOnClickListener(v -> {
             int delay = SettingsManager.getInstance(getApplicationContext()).increaseAlarmDelay(context);
             binding.buttonIncreaseAlarmDelay.setText(String.valueOf(delay));
+        });
+        binding.buttonIncreaseAlarmVibration.setOnClickListener(v -> {
+            int vibrationLevel = SettingsManager.getInstance(getApplicationContext()).increaseAlarmVibrationLevel(context);
+            binding.buttonIncreaseAlarmVibration.setText(String.valueOf(vibrationLevel));
         });
 
         binding.timePicker1.setOnTimeChangedListener((view, hourOfDay, minute) -> {

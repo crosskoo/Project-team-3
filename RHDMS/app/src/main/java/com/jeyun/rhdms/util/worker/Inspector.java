@@ -89,7 +89,7 @@ public class Inspector extends Worker
 
         for (int i = 0; i < 10; i++) {
             int requestCode = dateAsNumber*10 + i;
-            pendingIntents[i] = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntents[i] = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             alarmManager.cancel(pendingIntents[i]);
         }
 

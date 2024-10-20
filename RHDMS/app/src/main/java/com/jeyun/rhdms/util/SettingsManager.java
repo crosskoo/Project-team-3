@@ -69,7 +69,21 @@ public class SettingsManager {
         return sharedPreferences.getInt("alarmDelay", 1);
     }
 
+    public int increaseAlarmVibrationLevel(Context context){
+        int AlarmVibrationLevel = sharedPreferences.getInt("AlarmVibrationLevel", 1);
 
+        if(AlarmVibrationLevel >= 3) AlarmVibrationLevel = 0;
+        else AlarmVibrationLevel += 1;
+
+        editor.putInt("AlarmVibrationLevel", AlarmVibrationLevel).apply();
+        NotificationUtils.vibrateWithIntensity(context, AlarmVibrationLevel, 300);
+
+        return AlarmVibrationLevel;
+    }
+
+    public int getAlarmVibrationLevel(){
+        return sharedPreferences.getInt("AlarmVibrationLevel", 1);
+    }
 
     public void setDoNotDisturbStartTime(int startTimeHour, int startTimeMinute){
         Log.d("SettingsManager", "방해금지시작시간: " + startTimeHour + " " + startTimeMinute);
