@@ -1,7 +1,9 @@
 package com.jeyun.rhdms;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding; // 바인딩할 뷰 레이아웃
     private PopupFactory<AlertDialog> factory; // 알림 메시지 factory
+    private AlarmManager alarmManager;
 
     private boolean isRequested = false; // 권한 요청 여부
 
@@ -74,11 +77,12 @@ public class MainActivity extends AppCompatActivity {
         boolean isVibratePermissionDenied = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED;
 
         // 안드로이드 12 (API 31) 이상에서 정확한 알람 권한 승인 여부
-        boolean isScheduleExactAlarmDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED;
+        // alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        // boolean isScheduleExactAlarmDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms();
 
         // 여러 권한 중 하나라도 승인이 안 되어 있다면
-        if (isBluetoothPermissionDenied || isNotificationPermissionDenied || isVibratePermissionDenied || isScheduleExactAlarmDenied)
+        // if (isBluetoothPermissionDenied || isNotificationPermissionDenied || isVibratePermissionDenied || isScheduleExactAlarmDenied)
+        if (isBluetoothPermissionDenied || isNotificationPermissionDenied || isVibratePermissionDenied)
         {
             AlertDialog alert;
             if (isRequested) // 권한 요청은 전에 했지만 권한 승인이 되지 않은 경우
@@ -129,12 +133,16 @@ public class MainActivity extends AppCompatActivity {
             permissionsList.add(Manifest.permission.VIBRATE);
         }
 
-        // 안드로이드 12 (API 31) 정확한 알람 권한 승인이 안 되어 있다면
+        // 안드로이드 12 (API 31) 이상에서 정확한 알람 권한 승인이 안 되어 있다면
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED)
+                !alarmManager.canScheduleExactAlarms())
         {
-            permissionsList.add(Manifest.permission.SCHEDULE_EXACT_ALARM);
+            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
         }
+        */
 
         if (!permissionsList.isEmpty()) // 요청할 권한이 있다면
         {
