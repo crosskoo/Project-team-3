@@ -42,15 +42,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.55" />
 
-    <TextView
-        android:layout_width="0dp"
-        android:textAlignment="center"
-        android:layout_height="wrap_content"
-        android:text="@string/system_name"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:fontFamily="monospace"
-        android:letterSpacing="0.14"
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_logo"
         app:layout_constraintStart_toStartOf="@id/main_guideline3"
         app:layout_constraintEnd_toEndOf="@id/main_guideline4"
         app:layout_constraintTop_toTopOf="@id/main_guideline1"/>
@@ -60,7 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/placeholder_id"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/nanumsquareb"
         android:textSize="25sp"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="@id/main_guideline3"
@@ -72,7 +69,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/placeholder_pw"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/nanumsquareb"
         android:textSize="25sp"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@id/main_guideline3"
@@ -81,10 +78,11 @@
 
     <Button
         android:id="@+id/button_login"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:backgroundTint="#454749"
+        android:fontFamily="@font/nanumsquareb"
         app:layout_constraintStart_toStartOf="@id/main_guideline3"
         app:layout_constraintEnd_toEndOf="@id/main_guideline4"
         app:layout_constraintTop_toBottomOf="@id/main_guideline5"

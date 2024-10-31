@@ -79,7 +79,6 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
                         "AND SUBJECTID = %s;";
 
         String query = String.format(query_format, type, startDate, endDate, "1076");
-        System.out.println(query);
 
         try(Connection con = client.open())
         {

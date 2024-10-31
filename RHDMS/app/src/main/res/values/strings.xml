@@ -4,10 +4,12 @@
     <string name="placeholder_id">아이디</string>
     <string name="placeholder_pw">비밀번호</string>
     <string name="button_login">로그인</string>
-    <string name="text_pill_taking">복약 정보</string>
+    <string name="text_pill_management">오늘의 약시간 : </string>
     <string name="text_bp_management">혈압 정보</string>
+    <string name="text_bp_temp">120/80 mmHg</string>
     <string name="text_bp_measurement">혈압 측정</string>
     <string name="text_bs_management">혈당 정보</string>
+    <string name="text_bs_temp">103 mg/dL</string>
     <string name="text_bs_measurement">혈당 측정</string>
     <string name="toggle_button_text">GraphUnit</string>
     <string name="toggle_button_month">월</string>
@@ -23,4 +25,5 @@
     <string name="connect_state">연결 상태</string>
     <string name="connect_standby">기기 연결 대기중...</string>
     <string name="ble_text">실시간 측정</string>
+    <string name="text_setting">설정</string>
 </resources>

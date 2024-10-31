@@ -92,7 +92,7 @@ public abstract class GraphActivity<T> extends AppCompatActivity
             loadData(isWeek);
         });
 
-        // 토글 버튼에 설정된 값만큼 날짜가 증가하고 그 날짜에 해당하는 데이터를 불러옴.
+        /*// 토글 버튼에 설정된 값만큼 날짜가 증가하고 그 날짜에 해당하는 데이터를 불러옴.
         binding.buttonIncrease.setOnClickListener(v ->
         {
             ToggleButton tb = binding.togglePillInfo;
@@ -109,6 +109,7 @@ public abstract class GraphActivity<T> extends AppCompatActivity
             calendar.decrease(type);
             loadData(tb.isChecked());
         });
+        < > 버튼의 삭제로 인한 일시적 주석 처리 */
     }
 
     // 기본값으로는 '주'에 해당하는 데이터를 불러옴.

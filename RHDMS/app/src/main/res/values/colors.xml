@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#00FF00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="red">#FF0000</color>
+    <color name="bs">#e95755</color>
+    <color name="bp">#ff9933</color>
+    <color name="untaken">#ff9999</color>
+    <color name="taken">#57b65f</color>
+    <color name="overtaken">#3399ff</color>
+    <color name="delaytaken">#999999</color>
 </resources>
