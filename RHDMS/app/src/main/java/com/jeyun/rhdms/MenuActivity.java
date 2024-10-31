@@ -64,7 +64,7 @@ public class MenuActivity extends AppCompatActivity {
     private void initEvents()
     {
         binding.buttonPillInfo.setOnClickListener(v -> switchActivity(NewPillInfoActivity.class));
-        binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
+        //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
         binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class));
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
@@ -146,7 +146,7 @@ public class MenuActivity extends AppCompatActivity {
                         }
 
                         binding.adherenceTextView.setText(adherenceMessage);
-                        binding.adherenceImageView.setImageResource(imageResId);
+                        //binding.adherenceImageView.setImageResource(imageResId);
                         binding.adherenceImageView.setVisibility(View.VISIBLE);
 
                         String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
