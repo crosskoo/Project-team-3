@@ -96,6 +96,9 @@
         <activity android:name=".BleActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".TestNewPillInfoActivity">
+
+        </activity>
         <receiver android:name=".util.worker.AlarmReceiver"></receiver>
         <receiver android:name=".util.worker.CancelTodayAlarmReceiver"></receiver>
     </application>
