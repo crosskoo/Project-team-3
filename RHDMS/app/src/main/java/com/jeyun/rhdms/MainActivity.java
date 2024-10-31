@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.provider.Settings;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Toast;
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         // (추후 수정) 버튼 누를 시 메인 화면으로 이동
         binding.buttonLogin.setOnClickListener(v ->
         {
-            // Login();
+            Login(); // 추후 boolean 타입 반환 예정. true 반환 시 메인 페이지로 이동
 
             Intent intent_switch = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(intent_switch);
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /*
+
         Optional<User> optionalUser = getUserInfo(id, encryptedPassword);
 
         if (optionalUser.isPresent())
@@ -208,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
 
-         */
     }
 
     private String encryptPassword(@NonNull String password, @NonNull String id) throws Exception // 아이디, 비밀 번호로 해시값 생성
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         return Base64.getEncoder().encodeToString(hashValue);
     }
 
-    /*
+
     private Optional<User> getUserInfo(String id, String encryptedPassword) // 아이디, 비밀번호에 해당하는 데이터 값 찾아오기
     {
         String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";
@@ -233,7 +233,8 @@ public class MainActivity extends AppCompatActivity {
 
         Sql2o client = new Sql2o(url, username, userpassword);
 
-        ////
+        //// 아이디와 비밀번호에 해당하는 데이터를 찾기
+        /*
         String query_format =
                 "SELECT * FROM lettnemplyrinfo " +
                         "WHERE EMPLYR_ID = %s " +
@@ -242,13 +243,13 @@ public class MainActivity extends AppCompatActivity {
         String query = String.format(query_format, id, encryptedPassword);
         System.out.println(query);
         ////
+         */
 
         String query_format =
                 "SELECT * FROM lettnemplyrinfo " +
-                "WHERE EMPLYR_ID = %s;";
+                        "WHERE EMPLYR_ID = %s"; // 임시로 아이디에 해당하는 데이터만 찾아보기
 
         String query = String.format(query_format, id);
-        System.out.println(query);
 
         try (Connection con = client.open())
         {
@@ -266,5 +267,5 @@ public class MainActivity extends AppCompatActivity {
             return Optional.empty();
         }
     }
-     */
+
 }
