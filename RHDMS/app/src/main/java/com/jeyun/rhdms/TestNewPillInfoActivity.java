@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class TestNewPillInfoActivity extends AppCompatActivity
 {
@@ -33,6 +35,7 @@ public class TestNewPillInfoActivity extends AppCompatActivity
     private ArrayAdapter<String> dataAdapter; // 복약 상태 리스트
     private ActivityTestNewPillInfoBinding binding;
     private NetworkHandler networkHandler;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -148,42 +151,45 @@ public class TestNewPillInfoActivity extends AppCompatActivity
             newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
             newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
 
-            // HttpPostRequest();
+            HttpPostRequest();
             Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
         }
     }
 
     private void HttpPostRequest() { // 새롭게 생성된 복약 데이터를 json 형태로 전송
         setJsonData();
-        try
+
+        executor.execute(() ->
         {
-            URL url = new URL("http://211.229.106.53:8080/restful/pillbox-colct.json");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
-
-            String json = NetworkHandler.getJsonStringFromMap(newPillInfoMap);
-            System.out.println("json:" + json);
-
-            try (OutputStream os = conn.getOutputStream())
+            try
             {
-                byte[] input = json.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+                URL url = new URL("http://211.229.106.53:8080/restful/pillbox-colct");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+
+                String json = NetworkHandler.getJsonStringFromMap(newPillInfoMap);
+                System.out.println("json:" + json);
+
+                try (OutputStream os = conn.getOutputStream())
+                {
+                    byte[] input = json.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                int responseCode = conn.getResponseCode();
+                System.out.println("ResponseCode:" + responseCode); // 응답 코드 확인
+
+                conn.disconnect();
             }
-
-            int responseCode = conn.getResponseCode();
-            System.out.println("ResponseCode:" + responseCode); // 응답 코드 확인
-
-            conn.disconnect();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void setJsonData()
@@ -208,5 +214,10 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         newPillInfoMap.put("nowWeight", defaultNowWeight);
         newPillInfoMap.put("subject_id", defaultSubjectId);
         newPillInfoMap.put("paper", defaultPaper);
+
+        // 테스트 용
+        // newPillInfoMap.put("sID", defaultsID);
+        // newPillInfoMap.put("authYN", defaultauthYN);
+        // newPillInfoMap.put("fgpId", defaultfgpId);
     }
 }
