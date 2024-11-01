@@ -70,10 +70,6 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonLogin.setOnClickListener(v ->
         {
             Login(); // 추후 boolean 타입 반환 예정. true 반환 시 메인 페이지로 이동
-
-            Intent intent_switch = new Intent(getApplicationContext(), MenuActivity.class);
-            startActivity(intent_switch);
-            finish();
         });
     }
 
@@ -209,6 +205,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
 
+        // 임시
+        // 로그인 성공 시 메뉴 화면으로 이동
+        Intent intent_switch = new Intent(getApplicationContext(), MenuActivity.class);
+        startActivity(intent_switch);
+        finish();
     }
 
     private String encryptPassword(@NonNull String password, @NonNull String id) throws Exception // 아이디, 비밀 번호로 해시값 생성

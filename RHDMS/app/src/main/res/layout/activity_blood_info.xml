@@ -127,7 +127,7 @@
             app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
             />-->
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/bloodInfo_data"
         android:layout_width="320dp"
         android:layout_height="263dp"
@@ -138,7 +138,7 @@
         android:layout_marginTop="25dp"
         />
 
-    <!-- 복약 데이터 출력-->
+    <!-- 혈압 데이터 출력-->
     <FrameLayout
         android:id="@+id/bloodInfo_review"
         android:layout_width="320dp"
