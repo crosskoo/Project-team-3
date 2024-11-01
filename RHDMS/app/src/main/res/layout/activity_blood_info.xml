@@ -58,7 +58,7 @@
         android:id="@+id/pm_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/label_pill_management"
+        android:text="@string/text_bp_management"
         android:fontFamily="@font/nanumsquarer"
         android:textSize="24sp"
         android:textColor="#000000"
@@ -98,7 +98,7 @@
 
     <!-- 주간 월간 교체 버튼-->
     <ToggleButton
-        android:id="@+id/toggle_pill_info"
+        android:id="@+id/toggle_blood_info"
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:text=""
@@ -111,27 +111,27 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
 
 
-<!--    기존 다음 기간 이동 버튼
-    <Button
-        android:id="@+id/button_increase"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/increase"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#747679"
-        android:textColorLink="#FFFFFF"
-        android:textSize="25sp"
-        android:layout_margin="0dp"
-        app:layout_constraintStart_toStartOf="@id/pm_guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
-        />-->
+    <!--    기존 다음 기간 이동 버튼
+        <Button
+            android:id="@+id/button_increase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/increase"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#747679"
+            android:textColorLink="#FFFFFF"
+            android:textSize="25sp"
+            android:layout_margin="0dp"
+            app:layout_constraintStart_toStartOf="@id/pm_guideline4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
+            />-->
 
     <ImageView
-        android:id="@+id/pillInfo_adherence"
+        android:id="@+id/bloodInfo_data"
         android:layout_width="320dp"
-        android:layout_height="155dp"
-        android:src="@drawable/bg_pill_adherence"
+        android:layout_height="263dp"
+        android:src="@drawable/bg_blood_data"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/pm_guideline2"
@@ -140,10 +140,10 @@
 
     <!-- 복약 데이터 출력-->
     <FrameLayout
-        android:id="@+id/pillInfo_dataview"
+        android:id="@+id/bloodInfo_review"
         android:layout_width="320dp"
-        android:layout_height="368dp"
-        android:layout_marginTop="205dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="313dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/pm_guideline2"
@@ -153,28 +153,28 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bg_pill_data"
+            android:src="@drawable/bg_blood_review"
             />
 
-        <!--아래로는 필요한 것만 써먹을 방식 생각해야 함-->
-        <!--주간 기준 위치 가이드 점선-->
+        <!-- 최근 기록 보기 용 점선 두 줄 -->
         <ImageView
-            android:id="@+id/foreground_image"
-            android:layout_width="250dp"
-            android:layout_height="299dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/bg_pill_weekdata" />
-
-        <!--월간 기준 위치 가이드 달력-->
-        <ImageView
-            android:layout_width="290dp"
-            android:layout_height="299dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/bg_pill_monthdata"
+            android:layout_width="291dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="165dp"
+            android:src="@drawable/ic_dot_line_for_blood"
+            android:layout_gravity="center_horizontal"
             />
+
+        <ImageView
+            android:layout_width="291dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="208dp"
+            android:src="@drawable/ic_dot_line_for_blood"
+            android:layout_gravity="center_horizontal"
+            />
+
     </FrameLayout>
+
 
     <!--기존에 있던 프레임-->
     <FrameLayout
