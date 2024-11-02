@@ -166,7 +166,7 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            Fragment fragment = new GraphFragment(isWeek);
+            Fragment fragment = new GraphFragment(isWeek, calendar.timeNow);
             fragment.setArguments(bundle);
 
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); // 이전 fragment들이 back stack에 남지 않도록 비움.
