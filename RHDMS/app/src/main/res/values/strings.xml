@@ -11,7 +11,10 @@
     <string name="text_bp_last_recode_date">마지막 기록 : %s</string>
     <string name="text_bp_last_recode_high">수축기 %smmHg</string>
     <string name="text_bp_last_recode_low">이완기 %smmHg</string>
+    <string name="text_bs_max_recode_value">최대 %smg/dL</string>
+    <string name="text_bs_min_recode_value">최소 %smg/dL</string>
     <string name="text_bs_management">혈당 정보</string>
+    <string name="text_date_range">%s ~ %s</string>
     <string name="text_bs_temp">103 mg/dL</string>
     <string name="text_bs_measurement">혈당 측정</string>
     <string name="toggle_button_text">GraphUnit</string>
