@@ -1,6 +1,7 @@
 package com.jeyun.rhdms.graphActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.jeyun.rhdms.R;
 import com.jeyun.rhdms.databinding.ActivityBloodInfoBinding;
 import com.jeyun.rhdms.fragment.GraphFragment;
 import com.jeyun.rhdms.handler.BloodHandler;
@@ -18,7 +20,8 @@ import com.jeyun.rhdms.util.CustomCalendar;
 import com.jeyun.rhdms.util.Header;
 import com.jeyun.rhdms.util.MyCalendar;
 
-import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -38,12 +41,84 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
         binding = ActivityBloodInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        updateUI();
         initEvents();
         initData();
     }
 
+    private void updateUI()
+    {
+        executor.execute(() -> {
+            List<Blood> monthlyPressureData = new ArrayList<>(); // 최근 혈압 데이터
+            BloodHandler bloodHandler = new BloodHandler(type);
+            LocalDate today = LocalDate.now();
+            int month = 0;
+
+            while (month <= 6) // 최근 6개월 간 데이터 조회
+            {
+                LocalDate targetDate = today.minusMonths(month);
+                // 혈압 데이터 조회
+                monthlyPressureData = bloodHandler.getDataInMonth(targetDate);
+                if (!monthlyPressureData.isEmpty()) break; // 데이터가 있으면 반복문 종료
+                month = month + 1;
+            }
+
+            Log.d("BloodPressureActivity", "최근 혈압 데이터:" + monthlyPressureData);
+
+            Blood recentBloodData = monthlyPressureData.get(monthlyPressureData.size() - 1); // 최신 혈압 데이터
+
+            runOnUiThread(() -> {
+                updateLastBloodDate(recentBloodData);
+                updateLastBloodValue(recentBloodData);
+            });
+        });
+    }
+
+    private void updateLastBloodDate(Blood recentBloodData)
+    {
+        if (recentBloodData != null)
+        {
+            String measureDate = recentBloodData.mesure_de; // 측정 날짜
+            DateTimeFormatter input = DateTimeFormatter.ofPattern("yyyyMMdd");
+            DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            LocalDate date = LocalDate.parse(measureDate, input);
+            String formattedDate = date.format(output);
+
+            String lastDateText = getString(R.string.text_bp_last_recode_date, formattedDate);
+            binding.lastBloodDate.setText(lastDateText);
+        }
+        else
+        {
+            binding.lastBloodDate.setText("최근 혈압 데이터 없음");
+        }
+    }
+
+    private void updateLastBloodValue(Blood recentBloodData)
+    {
+        if (recentBloodData != null)
+        {
+            String measureVal = recentBloodData.mesure_val;
+            String[] parts = measureVal.split("/");
+            String systolic = parts[0]; // 수축기 혈압
+            String diastolic = parts[1]; // 이완기 혈압
+
+            String lastHighText = getString(R.string.text_bp_last_recode_high, systolic);
+            String lastLowText = getString(R.string.text_bp_last_recode_low, diastolic);
+
+            binding.lastBloodHighValue.setText(lastHighText);
+            binding.lastBloodLowValue.setText(lastLowText);
+        }
+        else
+        {
+            binding.lastBloodHighValue.setText("최근 혈압 데이터 없음");
+            binding.lastBloodLowValue.setText("최근 혈압 데이터 없음");
+        }
+    }
+
     private void initEvents() // 이벤트 초기화
     {
+        // 주간 혹은 월간 데이터 전송
         binding.toggleBloodInfo.setOnClickListener(v ->
         {
             ToggleButton tb = binding.toggleBloodInfo;
@@ -51,6 +126,7 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
             transferData(isWeek);
         });
 
+        // 이전 기간
         binding.buttonDecrease.setOnClickListener(v -> {
             ToggleButton tb = binding.toggleBloodInfo;
             int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
@@ -58,6 +134,7 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
             transferData(tb.isChecked());
         });
 
+        // 다음 기간
         binding.buttonIncrease.setOnClickListener(v -> {
             ToggleButton tb = binding.toggleBloodInfo;
             int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
@@ -84,7 +161,7 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
         executor.execute(() ->
         {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Header.WRAPPER_DATASET, (Serializable) loadBloodData(isWeek));
+            bundle.putSerializable(Header.WRAPPER_DATASET, loadBloodData(isWeek));
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

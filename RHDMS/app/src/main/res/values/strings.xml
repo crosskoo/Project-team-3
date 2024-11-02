@@ -8,6 +8,9 @@
     <string name="text_bp_management">혈압 정보</string>
     <string name="text_bp_temp">120/80 mmHg</string>
     <string name="text_bp_measurement">혈압 측정</string>
+    <string name="text_bp_last_recode_date">마지막 기록 : %s</string>
+    <string name="text_bp_last_recode_high">수축기 %smmHg</string>
+    <string name="text_bp_last_recode_low">이완기 %smmHg</string>
     <string name="text_bs_management">혈당 정보</string>
     <string name="text_bs_temp">103 mg/dL</string>
     <string name="text_bs_measurement">혈당 측정</string>
