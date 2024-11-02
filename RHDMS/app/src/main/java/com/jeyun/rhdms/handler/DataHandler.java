@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public abstract class DataHandler<T, K>
 {
-    private final String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";
+    private final String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/RHDMS";
     private final String username = "sa";
     private final String password = "test1q2w3e@@";
 

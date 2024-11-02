@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#CCCCCC"/> <!-- 배경 색상 -->
+    <size
+        android:width="64dp"
+        android:height="64dp"/> <!-- 원 크기 -->
+</shape>
