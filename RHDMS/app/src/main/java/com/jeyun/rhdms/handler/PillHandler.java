@@ -48,6 +48,35 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         }
     }
 
+    // 날짜로부터 이전으로 7일의 복약 데이터 가져오는 함수
+    public List<Pill> getDataIn7days(LocalDate today)
+    {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String startDate = today.minusDays(6).format(format);
+        String endDate = today.format(format);
+
+        String query_format =
+                "SELECT * FROM tb_drug " +
+                        "WHERE CONVERT(varchar, ARM_DT, 112) BETWEEN %s AND %s " +
+                        "AND SUBJECT_ID = %s;";
+
+
+        @SuppressLint("DefaultLocale")
+        String query = String.format(query_format, startDate, endDate, "1076");
+
+        try(Connection con = client.open())
+        {
+            return con.createQuery(query)
+                    .executeAndFetch(Pill.class);
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
     public List<Pill> getDataInMonth(LocalDate today)
     {
         LocalDate first = today.withDayOfMonth(1);
