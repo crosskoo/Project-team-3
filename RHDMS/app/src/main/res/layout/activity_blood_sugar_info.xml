@@ -158,29 +158,32 @@
 
         <TextView
             android:layout_marginTop="15dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/last_sugar_date"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/last_sugar_date_range"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="마지막 기록 : " />
+            android:fontFamily="@font/nanumsquarer"
+            android:text="(구간)" />
 
         <TextView
             android:layout_marginTop="60dp"
-            android:id="@+id/last_sugar_max_value"
+            android:id="@+id/sugar_max_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="수축기"
+            android:text="mg/dL"
+            android:fontFamily="@font/nanumsquareb"
             android:textSize="25sp"/>
 
         <TextView
-            android:layout_marginTop="100dp"
-            android:id="@+id/last_sugar_min_value"
+            android:layout_marginTop="95dp"
+            android:id="@+id/sugar_min_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="이완기"
+            android:text="mg/dL"
+            android:fontFamily="@font/nanumsquareb"
             android:textSize="25sp"/>
 
         <!-- 최근 기록 보기 용 점선 두 줄 -->
@@ -215,7 +218,6 @@
             android:text="21:56    "/>
 
     </FrameLayout>
-
 
     <!--기존에 있던 프레임-->
     <FrameLayout

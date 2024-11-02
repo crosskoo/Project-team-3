@@ -1,6 +1,7 @@
 package com.jeyun.rhdms.graphActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.jeyun.rhdms.R;
 import com.jeyun.rhdms.databinding.ActivityBloodSugarInfoBinding;
 import com.jeyun.rhdms.fragment.SugarGraphFragment;
 import com.jeyun.rhdms.handler.BloodHandler;
@@ -18,6 +20,12 @@ import com.jeyun.rhdms.util.CustomCalendar;
 import com.jeyun.rhdms.util.Header;
 import com.jeyun.rhdms.util.MyCalendar;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -27,7 +35,8 @@ public class BloodSugarInfoActivity extends AppCompatActivity {
 
     private String type = "31"; // 혈당
     private ActivityBloodSugarInfoBinding binding;
-    private CustomCalendar calendar = new MyCalendar();
+    private CustomCalendar calendar = new MyCalendar(); // 현재 날짜
+    private Boolean isWeek = true;
     protected Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -37,8 +46,84 @@ public class BloodSugarInfoActivity extends AppCompatActivity {
         binding = ActivityBloodSugarInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        updateUI();
+        updateDateRange(isWeek);
         initEvents();
         initData();
+    }
+
+    private void updateUI() // 주간 / 월간에 따라 최대 최소값 찾기
+    {
+        executor.execute(() -> {
+            BloodHandler dh = new BloodHandler(type);
+            List<Blood> dataset =
+                    isWeek ?
+                            dh.getDataInWeek(calendar.timeNow) :
+                            dh.getDataInMonth(calendar.timeNow);
+
+            final float[] MaxMinValues = {Float.MIN_VALUE, Float.MAX_VALUE};
+
+            if (!dataset.isEmpty())
+            {
+                for (Blood blood : dataset)
+                {
+                    float value = Float.parseFloat(blood.mesure_val);
+                    if (value > MaxMinValues[0]) MaxMinValues[0] = value;
+                    if (value < MaxMinValues[1]) MaxMinValues[1] = value;
+                }
+            }
+            else
+            {
+                MaxMinValues[0] = MaxMinValues[1] = 0f;
+            }
+
+            Log.d("BloodSugarInfo", "MaxMinValues : " + MaxMinValues[0] + ", " + MaxMinValues[1]);
+
+            runOnUiThread(() -> {
+                updateSugarValue(MaxMinValues[0], MaxMinValues[1]);
+            });
+        });
+    }
+
+    private void updateSugarValue(float maxValue, float minValue) // 최대, 최소를 UI에 반영
+    {
+        String maxValueStr = Float.toString(maxValue);
+        String minValueStr = Float.toString(minValue);
+
+        Log.d("BloodSugarInfo", "maxValueStr : " + maxValueStr + ", minValueStr : " + minValueStr);
+        String maxText = getString(R.string.text_bs_max_recode_value, maxValueStr);
+        String minText = getString(R.string.text_bs_min_recode_value, minValueStr);
+
+        binding.sugarMaxValue.setText(maxText);
+        binding.sugarMinValue.setText(minText);
+    }
+
+
+    private void updateDateRange(Boolean isWeek) // 구간 텍스트 업데이트
+    {
+        String startDate = null;
+        String endDate = null;
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        if (isWeek) // 주간이면 해당 주 월 ~ 일까지
+        {
+            LocalDate monday = calendar.timeNow.with(DayOfWeek.MONDAY);
+            LocalDate sunday = calendar.timeNow.with(DayOfWeek.SUNDAY);
+
+            startDate = monday.format(output);
+            endDate = sunday.format(output);
+        }
+        else // 월간이면 해당 월 첫 날 ~ 마지막 날까지
+        {
+            LocalDate firstDay = calendar.timeNow.with(TemporalAdjusters.firstDayOfMonth());
+            LocalDate lastDay = calendar.timeNow.with(TemporalAdjusters.lastDayOfMonth());
+
+            startDate = firstDay.format(output);
+            endDate = lastDay.format(output);
+        }
+
+        String curDateRangeText = getString(R.string.text_date_range, startDate, endDate);
+        binding.lastSugarDateRange.setText(curDateRangeText);
     }
 
     private void initEvents() // 버튼 별 이벤트 초기화
@@ -47,24 +132,35 @@ public class BloodSugarInfoActivity extends AppCompatActivity {
         binding.toggleBloodInfo.setOnClickListener(v ->
         {
             ToggleButton tb = binding.toggleBloodInfo;
-            boolean isWeek = tb.isChecked();
+            isWeek = tb.isChecked();
+
+            updateUI();
+            updateDateRange(isWeek);
             transferData(isWeek);
         });
 
         // 이전 기간
         binding.buttonDecrease.setOnClickListener(v -> {
             ToggleButton tb = binding.toggleBloodInfo;
-            int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
+            isWeek = tb.isChecked();
+            int type = isWeek ? CustomCalendar.WEEK : CustomCalendar.MONTH;
             calendar.decrease(type);
-            transferData(tb.isChecked());
+
+            updateUI();
+            updateDateRange(isWeek);
+            transferData(isWeek);
         });
 
         // 다음 기간
         binding.buttonIncrease.setOnClickListener(v -> {
             ToggleButton tb = binding.toggleBloodInfo;
-            int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
+            isWeek = tb.isChecked();
+            int type = isWeek ? CustomCalendar.WEEK : CustomCalendar.MONTH;
             calendar.increase(type);
-            transferData(tb.isChecked());
+
+            updateUI();
+            updateDateRange(isWeek);
+            transferData(isWeek);
         });
     }
 

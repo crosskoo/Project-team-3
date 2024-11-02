@@ -1,6 +1,7 @@
 package com.jeyun.rhdms.fragment;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -17,6 +20,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.jeyun.rhdms.R;
 import com.jeyun.rhdms.databinding.FragmentSugarGraphBinding;
 import com.jeyun.rhdms.handler.entity.Blood;
 import com.jeyun.rhdms.handler.entity.wrapper.BloodPack;
@@ -90,7 +94,9 @@ public class SugarGraphFragment extends Fragment {
         });
 
         LineDataSet sugarDataSet = new LineDataSet(sugarentries, "Sugar"); // 혈당 데이터
-        sugarDataSet.setCircleColor(Color.RED); // 색상
+
+        int sugarColor = ContextCompat.getColor(requireContext(), R.color.bs);
+        sugarDataSet.setCircleColor(sugarColor); // 색상
         sugarDataSet.setDrawCircles(true); // 원형 표시
         sugarDataSet.setDrawValues(false); // y 값은 표시하지 않음.
         sugarDataSet.setDrawFilled(false); // 라인 밑 면 채우기 비활성화
@@ -106,7 +112,7 @@ public class SugarGraphFragment extends Fragment {
         else // 월간 데이터 설정
         {
             sugarDataSet.setCircleRadius(2f); // 월간 데이터 -> 작게
-            sugarDataSet.setColor(Color.RED); // 라인 색상
+            sugarDataSet.setColor(sugarColor); // 라인 색상
         }
 
         chartData.addDataSet(sugarDataSet);
@@ -135,6 +141,7 @@ public class SugarGraphFragment extends Fragment {
         YAxis yAxisRight = chart.getAxisRight(); // 오른쪽 y축 활성화
         yAxisRight.setEnabled(true);
 
+        applyCustomFont(xAxis, yAxisRight); // x축 y축 폰트 지정
         chart.setBackgroundColor(Color.LTGRAY); // 차트 배경 색
         chart.setExtraOffsets(20f, 20f, 20f, 20f);
         chart.getLegend().setEnabled(false); // 범례 비활성화
@@ -142,5 +149,12 @@ public class SugarGraphFragment extends Fragment {
         chart.setDrawGridBackground(false); // 그리드 비활성화
         chart.setData(chartData); // 차트에 데이터 설정
         chart.invalidate(); // 데이터가 바뀔 시 업데이트
+    }
+
+    private void applyCustomFont(XAxis xAxis, YAxis yAxis)
+    {
+        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.nanumsquarer);
+        xAxis.setTypeface(typeface);
+        yAxis.setTypeface(typeface);
     }
 }
