@@ -10,10 +10,8 @@
         android:id="@+id/innerLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:background="@drawable/rounded_corners"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,10 +109,10 @@
             android:id="@+id/date1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="68dp"
             android:text="09/28"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="10/04"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/date6"
             app:layout_constraintTop_toTopOf="@+id/date6" />
 
@@ -134,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="09/29"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/date1"
             app:layout_constraintTop_toTopOf="@+id/date1" />
 
@@ -144,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="09/30"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/date2"
             app:layout_constraintTop_toTopOf="@+id/date2" />
 
@@ -154,6 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="10/01"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/date3"
             app:layout_constraintTop_toTopOf="@+id/date3" />
 
@@ -163,6 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="10/02"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/date4"
             app:layout_constraintTop_toTopOf="@+id/date4" />
 
@@ -172,6 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="10/03"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/date5"
             app:layout_constraintTop_toTopOf="@+id/date5" />
 
@@ -327,8 +328,9 @@
             android:id="@+id/text_time1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="00:00"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/line_view7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date7" />
@@ -337,8 +339,9 @@
             android:id="@+id/text_time2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="00:00"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/line_view7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date7" />
@@ -347,8 +350,9 @@
             android:id="@+id/text_time5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="00:00"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/line_view7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date7" />
@@ -357,8 +361,9 @@
             android:id="@+id/text_time3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="00:00"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/line_view7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date7" />
@@ -367,8 +372,9 @@
             android:id="@+id/text_time4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="00:00"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/line_view7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date7" />
