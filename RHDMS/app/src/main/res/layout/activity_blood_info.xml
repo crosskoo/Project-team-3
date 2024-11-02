@@ -81,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <!--기존 이전기간 이동 버튼
+    <!--기존 이전기간 이동 버튼-->
     <Button
         android:id="@+id/button_decrease"
         android:layout_width="0dp"
@@ -94,7 +94,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
-        />-->
+        />
 
     <!-- 주간 월간 교체 버튼-->
     <ToggleButton
@@ -111,23 +111,23 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
 
 
-    <!--    기존 다음 기간 이동 버튼
-        <Button
-            android:id="@+id/button_increase"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/increase"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#747679"
-            android:textColorLink="#FFFFFF"
-            android:textSize="25sp"
-            android:layout_margin="0dp"
-            app:layout_constraintStart_toStartOf="@id/pm_guideline4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
-            />-->
+    <!--  기존 다음 기간 이동 버튼 -->
+    <Button
+        android:id="@+id/button_increase"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/increase"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#747679"
+        android:textColorLink="#FFFFFF"
+        android:textSize="25sp"
+        android:layout_margin="0dp"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
+        />
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/bloodInfo_data"
         android:layout_width="320dp"
         android:layout_height="263dp"
@@ -138,7 +138,7 @@
         android:layout_marginTop="25dp"
         />
 
-    <!-- 복약 데이터 출력-->
+    <!-- 혈압 데이터 출력-->
     <FrameLayout
         android:id="@+id/bloodInfo_review"
         android:layout_width="320dp"
@@ -156,6 +156,33 @@
             android:src="@drawable/bg_blood_review"
             />
 
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/last_blood_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="마지막 기록 : " />
+
+        <TextView
+            android:layout_marginTop="60dp"
+            android:id="@+id/last_blood_high_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="수축기"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:layout_marginTop="100dp"
+            android:id="@+id/last_blood_low_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="이완기"
+            android:textSize="25sp"/>
+
         <!-- 최근 기록 보기 용 점선 두 줄 -->
         <ImageView
             android:layout_width="291dp"
@@ -165,6 +192,13 @@
             android:layout_gravity="center_horizontal"
             />
 
+        <TextView
+            android:layout_marginTop="180dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21:56    "/>
+
         <ImageView
             android:layout_width="291dp"
             android:layout_height="2dp"
@@ -172,6 +206,13 @@
             android:src="@drawable/ic_dot_line_for_blood"
             android:layout_gravity="center_horizontal"
             />
+
+        <TextView
+            android:layout_marginTop="220dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21:56    "/>
 
     </FrameLayout>
 
