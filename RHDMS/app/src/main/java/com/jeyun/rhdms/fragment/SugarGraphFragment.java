@@ -3,6 +3,7 @@ package com.jeyun.rhdms.fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,24 +27,30 @@ import com.jeyun.rhdms.handler.entity.Blood;
 import com.jeyun.rhdms.handler.entity.wrapper.BloodPack;
 import com.jeyun.rhdms.util.Header;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 public class SugarGraphFragment extends Fragment {
 
     private View view;
     private FragmentSugarGraphBinding binding;
-    private String type = "31";
-    private Boolean isWeek; // 주별, 월별에 따라 차트 세팅이 달라짐. (추후 수정)
+    private Boolean isWeek; // 주별, 월별에 따라 차트 세팅이 달라짐.
+    private LocalDate curDate; // 현재 날짜
 
     private LineChart chart; // 라인 차트
     private LineData chartData; // 차트에 넣을 데이터
     private List<Blood> dataset; // 혈당 정보 저장
     private List<String> labels; // 혈당 측정일 저장
 
-    public SugarGraphFragment(Boolean isWeek)
+    public SugarGraphFragment(Boolean isWeek, LocalDate curDate)
     {
         this.isWeek = isWeek;
+        this.curDate = curDate;
     }
 
     @Nullable
@@ -66,11 +73,9 @@ public class SugarGraphFragment extends Fragment {
 
     private void loadChart()
     {
+        setUpLabels(isWeek);
         setupChart(isWeek);
-        if(!dataset.isEmpty())
-        {
-            initChart();
-        }
+        initChart();
     }
 
     private void loadData() // 혈당 정보를 가져오는 함수
@@ -81,17 +86,60 @@ public class SugarGraphFragment extends Fragment {
         labels = new ArrayList<>();
     }
 
+    private void setUpLabels(Boolean isWeek) // labels 설정
+    {
+        LocalDate firstDay = null;
+        LocalDate endDay = null;
+
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        if (isWeek) // 주간 날짜
+        {
+            firstDay = curDate.with(DayOfWeek.MONDAY);
+            endDay = curDate.with(DayOfWeek.SUNDAY);
+        }
+        else // 월간 날짜
+        {
+            firstDay = curDate.withDayOfMonth(1);
+            endDay = curDate.withDayOfMonth(curDate.lengthOfMonth());
+        }
+
+        // 기간 만큼의 날짜를 labels에 넣는다.
+        for (LocalDate date = firstDay; !date.isAfter(endDay); date = date.plusDays(1))
+        {
+            String DayStr = date.format(output);
+            labels.add(DayStr);
+        }
+
+        Log.d("SugarGraph", "labels : " + labels);
+    }
+
     private void setupChart(Boolean isWeek) // 차트에 넣을 데이터를 설정하는 함수
     {
         List<Entry> sugarentries = new ArrayList<>(); // 혈당
-        this.dataset.forEach(blood ->
-        {
-            float value = Float.parseFloat(blood.mesure_val);
-            Entry sugarentry = new Entry(labels.size(), value);
 
-            labels.add(blood.mesure_de); // labels 리스트에 혈당 측정일을 저장. (mesure_de : 측정일)
-            sugarentries.add(sugarentry);
-        });
+        // 혈당 데이터셋을 순회하며 데이터가 존재하는 날짜에만 값 추가
+        for (int i = 0; i < labels.size(); i++)
+        {
+            String labelDate = labels.get(i);
+            Optional<Blood> bloodData = this.dataset.stream()
+                    .filter(blood -> blood.mesure_de.equals(labelDate))
+                    .findFirst();
+
+            if (bloodData.isPresent())
+            {
+                float value = Float.parseFloat(bloodData.get().mesure_val);
+                Entry sugarentry = new Entry(i, value);
+                sugarentries.add(sugarentry);
+            }
+            else
+            {
+                Entry sugarentry = new Entry(i, Float.NaN);
+                sugarentries.add(sugarentry);
+            }
+        }
+
+        Log.d("SugarGraph", "sugarentries : " + sugarentries);
 
         LineDataSet sugarDataSet = new LineDataSet(sugarentries, "Sugar"); // 혈당 데이터
 
