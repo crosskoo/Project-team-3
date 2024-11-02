@@ -10,57 +10,56 @@
         android:layout_height="wrap_content"
         android:hint="약상자 ID" />
 
-    <!-- 첫 번째 알람 사용 여부 -->
-    <Switch
-        android:id="@+id/alarm_enable_1st"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable 1st Alarm" />
+    <!-- 첫 번째 알람 무조건 사용 -->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1st Alarm Start Time" />
+        android:text="기본 알람 시작 시간" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <EditText
             android:id="@+id/alarm_start_hour_1st"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:inputType="number"
+            android:hint="Hour" />
 
-        <Button
+        <EditText
             android:id="@+id/alarm_start_minute_1st"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minute" />
+            android:inputType="number"
+            android:hint="Minute" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1st Alarm End Time" />
+        android:text="기본 알람 종료 시간" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <EditText
             android:id="@+id/alarm_end_hour_1st"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:inputType="number"
+            android:hint="Hour" />
 
-        <Button
+        <EditText
             android:id="@+id/alarm_end_minute_1st"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minute" />
+            android:inputType="number"
+            android:hint="Minute" />
     </LinearLayout>
 
     <!-- 두 번째 알람 시간 설정 -->
@@ -68,52 +67,56 @@
         android:id="@+id/alarm_enable_2nd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable 2nd Alarm" />
+        android:text="추가 알람_1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2nd Alarm Start Time" />
+        android:text="추가알람_1 시작 시간" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <EditText
             android:id="@+id/alarm_start_hour_2nd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:inputType="number"
+            android:hint="Hour" />
 
-        <Button
+        <EditText
             android:id="@+id/alarm_start_minute_2nd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minute" />
+            android:inputType="number"
+            android:hint="Minute" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2nd Alarm End Time" />
+        android:text="추가알람_1 종료 시간" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <EditText
             android:id="@+id/alarm_end_hour_2nd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:inputType="number"
+            android:hint="Hour" />
 
-        <Button
+        <EditText
             android:id="@+id/alarm_end_minute_2nd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minute" />
+            android:inputType="number"
+            android:hint="Minute" />
     </LinearLayout>
 
     <!-- 세 번째 알람 시간 설정 -->
@@ -121,52 +124,57 @@
         android:id="@+id/alarm_enable_3rd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable 3rd Alarm" />
+        android:text="추가알람_2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3rd Alarm Start Time" />
+        android:text="추가알람_2 시작 시간" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <EditText
             android:id="@+id/alarm_start_hour_3rd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:inputType="number"
+            android:hint="Hour" />
 
-        <Button
+        <EditText
+
             android:id="@+id/alarm_start_minute_3rd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minute" />
+            android:inputType="number"
+            android:hint="Minute" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3rd Alarm End Time" />
+        android:text="추가알람_2 종료 시간" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <EditText
             android:id="@+id/alarm_end_hour_3rd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour" />
+            android:inputType="number"
+            android:hint="Hour" />
 
-        <Button
+        <EditText
             android:id="@+id/alarm_end_minute_3rd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minute" />
+            android:inputType="number"
+            android:hint="Minute" />
     </LinearLayout>
 
     <!-- 볼륨 설정 -->
