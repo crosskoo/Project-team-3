@@ -62,7 +62,7 @@ public class GraphFragment extends Fragment {
 
     private void loadChart()
     {
-        setupChart();
+        setupChart(isWeek);
         if(!dataset.isEmpty())
         {
             initChart();
@@ -77,7 +77,7 @@ public class GraphFragment extends Fragment {
         labels = new ArrayList<>();
     }
 
-    private void setupChart() // 차트에 넣을 데이터를 설정하는 함수
+    private void setupChart(Boolean isWeek) // 차트에 넣을 데이터를 설정하는 함수
     {
         List<Entry> highentries = new ArrayList<>(); // 수축기 혈압
         List<Entry> lowentries = new ArrayList<>(); // 이완기 혈압
@@ -98,26 +98,45 @@ public class GraphFragment extends Fragment {
         });
 
         LineDataSet HighlineDataSet = new LineDataSet(highentries, "High Pressure"); // 수축기 혈압 데이터
-        HighlineDataSet.setColor(Color.TRANSPARENT); // 라인 색상 투명 (안 보이게 설정)
         HighlineDataSet.setCircleColor(Color.RED); // 색상
         HighlineDataSet.setDrawCircles(true); // 원형 표시
-        HighlineDataSet.setCircleRadius(10f); // 원의 반지름
         HighlineDataSet.setDrawValues(false); // y 값은 표시하지 않음.
-        HighlineDataSet.setDrawFilled(false); // 라인 채우기 비활성화
+        HighlineDataSet.setDrawFilled(false); // 라인 밑 면 채우기 비활성화
 
         HighlineDataSet.setDrawCircleHole(false);
         HighlineDataSet.setCircleHoleColor(Color.TRANSPARENT);
 
+        if (isWeek) // 주간 데이터 설정
+        {
+            HighlineDataSet.setCircleRadius(6f); // 주간 데이터 -> 크게
+            HighlineDataSet.setColor(Color.TRANSPARENT); // 라인 색상 투명 (안 보이게 설정)
+        }
+        else // 월간 데이터 설정
+        {
+            HighlineDataSet.setCircleRadius(2f); // 월간 데이터 -> 작게
+            HighlineDataSet.setColor(Color.RED); // 라인 색상
+        }
+
         LineDataSet LowlineDataSet = new LineDataSet(lowentries, "Low Pressure"); // 이완기 혈압 데이터
-        LowlineDataSet.setColor(Color.TRANSPARENT); // 라인 색상 투명 (안 보이게 설정)
         LowlineDataSet.setCircleColor(Color.YELLOW); // 색상
         LowlineDataSet.setDrawCircles(true); // 원형 표시
-        LowlineDataSet.setCircleRadius(10f); // 원의 반지름
         LowlineDataSet.setDrawValues(false); // y 값은 표시하지 않음.
-        LowlineDataSet.setDrawFilled(false); // 라인 채우기 비활성화
+        LowlineDataSet.setDrawFilled(false); // 라인 밑 면 채우기 비활성화
 
         LowlineDataSet.setDrawCircleHole(false);
         LowlineDataSet.setCircleHoleColor(Color.TRANSPARENT);
+
+        if (isWeek) // 주간 데이터 설정
+        {
+            LowlineDataSet.setCircleRadius(6f); // 주간 데이터 -> 크게
+            LowlineDataSet.setColor(Color.TRANSPARENT); // 라인 색상 투명 (안 보이게 설정)
+        }
+        else // 월간 데이터 설정
+        {
+            LowlineDataSet.setCircleRadius(2f); // 월간 데이터 -> 작게
+            LowlineDataSet.setColor(Color.YELLOW); // 라인 색상
+
+        }
 
         chartData.addDataSet(HighlineDataSet);
         chartData.addDataSet(LowlineDataSet);
@@ -146,6 +165,8 @@ public class GraphFragment extends Fragment {
         YAxis yAxisRight = chart.getAxisRight(); // 오른쪽 y축 활성화
         yAxisRight.setEnabled(true);
 
+        chart.setBackgroundColor(Color.LTGRAY); // 차트 배경 색
+        chart.setExtraOffsets(20f, 20f, 20f, 20f);
         chart.getLegend().setEnabled(false); // 범례 비활성화
         chart.setDescription(null); // 설명 비활성화
         chart.setDrawGridBackground(false); // 그리드 비활성화

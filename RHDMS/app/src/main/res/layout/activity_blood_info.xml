@@ -81,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <!--기존 이전기간 이동 버튼
+    <!--기존 이전기간 이동 버튼-->
     <Button
         android:id="@+id/button_decrease"
         android:layout_width="0dp"
@@ -94,7 +94,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
-        />-->
+        />
 
     <!-- 주간 월간 교체 버튼-->
     <ToggleButton
@@ -111,21 +111,21 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
 
 
-    <!--    기존 다음 기간 이동 버튼
-        <Button
-            android:id="@+id/button_increase"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/increase"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#747679"
-            android:textColorLink="#FFFFFF"
-            android:textSize="25sp"
-            android:layout_margin="0dp"
-            app:layout_constraintStart_toStartOf="@id/pm_guideline4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
-            />-->
+    <!--  기존 다음 기간 이동 버튼 -->
+    <Button
+        android:id="@+id/button_increase"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/increase"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#747679"
+        android:textColorLink="#FFFFFF"
+        android:textSize="25sp"
+        android:layout_margin="0dp"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2"
+        />
 
     <FrameLayout
         android:id="@+id/bloodInfo_data"

@@ -11,6 +11,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.jeyun.rhdms.databinding.ActivityMenuBinding;
+import com.jeyun.rhdms.graphActivity.BloodPressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
 import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
@@ -74,7 +75,8 @@ public class MenuActivity extends AppCompatActivity {
     {
         binding.buttonPillInfo.setOnClickListener(v -> switchActivity(NewPillInfoActivity.class));
         //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
-        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class));
+        // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
+        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 신규 혈압 페이지 (테스트)
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
         binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.

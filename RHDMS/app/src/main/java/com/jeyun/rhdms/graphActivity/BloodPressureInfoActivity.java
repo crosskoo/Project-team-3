@@ -50,6 +50,20 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
             boolean isWeek = tb.isChecked();
             transferData(isWeek);
         });
+
+        binding.buttonDecrease.setOnClickListener(v -> {
+            ToggleButton tb = binding.toggleBloodInfo;
+            int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
+            calendar.decrease(type);
+            transferData(tb.isChecked());
+        });
+
+        binding.buttonIncrease.setOnClickListener(v -> {
+            ToggleButton tb = binding.toggleBloodInfo;
+            int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
+            calendar.increase(type);
+            transferData(tb.isChecked());
+        });
     }
 
     private BloodPack loadBloodData(Boolean isWeek) // isWeek가 true이면 주간 혈압 데이터를, false이면 월간 혈압 데이터를 불러옴.
