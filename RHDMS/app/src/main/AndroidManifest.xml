@@ -48,6 +48,9 @@
         <activity android:name=".graphActivity.BloodPressureInfoActivity">
 
         </activity>
+        <activity android:name=".graphActivity.BloodSugarInfoActivity">
+
+        </activity>
         <activity
             android:name=".DeviceSettingsActivity"
             android:screenOrientation="portrait"></activity>
