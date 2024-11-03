@@ -131,57 +131,36 @@
         android:id="@+id/pillInfo_adherence"
         android:layout_width="320dp"
         android:layout_height="155dp"
-        android:src="@drawable/bg_pill_adherence"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pm_guideline2"
         android:layout_marginTop="25dp"
-        />
+        android:src="@drawable/bg_pill_adherence"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline2" />
 
     <!-- 복약 데이터 출력-->
-    <FrameLayout
-        android:id="@+id/pillInfo_dataview"
+
+    <ImageView
+        android:id="@+id/pillInfo_data"
         android:layout_width="320dp"
-        android:layout_height="368dp"
-        android:layout_marginTop="205dp"
+        android:layout_height="372dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pm_guideline2">
-
-        <!--제일 뒷 배경의 회색-->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/bg_pill_data" />
-
-        <!--아래로는 필요한 것만 써먹을 방식 생각해야 함-->
-        <!--주간 기준 위치 가이드 점선-->
-        <ImageView
-            android:id="@+id/foreground_image"
-            android:layout_width="250dp"
-            android:layout_height="299dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/bg_pill_weekdata" />
-
-        <!--월간 기준 위치 가이드 달력-->
-        <ImageView
-            android:layout_width="290dp"
-            android:layout_height="299dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/bg_pill_monthdata" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/pillInfo_adherence"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg_pill_data" />
 
     <FrameLayout
         android:id="@+id/pm_frame"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/pillInfo_dataview"
-        app:layout_constraintEnd_toEndOf="@+id/pillInfo_dataview"
-        app:layout_constraintStart_toStartOf="@+id/pillInfo_dataview"
-        app:layout_constraintTop_toTopOf="@+id/pillInfo_dataview" />
+        android:layout_width="320dp"
+        android:layout_height="372dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pillInfo_adherence">
+
+    </FrameLayout>
 
     <!--기존에 있던 프레임-->
 

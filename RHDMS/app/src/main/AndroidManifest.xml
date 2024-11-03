@@ -67,6 +67,9 @@
             android:name=".graphActivity.TestActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".PillInfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".PillListActivity"
             android:screenOrientation="portrait"></activity>
         <activity

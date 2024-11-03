@@ -36,7 +36,6 @@ public class WeekPillChartFragment extends Fragment {
     private ArrayList<Pill> dataset; // 복약 정보를 저장할 리스트
     Pill[] pills = new Pill[7]; // 출력할 데이터
     private CustomCalendar calendar; // 출력할 복약 기간 시작날짜
-    private boolean isWeek; // 1주일 단위 출력인지 확인
     private FragmentWeekPillChartBinding binding;
     private ConstraintLayout constraintLayout;
     private View line;
@@ -152,7 +151,6 @@ public class WeekPillChartFragment extends Fragment {
         PillBox temp = (PillBox) bundle.getSerializable(Header.WRAPPER_DATASET);
         dataset = temp.values;
         calendar = temp.calendar;
-        isWeek = temp.isWeek;
     }
 
     // point좌표 y값 설정(bias는 비율)
