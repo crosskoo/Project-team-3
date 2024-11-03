@@ -74,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
-        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(NewPillInfoActivity.class));
+        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
         //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
         // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
         binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 신규 혈압 페이지 (테스트)
