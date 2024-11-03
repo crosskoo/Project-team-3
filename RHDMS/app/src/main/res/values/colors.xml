@@ -12,7 +12,7 @@
     <color name="overtaken">#3399ff</color>
     <color name="delaytaken">#999999</color>
 
-    <color name="my_light_primary">#c3c3c3</color>
+    <color name="my_light_primary">#D9D9D9</color>
     <color name="my_light_primary_variant">#3700B3</color>
     <color name="my_light_secondary">#03DAC6</color>
 </resources>
