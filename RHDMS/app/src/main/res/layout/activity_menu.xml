@@ -77,13 +77,14 @@
         </FrameLayout>
 
         <!--약 시간 데이터가 옆에 뜰 수 있게 해야함-->
+
+        <!--최근 혈압 데이터 뜰 수 있게 수정해야함(현재는 고정값)-->
         <Button
             android:id="@+id/button_pill_info"
             android:layout_width="320dp"
             android:layout_height="103dp"
             android:layout_below="@id/adherenceContainer"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/ic_menu_pill"
             android:fontFamily="@font/nanumsquareb"
             android:gravity="start|center_vertical"
@@ -91,38 +92,36 @@
             android:text="@string/text_pill_management"
             android:textSize="20sp" />
 
-        <!--최근 혈압 데이터 뜰 수 있게 수정해야함(현재는 고정값)-->
+
+        <!--혈압과 같은 문제-->
+
         <Button
             android:id="@+id/button_pressure_info"
             android:layout_width="320dp"
             android:layout_height="103dp"
             android:layout_below="@id/button_pill_info"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="19dp"
             android:background="@drawable/ic_menu_bp"
             android:fontFamily="@font/nanumsquareb"
             android:gravity="start|center_vertical"
             android:paddingStart="20dp"
-            android:text="@string/text_bp_temp"
+            android:text="Loading..."
             android:textAllCaps="false"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
-
-        <!--혈압과 같은 문제-->
         <Button
             android:id="@+id/button_sugar_info"
             android:layout_width="320dp"
             android:layout_height="103dp"
             android:layout_below="@id/button_pressure_info"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="21dp"
             android:background="@drawable/ic_menu_bc"
             android:fontFamily="@font/nanumsquareb"
             android:gravity="start|center_vertical"
             android:paddingStart="20dp"
-            android:text="@string/text_bs_temp"
+            android:text="Loading..."
             android:textAllCaps="false"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"

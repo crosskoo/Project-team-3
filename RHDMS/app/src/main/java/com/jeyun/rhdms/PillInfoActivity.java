@@ -1,4 +1,4 @@
-package com.jeyun.rhdms.graphActivity;
+package com.jeyun.rhdms;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,23 +11,28 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.jeyun.rhdms.databinding.ActivityPillInfoBinding;
+import com.jeyun.rhdms.fragment.PillCalendarFragment;
+import com.jeyun.rhdms.fragment.WeekPillChartFragment;
+import com.jeyun.rhdms.handler.PillHandler;
+import com.jeyun.rhdms.handler.entity.Pill;
+import com.jeyun.rhdms.handler.entity.wrapper.PillBox;
 import com.jeyun.rhdms.util.CustomCalendar;
 import com.jeyun.rhdms.util.Header;
 import com.jeyun.rhdms.util.MyCalendar;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class GraphActivity<T> extends AppCompatActivity
-{
+public class PillInfoActivity extends AppCompatActivity {
     protected ActivityPillInfoBinding binding;
     protected CustomCalendar calendar = new MyCalendar();
     protected Executor executor = Executors.newSingleThreadExecutor();
 
-    protected Function<Boolean, T> function; // 자식 클래스마다 불러오는 데이터 및 그 함수가 다름.
     protected Supplier<Fragment> supplier; // 자식 클래스마다 fragment가 다름.
     protected String title; // 자식 클래스마다 title 값이 다름.
 
@@ -52,6 +57,7 @@ public abstract class GraphActivity<T> extends AppCompatActivity
     protected void initUI()
     {
         TextView tv = binding.pmTextView;
+        supplier = WeekPillChartFragment::new;
         tv.setText(title);
     }
 
@@ -61,9 +67,14 @@ public abstract class GraphActivity<T> extends AppCompatActivity
     {
         executor.execute(() ->
         {
+            PillHandler ph = new PillHandler();
+            List<Pill> pills = isWeek ? ph.getDataIn7days(calendar.timeNow) : ph.getDataInMonth(calendar.timeNow);
+            PillBox pillBox = new PillBox((ArrayList<Pill>) pills, calendar, isWeek);
+
+
             Bundle bundle = new Bundle();
             // (function으로부터 불러온 데이터들을 bundle에 넣는다. 데이터는 자식 클래스마다 다름.)
-            bundle.putSerializable(Header.WRAPPER_DATASET, (Serializable) function.apply(isWeek));
+            bundle.putSerializable(Header.WRAPPER_DATASET, (Serializable)pillBox);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -89,6 +100,7 @@ public abstract class GraphActivity<T> extends AppCompatActivity
         {
             ToggleButton tb = binding.togglePillInfo;
             boolean isWeek = tb.isChecked();
+            supplier = isWeek ? WeekPillChartFragment::new : PillCalendarFragment::new;
             loadData(isWeek);
         });
 
