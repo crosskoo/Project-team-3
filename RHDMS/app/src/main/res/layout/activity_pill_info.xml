@@ -129,17 +129,18 @@
         app:layout_constraintStart_toStartOf="@+id/pm_guideline7"
         app:layout_constraintTop_toTopOf="@+id/toggle_pill_info" />
 
+    <!-- 복약 데이터 출력-->
+
     <ImageView
         android:id="@+id/pillInfo_adherence"
         android:layout_width="320dp"
         android:layout_height="155dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/bg_pill_adherence"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/pm_guideline2" />
-
-    <!-- 복약 데이터 출력-->
 
     <ImageView
         android:id="@+id/pillInfo_data"
@@ -163,6 +164,42 @@
         app:layout_constraintTop_toBottomOf="@+id/pillInfo_adherence">
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:text=" 복약 순응률"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/pillInfo_adherence"
+        app:layout_constraintTop_toTopOf="@+id/pillInfo_adherence" />
+
+    <TextView
+        android:id="@+id/text_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="2024년 10월 7일 ~ 2024년 10월 13일"
+        app:layout_constraintStart_toStartOf="@+id/pillInfo_adherence"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/text_adherencePercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/black"
+        android:text="90%"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/pillInfo_adherence"
+        app:layout_constraintEnd_toEndOf="@+id/pillInfo_adherence" />
 
     <!--기존에 있던 프레임-->
 

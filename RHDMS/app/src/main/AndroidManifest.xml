@@ -89,6 +89,7 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".BleActivity"
+            android:theme="@style/AppTheme.MaterialActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".TestNewPillInfoActivity"></activity>
 
