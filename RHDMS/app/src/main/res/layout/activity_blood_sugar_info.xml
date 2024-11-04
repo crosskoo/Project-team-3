@@ -58,7 +58,7 @@
         android:id="@+id/pm_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/text_bp_management"
+        android:text="@string/text_bs_management"
         android:fontFamily="@font/nanumsquarer"
         android:textSize="24sp"
         android:textColor="#000000"
@@ -81,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <!--기존 이전기간 이동 버튼-->
+    <!--기존 이전 기간 이동 버튼-->
     <Button
         android:id="@+id/button_decrease"
         android:layout_width="0dp"
@@ -128,7 +128,7 @@
         app:layout_constraintTop_toTopOf="@+id/toggle_blood_info"/>
 
     <FrameLayout
-        android:id="@+id/bloodInfo_data"
+        android:id="@+id/sugarInfo_data"
         android:layout_width="320dp"
         android:layout_height="263dp"
         android:src="@drawable/bg_blood_data"
@@ -138,7 +138,7 @@
         android:layout_marginTop="25dp"
         />
 
-    <!-- 혈압 데이터 출력-->
+    <!-- 혈당 데이터 출력-->
     <FrameLayout
         android:id="@+id/bloodInfo_review"
         android:layout_width="320dp"
@@ -158,29 +158,32 @@
 
         <TextView
             android:layout_marginTop="15dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/last_blood_date"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/last_sugar_date_range"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="마지막 기록 : " />
+            android:fontFamily="@font/nanumsquarer"
+            android:text="(구간)" />
 
         <TextView
             android:layout_marginTop="60dp"
-            android:id="@+id/last_blood_high_value"
+            android:id="@+id/sugar_max_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="수축기"
+            android:text="mg/dL"
+            android:fontFamily="@font/nanumsquareb"
             android:textSize="25sp"/>
 
         <TextView
-            android:layout_marginTop="100dp"
-            android:id="@+id/last_blood_low_value"
+            android:layout_marginTop="95dp"
+            android:id="@+id/sugar_min_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="이완기"
+            android:text="mg/dL"
+            android:fontFamily="@font/nanumsquareb"
             android:textSize="25sp"/>
 
         <!-- 최근 기록 보기 용 점선 두 줄 -->
@@ -216,7 +219,6 @@
 
     </FrameLayout>
 
-
     <!--기존에 있던 프레임-->
     <FrameLayout
         android:id="@+id/pm_frame"
@@ -226,7 +228,6 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline4"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline5"
         app:layout_constraintTop_toBottomOf="@id/pm_guideline2"/>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
