@@ -94,6 +94,12 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                     // settingnum 값에 따라 알람 개수를 확인
                     int numOfAlarms = Integer.parseInt(settingnum.getText().toString());
 
+                    // settingnum이 3을 넘으면 오류 메시지 표시
+                    if (numOfAlarms > 3) {
+                        showAlert("오류", "알람 설정은 최대 3개까지만 가능합니다.");
+                        return;
+                    }
+
                     // 첫 번째 알람의 시작 시간이 올바른지 검사
                     if (numOfAlarms >= 1) {
                         if (!isValidTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString())) {
