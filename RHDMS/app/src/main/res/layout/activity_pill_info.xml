@@ -60,7 +60,6 @@
         android:id="@+id/pm_textView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/nanumsquarer"
         android:text="@string/label_pill_management"
@@ -113,7 +112,7 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
 
 
-<!--    기존 다음 기간 이동 버튼-->
+    <!--    기존 다음 기간 이동 버튼-->
     <Button
         android:id="@+id/button_increase"
         android:layout_width="0dp"
