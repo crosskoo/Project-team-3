@@ -172,6 +172,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="수축기"
+            android:textColor="@color/bs"
             android:textSize="25sp"/>
 
         <TextView
@@ -181,6 +182,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="이완기"
+            android:textColor="@color/bp"
             android:textSize="25sp"/>
 
         <!-- 최근 기록 보기 용 점선 두 줄 -->
