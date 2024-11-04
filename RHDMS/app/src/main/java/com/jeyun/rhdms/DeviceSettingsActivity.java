@@ -23,14 +23,27 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     private EditText pillboxId;
 
     // EditTexts for alarm time inputs
-    private EditText alarmStartHour1st, alarmStartMinute1st, alarmEndHour1st, alarmEndMinute1st;
-    private EditText alarmStartHour2nd, alarmStartMinute2nd, alarmEndHour2nd, alarmEndMinute2nd;
-    private EditText alarmStartHour3rd, alarmStartMinute3rd, alarmEndHour3rd, alarmEndMinute3rd;
+    private EditText alarmStartHour1st, alarmStartMinute1st;
+    private EditText alarmStartHour2nd, alarmStartMinute2nd;
+    private EditText alarmStartHour3rd, alarmStartMinute3rd;
+
+    private EditText alarmDuration1st;  // 첫 번째 알람의 지속 시간
+    private EditText alarmDuration2nd;  // 두 번째 알람의 지속 시간
+    private EditText alarmDuration3rd; // 세 번째 알람의 지속 시간
+
+    private EditText settingnum;
 
     private RadioGroup volumeGroup;
 
-    // Switches for enabling/disabling alarms (2nd and 3rd)
-    private Switch alarmEnable2nd, alarmEnable3rd;
+    String alarmEndHour1st= String.valueOf(0);
+    String alarmEndMinute1st= String.valueOf(0);
+
+    String alarmEndHour2nd= String.valueOf(0);
+    String alarmEndMinute2nd= String.valueOf(0);
+
+    String alarmEndHour3rd= String.valueOf(0);
+    String alarmEndMinute3rd= String.valueOf(0);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +56,23 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         // Initialize EditTexts for time inputs
         alarmStartHour1st = findViewById(R.id.alarm_start_hour_1st);
         alarmStartMinute1st = findViewById(R.id.alarm_start_minute_1st);
-        alarmEndHour1st = findViewById(R.id.alarm_end_hour_1st);
-        alarmEndMinute1st = findViewById(R.id.alarm_end_minute_1st);
 
         alarmStartHour2nd = findViewById(R.id.alarm_start_hour_2nd);
         alarmStartMinute2nd = findViewById(R.id.alarm_start_minute_2nd);
-        alarmEndHour2nd = findViewById(R.id.alarm_end_hour_2nd);
-        alarmEndMinute2nd = findViewById(R.id.alarm_end_minute_2nd);
 
         alarmStartHour3rd = findViewById(R.id.alarm_start_hour_3rd);
         alarmStartMinute3rd = findViewById(R.id.alarm_start_minute_3rd);
-        alarmEndHour3rd = findViewById(R.id.alarm_end_hour_3rd);
-        alarmEndMinute3rd = findViewById(R.id.alarm_end_minute_3rd);
+
+        alarmDuration1st = findViewById(R.id.alarm1_running_time);
+        alarmDuration2nd = findViewById(R.id.alarm2_running_time);
+        alarmDuration3rd = findViewById(R.id.alarm3_running_time);
+
+        settingnum = findViewById(R.id.settingnumber);
 
         volumeGroup = findViewById(R.id.volume_group);
 
-        // Initialize switches for 2nd and 3rd alarms
-        alarmEnable2nd = findViewById(R.id.alarm_enable_2nd);
-        alarmEnable3rd = findViewById(R.id.alarm_enable_3rd);
 
+        // Save button logic
         // Save button logic
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -80,11 +91,38 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                         return;
                     }
 
-                    if (validateTimeInputs()) {
-                        JSONObject settings = createSettingsJson();
-                        showSendSettingsPopup(settings);
-                        sendSettings(settings);
+                    // settingnum 값에 따라 알람 개수를 확인
+                    int numOfAlarms = Integer.parseInt(settingnum.getText().toString());
+
+                    // 첫 번째 알람의 시작 시간이 올바른지 검사
+                    if (numOfAlarms >= 1) {
+                        if (!isValidTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString())) {
+                            showAlert("오류", "첫 번째 알람의 시작 시간이 올바르지 않습니다.");
+                            return;
+                        }
                     }
+
+                    // 두 번째 알람의 시작 시간이 올바른지 검사 (필요 시)
+                    if (numOfAlarms >= 2) {
+                        if (!isValidTime(alarmStartHour2nd.getText().toString(), alarmStartMinute2nd.getText().toString())) {
+                            showAlert("오류", "두 번째 알람의 시작 시간이 올바르지 않습니다.");
+                            return;
+                        }
+                    }
+
+                    // 세 번째 알람의 시작 시간이 올바른지 검사 (필요 시)
+                    if (numOfAlarms == 3) {
+                        if (!isValidTime(alarmStartHour3rd.getText().toString(), alarmStartMinute3rd.getText().toString())) {
+                            showAlert("오류", "세 번째 알람의 시작 시간이 올바르지 않습니다.");
+                            return;
+                        }
+                    }
+
+                    // JSON 객체 생성 및 설정 저장
+                    JSONObject settings = createSettingsJson();
+                    showSendSettingsPopup(settings);
+                    sendSettings(settings);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -92,60 +130,58 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         });
     }
 
-    // Validate time inputs to ensure they are within valid ranges and that end time is not before start time
-    private boolean validateTimeInputs() {
-        StringBuilder errorMessage = new StringBuilder();
+    // 종료 시간을 계산하는 함수
+    private String calculateEndTime(String startHourStr, String startMinuteStr, String durationStr) {
+        try {
+            int startHour = Integer.parseInt(startHourStr);
+            int startMinute = Integer.parseInt(startMinuteStr);
+            int duration = Integer.parseInt(durationStr);
 
-        // 첫 번째 알람 시간 검증 및 종료 시간이 시작 시간보다 늦은지 확인
-        if (!isValidTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString())) {
-            errorMessage.append("기본 시간의 시작 시간이 잘못되었습니다.\n");
+            // 분 단위로 총 시간을 계산
+            int totalMinutes = startHour * 60 + startMinute + duration;
+
+            // 종료 시간의 시와 분을 다시 구함
+            int endHour = (totalMinutes / 60) % 24; // 24시간 형식으로 변환
+            int endMinute = totalMinutes % 60;
+
+            return String.format(Locale.getDefault(), "%02d%02d", endHour, endMinute);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return ""; // 오류 발생 시 기본값 반환
         }
-        if (!isValidTime(alarmEndHour1st.getText().toString(), alarmEndMinute1st.getText().toString())) {
-            errorMessage.append("기본 시간의 종료 시간이 잘못되었습니다.\n");
-        } else if (!isEndTimeAfterStartTime(alarmStartHour1st.getText().toString(),
-                alarmStartMinute1st.getText().toString(),
-                alarmEndHour1st.getText().toString(),
-                alarmEndMinute1st.getText().toString())) {
-            errorMessage.append("기본 시간의 종료 시간이 시작 시간보다 빠를 수 없습니다.\n");
+    }
+
+    // 종료 시간을 계산하는 함수
+    private void calculateAndSetEndTime() {
+        // 첫 번째 알람 종료 시간 계산 및 설정
+        if (isValidTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString())) {
+            String endTime1st = calculateEndTime(
+                    alarmStartHour1st.getText().toString(),
+                    alarmStartMinute1st.getText().toString(),
+                    alarmDuration1st.getText().toString());
+            alarmEndHour1st = endTime1st.substring(0, 2);  // 종료 시각의 시
+            alarmEndMinute1st = endTime1st.substring(2, 4);  // 종료 시각의 분
         }
 
-        // 두 번째 알람이 활성화된 경우 시간 검증 및 종료 시간이 시작 시간보다 늦은지 확인
-        if (alarmEnable2nd.isChecked()) {
-            if (!isValidTime(alarmStartHour2nd.getText().toString(), alarmStartMinute2nd.getText().toString())) {
-                errorMessage.append("추가시간1의 시작 시간이 잘못되었습니다.\n");
-            }
-            if (!isValidTime(alarmEndHour2nd.getText().toString(), alarmEndMinute2nd.getText().toString())) {
-                errorMessage.append("추가시간1의 종료 시간이 잘못되었습니다.\n");
-            } else if (!isEndTimeAfterStartTime(alarmStartHour2nd.getText().toString(),
+        // 두 번째 알람 종료 시간 계산 및 설정
+        if (isValidTime(alarmStartHour2nd.getText().toString(), alarmStartMinute2nd.getText().toString())) {
+            String endTime2nd = calculateEndTime(
+                    alarmStartHour2nd.getText().toString(),
                     alarmStartMinute2nd.getText().toString(),
-                    alarmEndHour2nd.getText().toString(),
-                    alarmEndMinute2nd.getText().toString())) {
-                errorMessage.append("추가시간1의 종료 시간이 시작 시간보다 빠를 수 없습니다.\n");
-            }
+                    alarmDuration2nd.getText().toString());
+            alarmEndHour2nd = endTime2nd.substring(0, 2);
+            alarmEndMinute2nd = endTime2nd.substring(2, 4);
         }
 
-        // 세 번째 알람이 활성화된 경우 시간 검증 및 종료 시간이 시작 시간보다 늦은지 확인
-        if (alarmEnable3rd.isChecked()) {
-            if (!isValidTime(alarmStartHour3rd.getText().toString(), alarmStartMinute3rd.getText().toString())) {
-                errorMessage.append("추가시간2의 시작 시간이 잘못되었습니다.\n");
-            }
-            if (!isValidTime(alarmEndHour3rd.getText().toString(), alarmEndMinute3rd.getText().toString())) {
-                errorMessage.append("추가시간2의 종료 시간이 잘못되었습니다.\n");
-            } else if (!isEndTimeAfterStartTime(alarmStartHour3rd.getText().toString(),
+        // 세 번째 알람 종료 시간 계산 및 설정
+        if (isValidTime(alarmStartHour3rd.getText().toString(), alarmStartMinute3rd.getText().toString())) {
+            String endTime3rd = calculateEndTime(
+                    alarmStartHour3rd.getText().toString(),
                     alarmStartMinute3rd.getText().toString(),
-                    alarmEndHour3rd.getText().toString(),
-                    alarmEndMinute3rd.getText().toString())) {
-                errorMessage.append("추가시간2의 종료 시간이 시작 시간보다 빠를 수 없습니다.\n");
-            }
+                    alarmDuration3rd.getText().toString());
+            alarmEndHour3rd = endTime3rd.substring(0, 2);
+            alarmEndMinute3rd = endTime3rd.substring(2, 4);
         }
-
-        // 오류 메시지가 있다면 경고 대화 상자를 띄움
-        if (errorMessage.length() > 0) {
-            showAlert("잘못된 입력", errorMessage.toString());
-            return false;
-        }
-
-        return true;
     }
 
     // Check if the hour and minute inputs are valid numbers within the correct range
@@ -159,76 +195,67 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         }
     }
 
-    // Check if the end time is after the start time
-    private boolean isEndTimeAfterStartTime(String startHourStr, String startMinuteStr, String endHourStr, String endMinuteStr) {
-        try {
-            int startHour = Integer.parseInt(startHourStr);
-            int startMinute = Integer.parseInt(startMinuteStr);
-            int endHour = Integer.parseInt(endHourStr);
-            int endMinute = Integer.parseInt(endMinuteStr);
 
-            if (endHour > startHour) {
-                return true; // End hour is later than start hour
-            } else if (endHour == startHour && endMinute > startMinute) {
-                return true; // End minute is later than start minute when hours are the same
-            } else {
-                return false; // End time is earlier or the same as start time
-            }
-
-        } catch (NumberFormatException e) {
-            return false; // Invalid number format in input strings
-        }
-    }
-
-    // Create JSON object with the settings data
     private JSONObject createSettingsJson() throws Exception {
-
         JSONObject settings = new JSONObject();
 
+        // 약상자 ID 설정
         settings.put("pillboxno", pillboxId.getText().toString());
 
-        // 첫 번째 알람은 항상 설정됨
-        settings.put("alarmStart_1st", getFormattedTime(
-                alarmStartHour1st.getText().toString(),
-                alarmStartMinute1st.getText().toString()));
+        // settingnum 값에 따라 알람 설정
+        int numOfAlarms = Integer.parseInt(settingnum.getText().toString());
 
-        settings.put("alarmEnd_1st", getFormattedTime(
-                alarmEndHour1st.getText().toString(),
-                alarmEndMinute1st.getText().toString()));
+        // 종료 시간 계산
+        calculateAndSetEndTime();
 
-        // 두 번째 및 세 번째 알람은 스위치가 켜진 경우에만 설정됨
-        settings.put("alarmStart_2nd",
-                alarmEnable2nd.isChecked() ? getFormattedTime(
-                        alarmStartHour2nd.getText().toString(),
-                        alarmStartMinute2nd.getText().toString()) : "");
+        if (numOfAlarms >= 1) {
+            // 첫 번째 알람 설정
+            settings.put("alarmStart_1st", getFormattedTime(
+                    alarmStartHour1st.getText().toString(),
+                    alarmStartMinute1st.getText().toString()));
 
-        settings.put("alarmEnd_2nd",
-                alarmEnable2nd.isChecked() ? getFormattedTime(
-                        alarmEndHour2nd.getText().toString(),
-                        alarmEndMinute2nd.getText().toString()) : "");
+            // 첫 번째 알람 종료 시간 설정
+            settings.put("alarmEnd_1st", getFormattedTime(alarmEndHour1st, alarmEndMinute1st));
+        } else {
+            settings.put("alarmStart_1st", "");
+            settings.put("alarmEnd_1st", "");
+        }
 
-        settings.put("alarmStart_3rd",
-                alarmEnable3rd.isChecked() ? getFormattedTime(
-                        alarmStartHour3rd.getText().toString(),
-                        alarmStartMinute3rd.getText().toString()) : "");
+        if (numOfAlarms >= 2) {
+            // 두 번째 알람 설정
+            settings.put("alarmStart_2nd", getFormattedTime(
+                    alarmStartHour2nd.getText().toString(),
+                    alarmStartMinute2nd.getText().toString()));
 
-        settings.put("alarmEnd_3rd",
-                alarmEnable3rd.isChecked() ? getFormattedTime(
-                        alarmEndHour3rd.getText().toString(),
-                        alarmEndMinute3rd.getText().toString()) : "");
+            // 두 번째 알람 종료 시간 설정
+            settings.put("alarmEnd_2nd", getFormattedTime(alarmEndHour2nd, alarmEndMinute2nd));
+        } else {
+            settings.put("alarmStart_2nd", "");
+            settings.put("alarmEnd_2nd", "");
+        }
 
+        if (numOfAlarms == 3) {
+            // 세 번째 알람 설정
+            settings.put("alarmStart_3rd", getFormattedTime(
+                    alarmStartHour3rd.getText().toString(),
+                    alarmStartMinute3rd.getText().toString()));
 
+            // 세 번째 알람 종료 시간 설정
+            settings.put("alarmEnd_3rd", getFormattedTime(alarmEndHour3rd, alarmEndMinute3rd));
+        } else {
+            settings.put("alarmStart_3rd", "");
+            settings.put("alarmEnd_3rd", "");
+        }
+
+        // 볼륨 설정
         int selectedVolumeId = volumeGroup.getCheckedRadioButtonId();
-
         RadioButton selectedVolume = findViewById(selectedVolumeId);
-
         if (selectedVolume != null) {
             settings.put("volume", selectedVolume.getText().toString());
         }
 
         return settings;
     }
-
     // Show a popup with the JSON data before sending it
     private void showSendSettingsPopup(JSONObject settings) {
         try {
