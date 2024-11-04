@@ -1,224 +1,627 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.80" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8515815" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_mainend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.93" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.32" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_running_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.623" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.378" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_running_minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.675" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm1_under"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.44" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm2_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.47" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm2_under"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.57" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.58" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm3_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm3_under"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/decrease"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="30sp"
+        android:textColor="#000000"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_set"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
+
+    <ImageView
+        android:id="@+id/selection"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:background="@drawable/bg_device_selec"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline6"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline7"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
+
+    <!-- 복약기 ID -->
+    <ImageView
+        android:id="@+id/deviceid_bg"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:src="@drawable/bg_id"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline2"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:text="복약기 ID"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="11dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline2"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"/>
 
     <EditText
         android:id="@+id/pillbox_id"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="약상자 ID" />
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textSize="15dp"
+        android:hint="약상자 ID"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline2"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
 
-    <!-- 첫 번째 알람 무조건 사용 -->
+    <!-- 이미지 겹침 문제로 레이아웃은 3번째 알람부터 역순 작성 되었습니다.-->
+
+    <!-- 3번째 알람 설정 -->
+
+    <ImageView
+        android:id="@+id/alarm_setting_3"
+        android:layout_width="0dp"
+        android:layout_height="103dp"
+        android:src="@drawable/bg_device_alarm2"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm3"
+        />
+
+    <Button
+        android:id="@+id/alarm_start_hour_3rd"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Hour"
+        android:textSize="10dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_time"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm3_under"/>
+
+    <Button
+        android:id="@+id/alarm_start_minute_3rd"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Minute"
+        android:textSize="10dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_time"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm3_under"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="기본 알람 시작 시간" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/alarm_start_hour_1st"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Hour" />
-
-        <EditText
-            android:id="@+id/alarm_start_minute_1st"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Minute" />
-    </LinearLayout>
+        android:text="알람 ③"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm3_title"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_num"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="기본 알람 종료 시간" />
+        android:text="시작 시간"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm3_title"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_start_time"
+        />
 
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="지속 시간"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm3_title"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_running_time"
+        />
 
-        <EditText
-            android:id="@+id/alarm_end_hour_1st"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Hour" />
+    <!-- 지속시간 설정버튼(수정필요 : 실제 데이터 값 연결 해야함) -->
+    <TextView
+        android:id="@+id/alarm3_running_time"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm3_under"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline_running_minute"
+        android:text="5"
+        android:fontFamily="@font/nanumsquareb"
+        android:textColor="@color/black"
+        android:textSize="32dp"
+        />
 
-        <EditText
-            android:id="@+id/alarm_end_minute_1st"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Minute" />
-    </LinearLayout>
+    <!-- 두번째 알람 시간 세팅 -->
 
-    <!-- 두 번째 알람 시간 설정 -->
+    <ImageView
+        android:id="@+id/alarm_setting_2"
+        android:layout_width="0dp"
+        android:layout_height="103dp"
+        android:src="@drawable/bg_device_alarm2"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm2"
+        />
+
+    <Button
+        android:id="@+id/alarm_start_hour_2nd"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Hour"
+        android:textSize="10dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_time"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm2_under"/>
+
+    <Button
+        android:id="@+id/alarm_start_minute_2nd"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Minute"
+        android:textSize="10dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_time"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm2_under"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알람 ②"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm2_title"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_num"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시작 시간"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm2_title"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_start_time"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지속 시간"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm2_title"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_running_time"
+        />
+
+    <!-- 지속시간 설정버튼(수정필요 : 실제 데이터 값 연결 해야함) -->
+    <TextView
+        android:id="@+id/alarm2_running_time"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm2_under"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline_running_minute"
+        android:text="16"
+        android:fontFamily="@font/nanumsquareb"
+        android:textColor="@color/black"
+        android:textSize="32dp"
+        />
+
+    <!-- 첫 알람 시간 세팅 -->
+    <ImageView
+        android:id="@+id/alarm_setting_1"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:src="@drawable/bg_device_alarm1"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_count"
+        />
+
+    <Button
+        android:id="@+id/alarm_start_hour_1st"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Hour"
+        android:textSize="10dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_time"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm1_under"/>
+
+    <Button
+        android:id="@+id/alarm_start_minute_1st"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Minute"
+        android:textSize="10dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_time"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm1_under"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알람 ①"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm1"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_num"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시작 시간"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm1"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_start_time"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지속 시간"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm1"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_running_time"
+        />
+
+        <!-- 지속시간 설정버튼(수정필요 : 실제 데이터 값 연결 해야함) -->
+    <TextView
+        android:id="@+id/alarm1_running_time"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm1_under"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline_running_minute"
+        android:text="16"
+        android:fontFamily="@font/nanumsquareb"
+        android:textColor="@color/black"
+        android:textSize="32dp"
+        />
+
+    <!-- 알람 설정 -->
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:src="@drawable/bg_device_count"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_count"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
+
+
+    <!-- 알람 사용 설정(작동 방식 수정해야함)-->
+    <Switch
+        android:id="@+id/alarm_enable_1st"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable 1st Alarm"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="14dp"
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline_count"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline3"/>
+
+
+    <!-- 기존인데 ☆안쓰게☆ 된 첫 번째 알람 종료 시간 관련 -->
+
+    <Button
+        android:id="@+id/alarm_end_hour_1st"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hour"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/alarm_end_minute_1st"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minute"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 두 번째 알람 여부 및 종료시간 관련 -->
     <Switch
         android:id="@+id/alarm_enable_2nd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추가 알람_1" />
+        android:text="Enable 2nd Alarm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
-    <TextView
+    <Button
+        android:id="@+id/alarm_end_hour_2nd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추가알람_1 시작 시간" />
+        android:text="Hour"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/alarm_end_minute_2nd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="Minute"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/alarm_start_hour_2nd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Hour" />
-
-        <EditText
-            android:id="@+id/alarm_start_minute_2nd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Minute" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="추가알람_1 종료 시간" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/alarm_end_hour_2nd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Hour" />
-
-        <EditText
-            android:id="@+id/alarm_end_minute_2nd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Minute" />
-    </LinearLayout>
-
-    <!-- 세 번째 알람 시간 설정 -->
+    <!-- 세 번째 알람 시간 관련 -->
     <Switch
         android:id="@+id/alarm_enable_3rd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추가알람_2" />
+        android:text="Enable 3rd Alarm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
+
+    <Button
+        android:id="@+id/alarm_end_hour_3rd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추가알람_2 시작 시간" />
+        android:text="Hour"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/alarm_end_minute_3rd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/alarm_start_hour_3rd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Hour" />
-
-        <EditText
-
-            android:id="@+id/alarm_start_minute_3rd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Minute" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="추가알람_2 종료 시간" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/alarm_end_hour_3rd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Hour" />
-
-        <EditText
-            android:id="@+id/alarm_end_minute_3rd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Minute" />
-    </LinearLayout>
+        android:text="Minute"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 볼륨 설정 -->
+    <!-- 체크할 수 있는 원형의 간격을 조금만 더 숫자랑 가까이 붙일 수 있는지-->
     <RadioGroup
         android:id="@+id/volume_group"
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline_count"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend">
 
         <RadioButton
             android:id="@+id/volume_0"
-            android:text="0 (Mute)"
+            android:text="0"
+            android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <RadioButton
             android:id="@+id/volume_1"
             android:text="1"
+            android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <RadioButton
             android:id="@+id/volume_2"
             android:text="2"
+            android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <RadioButton
             android:id="@+id/volume_3"
             android:text="3"
+            android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <RadioButton
             android:id="@+id/volume_4"
             android:text="4"
+            android:textSize="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
     </RadioGroup>
 
     <!-- 저장 버튼 -->
     <Button
         android:id="@+id/save_button"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:text="저장" />
-</LinearLayout>
+        android:text="저장"
+        android:textSize="14dp"
+        android:fontFamily="@font/nanumsquareb"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline8"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

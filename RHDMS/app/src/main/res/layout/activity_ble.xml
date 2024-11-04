@@ -7,6 +7,39 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back2"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanumsquarer"
+            android:text="@string/decrease"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+            app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/pm_textView2"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:fontFamily="@font/nanumsquarer"
+            android:text="@string/ble_text"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+            app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
+
+    </LinearLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etMainConnectedDeviceDecoration"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -39,13 +72,13 @@
 
     <TextView
         android:id="@+id/bloodPressureValue"
-        android:layout_width="279dp"
+        android:layout_width="378dp"
         android:layout_height="142dp"
         android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corners"
         android:gravity="center"
-        android:layout_marginTop="48dp"
         android:text="측정을 \n기다리고 있습니다."
-        android:background="#888888"
         android:textAlignment="center"
         android:textSize="30sp" />
 
