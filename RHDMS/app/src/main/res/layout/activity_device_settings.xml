@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.378" />
+        app:layout_constraintGuide_begin="155dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_running_minute"
@@ -214,7 +214,7 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
         />
 
-    <TextView
+    <EditText
         android:layout_width="100dp"
         android:layout_height="20dp"
         android:text="복약기 ID"
@@ -252,21 +252,21 @@
         app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm3"
         />
 
-    <Button
+    <EditText
         android:id="@+id/alarm_start_hour_3rd"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Hour"
+        android:hint="Hour"
         android:textSize="10dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_time"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm3_under"/>
 
-    <Button
+    <EditText
         android:id="@+id/alarm_start_minute_3rd"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Minute"
+        android:hint="Minute"
         android:textSize="10dp"
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_time"
@@ -306,16 +306,16 @@
         />
 
     <!-- 지속시간 설정버튼(수정필요 : 실제 데이터 값 연결 해야함) -->
-    <TextView
+    <EditText
         android:id="@+id/alarm3_running_time"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm3_under"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline_running_minute"
-        android:text="5"
+        android:hint="입력"
         android:fontFamily="@font/nanumsquareb"
         android:textColor="@color/black"
-        android:textSize="32dp"
+        android:textSize="16dp"
         />
 
     <!-- 두번째 알람 시간 세팅 -->
@@ -330,21 +330,21 @@
         app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm2"
         />
 
-    <Button
+    <EditText
         android:id="@+id/alarm_start_hour_2nd"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Hour"
+        android:hint="Hour"
         android:textSize="10dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_time"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm2_under"/>
 
-    <Button
+    <EditText
         android:id="@+id/alarm_start_minute_2nd"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Minute"
+        android:hint="Minute"
         android:textSize="10dp"
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_time"
@@ -384,16 +384,16 @@
         />
 
     <!-- 지속시간 설정버튼(수정필요 : 실제 데이터 값 연결 해야함) -->
-    <TextView
+    <EditText
         android:id="@+id/alarm2_running_time"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm2_under"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline_running_minute"
-        android:text="16"
+        android:hint="입력"
         android:fontFamily="@font/nanumsquareb"
         android:textColor="@color/black"
-        android:textSize="32dp"
+        android:textSize="16dp"
         />
 
     <!-- 첫 알람 시간 세팅 -->
@@ -407,21 +407,21 @@
         app:layout_constraintTop_toTopOf="@id/pm_guideline_count"
         />
 
-    <Button
+    <EditText
         android:id="@+id/alarm_start_hour_1st"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Hour"
+        android:hint="Hour"
         android:textSize="10dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_time"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm1_under"/>
 
-    <Button
+    <EditText
         android:id="@+id/alarm_start_minute_1st"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Minute"
+        android:hint="Minute"
         android:textSize="10dp"
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_time"
@@ -461,16 +461,16 @@
         />
 
     <!-- 지속시간 설정버튼(수정필요 : 실제 데이터 값 연결 해야함) -->
-    <TextView
+    <EditText
         android:id="@+id/alarm1_running_time"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm1_under"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline_running_minute"
-        android:text="16"
+        android:hint="입력"
         android:fontFamily="@font/nanumsquareb"
         android:textColor="@color/black"
-        android:textSize="32dp"
+        android:textSize="16dp"
         />
 
     <!-- 알람 설정 -->
@@ -483,90 +483,24 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
 
 
-    <!-- 알람 사용 설정(작동 방식 수정해야함)-->
-    <Switch
-        android:id="@+id/alarm_enable_1st"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable 1st Alarm"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="14dp"
-        app:layout_constraintTop_toBottomOf="@id/pm_guideline_count"
-        app:layout_constraintStart_toStartOf="@id/pm_guideline3"/>
+    <!-- 알람 사용 설정-->
+    <EditText
+        android:id="@+id/settingnumber"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:hint="입력"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_count" />
 
-
-    <!-- 기존인데 ☆안쓰게☆ 된 첫 번째 알람 종료 시간 관련 -->
-
-    <Button
-        android:id="@+id/alarm_end_hour_1st"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hour"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <Button
-        android:id="@+id/alarm_end_minute_1st"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Minute"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- 두 번째 알람 여부 및 종료시간 관련 -->
-    <Switch
-        android:id="@+id/alarm_enable_2nd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable 2nd Alarm"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
-
-    <Button
-        android:id="@+id/alarm_end_hour_2nd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hour"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/alarm_end_minute_2nd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Minute"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- 세 번째 알람 시간 관련 -->
-    <Switch
-        android:id="@+id/alarm_enable_3rd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable 3rd Alarm"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-
-    <Button
-        android:id="@+id/alarm_end_hour_3rd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hour"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/alarm_end_minute_3rd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Minute"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 볼륨 설정 -->
     <!-- 체크할 수 있는 원형의 간격을 조금만 더 숫자랑 가까이 붙일 수 있는지-->
+
+
     <RadioGroup
         android:id="@+id/volume_group"
         android:orientation="horizontal"
