@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -45,6 +46,11 @@ public class Inspector extends Worker
     @Override
     public Result doWork()
     {
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()){
+            return Result.success();
+        }
+
         //test 현재시간 출력
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

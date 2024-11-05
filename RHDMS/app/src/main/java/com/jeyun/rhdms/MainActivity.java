@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.provider.Settings;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -93,37 +94,40 @@ public class MainActivity extends AppCompatActivity {
         // 진동 권한 승인 여부
         boolean isVibratePermissionDenied = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED;
 
-        // 안드로이드 12 (API 31) 이상에서 정확한 알람 권한 승인 여부
-        // alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        // boolean isScheduleExactAlarmDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms();
+//         안드로이드 12 (API 31) 이상에서 정확한 알람 권한 승인 여부
+         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+         boolean isScheduleExactAlarmDenied = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms();
 
         // 여러 권한 중 하나라도 승인이 안 되어 있다면
-        // if (isBluetoothPermissionDenied || isNotificationPermissionDenied || isVibratePermissionDenied || isScheduleExactAlarmDenied)
         if (isBluetoothPermissionDenied || isNotificationPermissionDenied || isVibratePermissionDenied)
         {
             AlertDialog alert;
             if (isRequested) // 권한 요청은 전에 했지만 권한 승인이 되지 않은 경우
             {
-                alert = factory.createPopup("권한 요청", "수동으로 권한을 활성화해주세요!", (dialog, which) -> gotoAppSettings());
+                alert = factory.createPopup("권한 요청", "수동으로 권한을 활성화해주세요!", (dialog, which) -> gotoAppSettings(Settings.ACTION_APPLICATION_DETAILS_SETTINGS));
             }
             else // 처음 권한 요청을 하는 경우
             {
                 alert = factory.createPopupYN("권한 요청", "해당 권한이 필수적으로 요구됩니다.",
                         (dialog, which) -> requestPermission(),
-                        (dialog, which) -> gotoAppSettings());
+                        (dialog, which) -> gotoAppSettings(Settings.ACTION_APPLICATION_DETAILS_SETTINGS));
             }
 
             alert.show();
         }
+        AlertDialog alert;
+        if(isScheduleExactAlarmDenied){
+            alert = factory.createPopup("권한 요청", "복약 푸시알림을 위해 알람 및 리마인더 설정을 허용해주세요!", (dialog, which) -> gotoAppSettings(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM));
+            alert.show();
+        }
     }
 
-    private void gotoAppSettings() // App 설정으로 이동
+    private void gotoAppSettings(String settingsAction) // App 설정으로 이동
     {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Intent intent = new Intent(settingsAction,
                 Uri.fromParts("package", getPackageName(), null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
     }
 
     private void requestPermission()
