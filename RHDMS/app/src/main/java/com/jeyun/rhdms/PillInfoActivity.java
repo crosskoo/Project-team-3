@@ -143,6 +143,11 @@ public class PillInfoActivity extends AppCompatActivity {
             loadData(tb.isChecked());
         });
         //< > 버튼의 삭제로 인한 일시적 주석 처리 */
+        binding.pillupdateEnter.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), TestNewPillInfoActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     // 기본값으로는 '주'에 해당하는 데이터를 불러옴.
