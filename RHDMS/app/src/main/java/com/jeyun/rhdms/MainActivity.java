@@ -25,13 +25,9 @@ import androidx.core.content.ContextCompat;
 
 import com.jeyun.rhdms.databinding.ActivityMainBinding;
 import com.jeyun.rhdms.handler.entity.User;
+import com.jeyun.rhdms.handler.entity.UserHandler;
 import com.jeyun.rhdms.util.factory.AlertFactory;
 import com.jeyun.rhdms.util.factory.PopupFactory;
-
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
-import org.sql2o.Sql2oException;
-
 import java.security.MessageDigest;
 import java.security.spec.ECField;
 import java.sql.PreparedStatement;
@@ -39,12 +35,23 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding; // 바인딩할 뷰 레이아웃
     private PopupFactory<AlertDialog> factory; // 알림 메시지 factory
     private AlarmManager alarmManager;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private String id = "";
+    private String password = "";
+    private String encryptedPassword;
 
     private boolean isRequested = false; // 권한 요청 여부
 
@@ -52,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
 
         // 뷰 바인딩
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -70,7 +76,33 @@ public class MainActivity extends AppCompatActivity {
         // (추후 수정) 버튼 누를 시 메인 화면으로 이동
         binding.buttonLogin.setOnClickListener(v ->
         {
-            Login(); // 추후 boolean 타입 반환 예정. true 반환 시 메인 페이지로 이동
+            setIdPw(); // 아이디, 비밀 번호 설정
+
+            if (id.isEmpty() || password.isEmpty()) // 아이디, 비밀 번호 둘 중 하나라도 입력하지 않으면
+            {
+                // 입력하라는 팝업 메시지 출력
+                Toast.makeText(this, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Boolean idExist = findUser(id);
+            if (idExist)
+            {
+                // 로그인 성공
+                Log.d("ksd", "로그인 성공");
+                Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
+
+                // 메인 화면으로 이동
+                Intent intent_switch = new Intent(this, MenuActivity.class);
+                startActivity(intent_switch);
+                finish();
+            }
+            else
+            {
+                // 로그인 실패
+                Log.d("ksd", "로그인 실패");
+                Toast.makeText(this, "로그인에 실패했습니다. 아이디 혹은 비밀번호를 정확히 입력해주세요.", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -173,47 +205,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void Login() // 로그인할 데이터 전처리
+    private void setIdPw() // 로그인할 데이터 전처리
     {
-        String id = binding.inputId.getText().toString();
-        String password = binding.inputPw.getText().toString();
-        String encryptedPassword = "";
-
-        if (id.isEmpty() || password.isEmpty())
-        {
-            Toast.makeText(this, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        id = binding.inputId.getText().toString();
+        password = binding.inputPw.getText().toString();
+        encryptedPassword = "";
 
         try
         {
             encryptedPassword = encryptPassword(password, id);
-            Toast.makeText(this, "id : " + id + ", pw : " + encryptedPassword, Toast.LENGTH_SHORT).show(); // 확인용
+            // Toast.makeText(this, "id : " + id + ", pw : " + encryptedPassword, Toast.LENGTH_SHORT).show(); // 확인용
         }
         catch (Exception e)
         {
             Toast.makeText(this, "비밀 번호를 암호화 하는데 실패했습니다.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
-
-        Optional<User> optionalUser = getUserInfo(id, encryptedPassword);
-
-        if (optionalUser.isPresent())
-        {
-            User user = optionalUser.get();
-            System.out.println("User EMPLYR_ID : " + user.getEMPLYR_ID() + ", User ORGNZT_ID : " + user.getORGNZT_ID());
-        }
-        else
-        {
-            Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
-        }
-
-        // 임시
-        // 로그인 성공 시 메뉴 화면으로 이동
-        Intent intent_switch = new Intent(getApplicationContext(), MenuActivity.class);
-        startActivity(intent_switch);
-        finish();
     }
 
     private String encryptPassword(@NonNull String password, @NonNull String id) throws Exception // 아이디, 비밀 번호로 해시값 생성
@@ -229,48 +236,28 @@ public class MainActivity extends AppCompatActivity {
         return Base64.getEncoder().encodeToString(hashValue);
     }
 
-
-    private Optional<User> getUserInfo(String id, String encryptedPassword) // 아이디, 비밀번호에 해당하는 데이터 값 찾아오기
+    private Boolean findUser(String id) // DB로부터 유저 정보가 있는지 확인하는 함수
     {
-        String url = "jdbc:jtds:sqlserver://211.229.106.53:11433/사용성평가";
-        String username = "sa";
-        String userpassword = "test1q2w3e@@";
+        final Boolean[] result = {false};
 
-        Sql2o client = new Sql2o(url, username, userpassword);
+        Callable<Boolean> task = () -> {
+            UserHandler userHandler = new UserHandler(id);
+            return userHandler.findUserInfo(id);
+        };
 
-        //// 아이디와 비밀번호에 해당하는 데이터를 찾기
-        /*
-        String query_format =
-                "SELECT * FROM lettnemplyrinfo " +
-                        "WHERE EMPLYR_ID = %s " +
-                        "AND PASSWORD = %s;";
+        Future<Boolean> future = executor.submit(task);
 
-        String query = String.format(query_format, id, encryptedPassword);
-        System.out.println(query);
-        ////
-         */
-
-        String query_format =
-                "SELECT * FROM lettnemplyrinfo " +
-                        "WHERE EMPLYR_ID = %s"; // 임시로 아이디에 해당하는 데이터만 찾아보기
-
-        String query = String.format(query_format, id);
-
-        try (Connection con = client.open())
+        try
         {
-            User user =  con.createQuery(query).executeAndFetchFirst(User.class);
-            return Optional.ofNullable(user);
+            result[0] = future.get();
         }
-        catch (Sql2oException e)
+        catch (InterruptedException | ExecutionException e)
         {
             e.printStackTrace();
-            return Optional.empty();
+            return false;
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return Optional.empty();
-        }
+
+        Log.d("ksd","result[0] : " + result[0]); // 테스트용"
+        return result[0]; // 유저 정보가 있으면 true, 유저 정보가 없으면 false
     }
-
 }
