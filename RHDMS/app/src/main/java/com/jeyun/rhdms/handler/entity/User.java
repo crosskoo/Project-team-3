@@ -7,7 +7,7 @@ public class User
     private String USER_NM; // 사용자 이름
     private String PASSWORD; // 비밀번호 (암호화된)
 
-    public String getEMPLYR_ID() {
+    public String getEMPLYR_NO() {
         return EMPLYR_ID;
     }
 
