@@ -1,12 +1,11 @@
-package com.jeyun.rhdms.handler.entity;
+package com.jeyun.rhdms.handler;
 
-import com.jeyun.rhdms.handler.DataHandler;
+import com.jeyun.rhdms.handler.entity.User;
 
 import org.sql2o.Connection;
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class UserHandler extends DataHandler<User, String>
