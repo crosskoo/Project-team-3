@@ -5,52 +5,299 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_mainend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.93" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.23" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.405" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.26" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_alarm_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_X_1end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.679" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_ver_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_quarter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_half"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_quarter2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nanumsquarer"
+        android:text="@string/decrease"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_set"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
+
+    <ImageView
+        android:id="@+id/selection"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:background="@drawable/bg_device_selec"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline6"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline7"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
+
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_set"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_end"
+        android:src="@drawable/bg_app_alarm"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_quarter"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_quarter"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_title"
+        android:text="반복 횟수"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="14dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_half"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_half"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_title"
+        android:text="반복 주기"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="14dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_quarter2"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_quarter2"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_title"
+        android:text="진동 세기"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nanumsquarer"
+        android:textSize="14dp"/>
+
     <!-- Example Button -->
     <Button
         android:id="@+id/button_increase_alarm_count"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:text="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1" />
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_quarter"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_quarter"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_content"
+        tools:text="1"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumsquareb"/>
 
     <Button
         android:id="@+id/button_increase_alarm_delay"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_count"
-        tools:text="10" />
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_half"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_half"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_content"
+        tools:text="10"
+        android:background="@color/white"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumsquareb"/>
 
     <Button
         android:id="@+id/button_increase_alarm_vibration"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_delay"
-        tools:text="1" />
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_quarter2"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_quarter2"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_content"
+        tools:text="1"
+        android:background="@color/white"
+        android:textSize="20dp"
+        android:fontFamily="@font/nanumsquareb"/>
+
+    <!-- 방해금지 시간 시작 -->
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:background="@drawable/bg_alarm_mute"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_end"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquarer"
+        android:text="방해금지 시간 시작"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/pm_guideline_ver_title"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_end" />
 
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:timePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_increase_alarm_vibration" />
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_end" />
+
+    <!-- 방해금지 시간 종료 -->
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:background="@drawable/bg_alarm_mute"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_X_1end"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquarer"
+        android:text="방해금지 시간 종료"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/pm_guideline_ver_title"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_X_1end" />
 
     <TimePicker
         android:id="@+id/timePicker2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:timePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker1" />
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_X_1end"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

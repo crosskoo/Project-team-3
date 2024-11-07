@@ -48,6 +48,9 @@
         <activity android:name=".graphActivity.BloodPressureInfoActivity">
 
         </activity>
+        <activity android:name=".graphActivity.BloodSugarInfoActivity">
+
+        </activity>
         <activity
             android:name=".DeviceSettingsActivity"
             android:screenOrientation="portrait"></activity>
@@ -67,6 +70,9 @@
             android:name=".graphActivity.TestActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".PillInfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".PillListActivity"
             android:screenOrientation="portrait"></activity>
         <activity
@@ -83,6 +89,7 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".BleActivity"
+            android:theme="@style/AppTheme.MaterialActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".TestNewPillInfoActivity"></activity>
 

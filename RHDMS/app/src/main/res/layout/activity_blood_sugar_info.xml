@@ -54,35 +54,34 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
-    <!--    기존 이전기간 이동 버튼-->
-
     <TextView
         android:id="@+id/pm_textView"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:text="@string/text_bs_management"
         android:fontFamily="@font/nanumsquarer"
-        android:text="@string/label_pill_management"
-        android:textAlignment="center"
-        android:textColor="#000000"
         android:textSize="24sp"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:layout_marginBottom="13dp"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
 
     <Button
         android:id="@+id/back"
-        android:layout_width="64dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/nanumsquarer"
         android:text="@string/decrease"
-        android:textColor="#000000"
+        android:fontFamily="@font/nanumsquarer"
         android:textSize="30sp"
+        android:textColor="#000000"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
+    <!--기존 이전 기간 이동 버튼-->
     <Button
         android:id="@+id/button_decrease"
         android:layout_width="0dp"
@@ -95,11 +94,11 @@
         app:layout_constraintBottom_toTopOf="@+id/pm_guideline2"
         app:layout_constraintEnd_toStartOf="@+id/pm_guideline6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toggle_pill_info" />
+        app:layout_constraintTop_toTopOf="@+id/toggle_blood_info"/>
 
     <!-- 주간 월간 교체 버튼-->
     <ToggleButton
-        android:id="@+id/toggle_pill_info"
+        android:id="@+id/toggle_blood_info"
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:text=""
@@ -112,7 +111,7 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
 
 
-    <!--    기존 다음 기간 이동 버튼-->
+    <!--  기존 다음 기간 이동 버튼 -->
     <Button
         android:id="@+id/button_increase"
         android:layout_width="0dp"
@@ -126,81 +125,109 @@
         app:layout_constraintBottom_toTopOf="@+id/pm_guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/pm_guideline7"
-        app:layout_constraintTop_toTopOf="@+id/toggle_pill_info" />
-
-    <!-- 복약 데이터 출력-->
-
-    <ImageView
-        android:id="@+id/pillInfo_adherence"
-        android:layout_width="320dp"
-        android:layout_height="155dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/bg_pill_adherence"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pm_guideline2" />
-
-    <ImageView
-        android:id="@+id/pillInfo_data"
-        android:layout_width="320dp"
-        android:layout_height="372dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pillInfo_adherence"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/bg_pill_data" />
+        app:layout_constraintTop_toTopOf="@+id/toggle_blood_info"/>
 
     <FrameLayout
-        android:id="@+id/pm_frame"
+        android:id="@+id/sugarInfo_data"
         android:layout_width="320dp"
-        android:layout_height="372dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="263dp"
+        android:src="@drawable/bg_blood_data"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pillInfo_adherence">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline2"
+        android:layout_marginTop="25dp"
+        />
+
+    <!-- 혈당 데이터 출력-->
+    <FrameLayout
+        android:id="@+id/bloodInfo_review"
+        android:layout_width="320dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="313dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pm_guideline2"
+        >
+
+        <!--제일 뒷 배경의 회색-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_blood_review"
+            />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/last_sugar_date_range"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:fontFamily="@font/nanumsquarer"
+            android:text="(구간)" />
+
+        <TextView
+            android:layout_marginTop="60dp"
+            android:id="@+id/sugar_max_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="mg/dL"
+            android:fontFamily="@font/nanumsquareb"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:layout_marginTop="95dp"
+            android:id="@+id/sugar_min_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="mg/dL"
+            android:fontFamily="@font/nanumsquareb"
+            android:textSize="25sp"/>
+
+        <!-- 최근 기록 보기 용 점선 두 줄 -->
+        <ImageView
+            android:layout_width="291dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="165dp"
+            android:src="@drawable/ic_dot_line_for_blood"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_marginTop="180dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21:56    "/>
+
+        <ImageView
+            android:layout_width="291dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="208dp"
+            android:src="@drawable/ic_dot_line_for_blood"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_marginTop="220dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21:56    "/>
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
-        android:text=" 복약 순응률"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/pillInfo_adherence"
-        app:layout_constraintTop_toTopOf="@+id/pillInfo_adherence" />
-
-    <TextView
-        android:id="@+id/text_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="2024년 10월 7일 ~ 2024년 10월 13일"
-        app:layout_constraintStart_toStartOf="@+id/pillInfo_adherence"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/text_adherencePercentage"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/black"
-        android:text="90%"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/pillInfo_adherence"
-        app:layout_constraintEnd_toEndOf="@+id/pillInfo_adherence" />
-
     <!--기존에 있던 프레임-->
+    <FrameLayout
+        android:id="@+id/pm_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/pm_guideline3"
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline4"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline5"
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline2"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
