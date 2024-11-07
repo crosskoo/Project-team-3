@@ -122,6 +122,8 @@ public class NewPillInfoActivity extends AppCompatActivity
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PillInfoActivity.class);
+            startActivity(intent);
             finish();
         });
 
