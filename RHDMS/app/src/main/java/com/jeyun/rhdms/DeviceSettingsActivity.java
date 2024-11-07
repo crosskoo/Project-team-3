@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
+import com.jeyun.rhdms.handler.entity.User;
 
 import org.json.JSONObject;
 
@@ -32,6 +32,9 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     private EditText alarmDuration3rd; // 세 번째 알람의 지속 시간
 
     private EditText settingnum;
+
+    private Button SettingResetButton;
+    private Button FactoryResetButton;
 
     private RadioGroup volumeGroup;
 
@@ -69,11 +72,94 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
         settingnum = findViewById(R.id.settingnumber);
 
+        SettingResetButton = findViewById(R.id.SettingReset_button);
+        FactoryResetButton = findViewById(R.id.DeviceRest_button);
+
         volumeGroup = findViewById(R.id.volume_group);
 
+        String user_id= User.getInstance().getOrgnztId();
+        pillboxId.setText(user_id);
 
-        // Save button logic
-        // Save button logic
+        // 뒤로가기 버튼
+        Button backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(v -> finish());
+
+        //설정 초기화
+        SettingResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 경고 대화상자 생성
+                new AlertDialog.Builder(DeviceSettingsActivity.this)
+                        .setTitle("경고")
+                        .setMessage("설정을 초기화 합니다!!!")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            // Yes 클릭 시 설정 초기화 실행
+                            try {
+                                // PillboxID는 그대로 유지
+                                String pillboxIdValue = pillboxId.getText().toString();
+
+                                // 알람 크기 및 개수를 0으로 설정
+                                alarmDuration1st.setText("0");
+                                alarmDuration2nd.setText("0");
+                                alarmDuration3rd.setText("0");
+                                settingnum.setText("0"); // 알람 개수 0
+
+                                // 나머지 값들을 빈 문자열로 설정
+                                alarmStartHour1st.setText("");
+                                alarmStartMinute1st.setText("");
+                                alarmStartHour2nd.setText("");
+                                alarmStartMinute2nd.setText("");
+                                alarmStartHour3rd.setText("");
+                                alarmStartMinute3rd.setText("");
+
+                                // 볼륨 선택 해제 (RadioGroup)
+                                volumeGroup.clearCheck();
+
+                                // JSON 객체 생성 및 전송
+                                JSONObject settings = new JSONObject();
+                                settings.put("pillboxno", pillboxIdValue);  // 약상자 ID는 유지
+                                settings.put("alarmStart_1st", "");
+                                settings.put("alarmEnd_1st", "");
+                                settings.put("alarmStart_2nd", "");
+                                settings.put("alarmEnd_2nd", "");
+                                settings.put("alarmStart_3rd", "");
+                                settings.put("alarmEnd_3rd", "");
+                                settings.put("volume", "");  // 볼륨 값도 빈 문자열로
+
+                                showSendSettingsPopup(settings);  // 팝업으로 확인 후 전송
+                                sendSettings(settings);  // 서버로 전송
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        })
+                        .setNegativeButton("No", null) // No 클릭 시 아무 작업도 하지 않음
+                        .show();
+            }
+        });
+
+        // 공장 초기화 버튼
+        FactoryResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 경고 대화상자 생성
+                new AlertDialog.Builder(DeviceSettingsActivity.this)
+                        .setTitle("경고")
+                        .setMessage("기기를 공장 초기화합니다!!!")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            // Yes 클릭 시 공장 초기화 실행
+                            try {
+                                //공장 초기화
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        })
+                        .setNegativeButton("No", null) // No 클릭 시 아무 작업도 하지 않음
+                        .show();
+            }
+        });
+        //저장 버튼
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +179,12 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
                     // settingnum 값에 따라 알람 개수를 확인
                     int numOfAlarms = Integer.parseInt(settingnum.getText().toString());
+
+                    // settingnum이 3을 넘으면 오류 메시지 표시
+                    if (numOfAlarms > 3) {
+                        showAlert("오류", "알람 설정은 최대 3개까지만 가능합니다.");
+                        return;
+                    }
 
                     // 첫 번째 알람의 시작 시간이 올바른지 검사
                     if (numOfAlarms >= 1) {
