@@ -11,56 +11,31 @@ import java.util.Optional;
 
 public class UserHandler extends DataHandler<User, String>
 {
-    private String id;
-    public UserHandler(String id)
-    {
-        this.id = id;
-    }
 
-    public Boolean findUserInfo(String id) // 유저가 입력한 id과 동일한 정보가 DB에 있는 지 탐색하는 메소드
+    public Optional<String> findUserInfo(String id, String encryptedPassword) // 유저가 입력한 id과 동일한 정보가 DB에 있는 지 탐색하는 메소드
     {
-        String query_format = "SELECT COUNT(*) " +
+
+        String query_format = "SELECT ORGNZT_ID " +
                 "FROM lettnemplyrinfo " +
-                "WHERE EMPLYR_ID = :userId";
+                "WHERE EMPLYR_ID = :userId " +
+                "AND PASSWORD = :password";
 
         try (Connection con = client.open())
         {
-            int count =  con.createQuery(query_format)
+
+            String orgnztId = con.createQuery(query_format)
                     .addParameter("userId", id)
-                    .executeScalar(Integer.class);
-            return count > 0; // 있으면 true, 없으면 false 반환
+                    .addParameter("password", encryptedPassword)
+                    .executeScalar(String.class);
+
+            return Optional.ofNullable(orgnztId); // id, 비밀번호에 해당하는 유저의 orgnztId 반환
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return false; // 없으면 false 반환
+            return Optional.empty(); // 없으면 빈 객체 반환
         }
     }
-
-    // 테스트 용
-    public void showTableInfo() {
-        String query_format = "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH\n" +
-                "FROM INFORMATION_SCHEMA.COLUMNS\n" +
-                "WHERE TABLE_NAME = 'lettnemplyrinfo';";
-
-        List<Map<String, Object>> columnInfo = new ArrayList<>();
-
-        try (Connection con = client.open()) {
-            columnInfo = con.createQuery(query_format)
-                    .executeAndFetchTable()
-                    .asList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // 컬럼 정보 출력 (컬럼명, 데이터 타입, 최대 길이)
-        for (Map<String, Object> row : columnInfo) {
-            System.out.println("Column Name: " + row.get("COLUMN_NAME") +
-                    ", Data Type: " + row.get("DATA_TYPE") +
-                    ", Max Length: " + row.get("CHARACTER_MAXIMUM_LENGTH"));
-        }
-    }
-
 
     // 나머지 메소드들은 사용하지 않는다.
     @Override

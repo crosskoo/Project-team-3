@@ -85,12 +85,12 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            Boolean idExist = findUser(id);
-            if (idExist)
+            Optional<String> orgnztId = findUser(id, encryptedPassword); // id, 비밀번호에 해당하는 유저의 orgnztId를 반환.
+            if (orgnztId.isPresent())
             {
                 // 로그인 성공
                 Log.d("ksd", "로그인 성공");
-                Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "환영합니다. " + orgnztId.get() + "님.", Toast.LENGTH_SHORT).show();
 
                 // 메인 화면으로 이동
                 Intent intent_switch = new Intent(this, MenuActivity.class);
@@ -232,32 +232,28 @@ public class MainActivity extends AppCompatActivity {
         md.update(id.getBytes());
 
         hashValue = md.digest(password.getBytes());
+        Log.d("ksd", "hashValue : " + Base64.getEncoder().encodeToString(hashValue)); // 테스트 용
 
         return Base64.getEncoder().encodeToString(hashValue);
     }
 
-    private Boolean findUser(String id) // DB로부터 유저 정보가 있는지 확인하는 함수
+    private Optional<String> findUser(String id, String encryptedPassword) // DB로부터 유저 정보가 있는지 확인하는 함수
     {
-        final Boolean[] result = {false};
-
-        Callable<Boolean> task = () -> {
-            UserHandler userHandler = new UserHandler(id);
-            return userHandler.findUserInfo(id);
+        Callable<Optional<String>> task = () -> {
+            UserHandler userHandler = new UserHandler();
+            return userHandler.findUserInfo(id, encryptedPassword);
         };
 
-        Future<Boolean> future = executor.submit(task);
+        Future<Optional<String>> future = executor.submit(task);
 
         try
         {
-            result[0] = future.get();
+            return future.get();
         }
         catch (InterruptedException | ExecutionException e)
         {
             e.printStackTrace();
-            return false;
+            return Optional.empty();
         }
-
-        Log.d("ksd","result[0] : " + result[0]); // 테스트용"
-        return result[0]; // 유저 정보가 있으면 true, 유저 정보가 없으면 false
     }
 }
