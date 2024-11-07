@@ -89,8 +89,10 @@ public class MainActivity extends AppCompatActivity {
             if (orgnztId.isPresent())
             {
                 // 로그인 성공
-                Log.d("ksd", "로그인 성공");
-                Toast.makeText(this, "환영합니다. " + orgnztId.get() + "님.", Toast.LENGTH_SHORT).show();
+                Log.d("assert login", "로그인 성공"); // 테스트 용
+                Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
+                User.getInstance().setOrgnztId(orgnztId.get()); // orgnztId 저장하는 싱글톤 클래스 생성
+                Log.d("check orgnztId", User.getInstance().getOrgnztId()); // 테스트 용
 
                 // 메인 화면으로 이동
                 Intent intent_switch = new Intent(this, MenuActivity.class);
