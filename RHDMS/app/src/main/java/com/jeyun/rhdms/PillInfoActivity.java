@@ -1,5 +1,6 @@
 package com.jeyun.rhdms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.jeyun.rhdms.util.Header;
 import com.jeyun.rhdms.util.MyCalendar;
 
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -33,8 +35,8 @@ public class PillInfoActivity extends AppCompatActivity {
     protected CustomCalendar calendar = new MyCalendar();
     protected Executor executor = Executors.newSingleThreadExecutor();
 
-    protected Supplier<Fragment> supplier; // 자식 클래스마다 fragment가 다름.
-    protected String title; // 자식 클래스마다 title 값이 다름.
+    protected Supplier<Fragment> supplier;
+    protected String title = "복약 정보";
 
     protected void create()
     {
@@ -71,6 +73,25 @@ public class PillInfoActivity extends AppCompatActivity {
             List<Pill> pills = isWeek ? ph.getDataIn7days(calendar.timeNow) : ph.getDataInMonth(calendar.timeNow);
             PillBox pillBox = new PillBox((ArrayList<Pill>) pills, calendar, isWeek);
 
+            // 기간 설정 & 복약 순응률 계산
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(isWeek){
+                        binding.textDuration.setText(calendar.timeNow.minusDays(6).format(formatter) + " ~ " + calendar.timeNow.format(formatter));
+                    }else{
+                        binding.textDuration.setText(calendar.timeNow.withDayOfMonth(1).format(formatter) + " ~ " + calendar.timeNow.withDayOfMonth(calendar.timeNow.lengthOfMonth()).format(formatter));
+                    }
+
+                    int adherenceCount = 0;
+                    for(int i = 0; i < pills.size(); i++){
+                        if(pills.get(i).TAKEN_ST.equals("TAKEN")) adherenceCount++;
+                    }
+                    if(pills.size() == 0) binding.textAdherencePercentage.setText("0.0%");
+                    else binding.textAdherencePercentage.setText(String.format("%.1f", adherenceCount / (float)pills.size() * 100) + "%");
+                }
+            });
 
             Bundle bundle = new Bundle();
             // (function으로부터 불러온 데이터들을 bundle에 넣는다. 데이터는 자식 클래스마다 다름.)
@@ -122,6 +143,12 @@ public class PillInfoActivity extends AppCompatActivity {
             loadData(tb.isChecked());
         });
         //< > 버튼의 삭제로 인한 일시적 주석 처리 */
+        binding.pillupdateEnter.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), TestNewPillInfoActivity.class);
+            startActivity(intent);
+            finish();
+        });
+        binding.back.setOnClickListener(v -> finish());
     }
 
     // 기본값으로는 '주'에 해당하는 데이터를 불러옴.

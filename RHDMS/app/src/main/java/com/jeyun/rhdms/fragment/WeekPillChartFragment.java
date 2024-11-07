@@ -75,7 +75,7 @@ public class WeekPillChartFragment extends Fragment {
         initChart();
     }
 
-    // 차트 초기화
+    // 차트 구성
     private void initChart()
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");

@@ -68,5 +68,6 @@ public class AppSettingsActivity extends AppCompatActivity {
         binding.timePicker2.setOnTimeChangedListener((view, hourOfDay, minute) -> {
             settingsManager.setDoNotDisturbEndTime(hourOfDay, minute);
         });
+        binding.back.setOnClickListener(v -> finish());
     }
 }

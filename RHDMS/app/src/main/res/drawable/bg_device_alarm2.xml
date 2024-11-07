@@ -5,57 +5,57 @@
     android:height="389dp">
     <path
         android:pathData="M959 207L967 207L967 219.5L967.5 220L1019 220L1019 207L1027 207L1027 246L959 246L959 207ZM967 227L967 239L968 239L1019 239L1019 228L1019 227L967 227Z"
-        android:fillColor="#6F6F6F"
+        android:fillColor="#000000"
         android:strokeColor="#6F6F6F"
         android:strokeWidth="1" />
     <path
         android:pathData="M945 257L1041.5 257L1042 257.5L1042 264L998 264L998 284L990 284L990 264L945.5 264L945 263.5L945 257Z"
-        android:fillColor="#6F6F6F"
+        android:fillColor="#000000"
         android:strokeColor="#6F6F6F"
         android:strokeWidth="1" />
     <path
         android:pathData="M959 275L967 275L967 297L1029.5 297Q1030.6 297.1 1030 302.5L1028.5 304L959 304L959 275Z"
-        android:fillColor="#6F6F6F"
+        android:fillColor="#000000"
         android:strokeColor="#6F6F6F"
         android:strokeWidth="1" />
     <path
         android:pathData="M12.5 11L10.5 14L12.5 11Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M1326.5 11L1328.5 14L1326.5 11Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M5.5 23L6 25.5L5 25.5L5.5 23Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M1333.5 23L1334 25.5L1333 25.5L1333.5 23Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M5.5 363L6 365.5L5 365.5L5.5 363Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M1333.5 363L1334 365.5L1333 365.5L1333.5 363Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M10.5 375L12.5 378L10.5 375Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path
         android:pathData="M1328.5 375L1326.5 378L1328.5 375Z"
-        android:fillColor="#F6F6F6"
+        android:fillColor="#000000"
         android:strokeColor="#F6F6F6"
         android:strokeWidth="1" />
     <path

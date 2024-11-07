@@ -18,6 +18,7 @@ import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
 import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
 import com.jeyun.rhdms.handler.BloodHandler;
 import com.jeyun.rhdms.handler.entity.Blood;
+import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.SettingsManager;
 import com.jeyun.rhdms.util.worker.Inspector;
 import com.jeyun.rhdms.util.worker.MyWorkManager;

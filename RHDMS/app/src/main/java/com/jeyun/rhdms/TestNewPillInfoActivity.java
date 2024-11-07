@@ -2,10 +2,12 @@ package com.jeyun.rhdms;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jeyun.rhdms.bluetooth.NetworkHandler;
@@ -44,8 +46,18 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         binding = ActivityTestNewPillInfoBinding.inflate(getLayoutInflater()); // 뷰 바인딩
         setContentView(binding.getRoot());
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(getApplicationContext(), PillInfoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         initUI();
     }
+
 
     private void initUI()
     {

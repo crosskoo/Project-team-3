@@ -72,6 +72,7 @@ public class PillCalendarFragment extends Fragment {
         if(rows == 6){
             binding.calendarImage.setBackgroundResource(R.drawable.bg_pill_monthdata_6rows);
         }else{
+            rows = 5;
             binding.calendarImage.setBackgroundResource(R.drawable.bg_pill_monthdata);
         }
 

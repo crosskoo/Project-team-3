@@ -17,6 +17,7 @@
     <string name="text_date_range">%s ~ %s</string>
     <string name="text_bs_temp">103 mg/dL</string>
     <string name="text_bs_measurement">혈당 측정</string>
+    <string name="text_set">설정</string>
     <string name="toggle_button_text">GraphUnit</string>
     <string name="toggle_button_month">월</string>
     <string name="toggle_button_week">주</string>

@@ -64,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="45dp"
+            android:textColor="@color/black"
             android:text="미복용"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -77,6 +78,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="45dp"
             android:text="정상 복욕"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/circle_green"
@@ -89,6 +91,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="45dp"
             android:text="과복용"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/circle_blue"
@@ -102,6 +105,7 @@
             android:layout_marginTop="45dp"
             android:text="지연"
             android:textSize="12sp"
+            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/circle_gray"
             app:layout_constraintTop_toTopOf="parent" />
@@ -113,6 +117,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="68dp"
             android:text="09/28"
+
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

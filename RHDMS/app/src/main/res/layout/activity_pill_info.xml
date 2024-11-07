@@ -5,6 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/pm_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:fontFamily="@font/nanumsquarer"
+        android:text="@string/text_bs_management"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline1"
         android:layout_width="wrap_content"
@@ -54,34 +67,43 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
-    <TextView
-        android:id="@+id/pm_textView"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_adheren"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_pill_management"
-        android:fontFamily="@font/nanumsquarer"
-        android:textSize="24sp"
-        android:textColor="#000000"
-        android:textAlignment="center"
-        android:layout_marginBottom="13dp"
-        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
-        app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.21" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.46" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_adhend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.42" />
+
+    <!--    기존 이전기간 이동 버튼-->
 
     <Button
         android:id="@+id/back"
-        android:layout_width="50dp"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:text="@string/decrease"
-        android:fontFamily="@font/nanumsquarer"
-        android:textSize="30sp"
-        android:textColor="#000000"
+        android:layout_marginBottom="4dp"
         android:background="@android:color/transparent"
+        android:fontFamily="@font/nanumsquarer"
+        android:text="@string/decrease"
+        android:textColor="#000000"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
-<!--    기존 이전기간 이동 버튼-->
     <Button
         android:id="@+id/button_decrease"
         android:layout_width="0dp"
@@ -111,7 +133,7 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
 
 
-<!--    기존 다음 기간 이동 버튼-->
+    <!--    기존 다음 기간 이동 버튼-->
     <Button
         android:id="@+id/button_increase"
         android:layout_width="0dp"
@@ -127,17 +149,32 @@
         app:layout_constraintStart_toStartOf="@+id/pm_guideline7"
         app:layout_constraintTop_toTopOf="@+id/toggle_pill_info" />
 
+    <!-- 복약 데이터 출력-->
+
     <ImageView
         android:id="@+id/pillInfo_adherence"
         android:layout_width="320dp"
         android:layout_height="155dp"
-        android:layout_marginTop="25dp"
         android:src="@drawable/bg_pill_adherence"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pm_guideline2" />
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_adheren"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_adhend"/>
 
-    <!-- 복약 데이터 출력-->
+    <Button
+        android:id="@+id/pillupdate_enter"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_pill_enter"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="복약 수동 입력"
+        android:fontFamily="@font/nanumsquareb"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/pillInfo_adherence"
+        app:layout_constraintStart_toStartOf="@id/pillInfo_adherence"
+        />
 
     <ImageView
         android:id="@+id/pillInfo_data"
@@ -155,12 +192,47 @@
         android:id="@+id/pm_frame"
         android:layout_width="320dp"
         android:layout_height="372dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pillInfo_adherence">
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_data">
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:text=" 복약 순응률"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/pillInfo_adherence"
+        app:layout_constraintTop_toTopOf="@+id/pillInfo_adherence" />
+
+    <TextView
+        android:id="@+id/text_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="2024년 10월 7일 ~ 2024년 10월 13일"
+        app:layout_constraintStart_toStartOf="@id/pillInfo_adherence"
+        app:layout_constraintTop_toBottomOf="@id/textView2" />
+
+    <TextView
+        android:id="@+id/text_adherencePercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/black"
+        android:text="90%"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/pillInfo_adherence"
+        app:layout_constraintEnd_toEndOf="@id/pillInfo_adherence" />
 
     <!--기존에 있던 프레임-->
 
