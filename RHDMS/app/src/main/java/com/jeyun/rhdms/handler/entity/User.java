@@ -1,17 +1,28 @@
 package com.jeyun.rhdms.handler.entity;
 
-public class User
+public class User // 아이디, 비밀번호에 해당하는 orgnztId를 저장하는 싱글톤 클래스
 {
-    private String EMPLYR_ID; // 사용자 ID
-    private String ORGNZT_ID; // 기관 번호 (대상 환자 번호와 동일)
-    private String USER_NM; // 사용자 이름
-    private String PASSWORD; // 비밀번호 (암호화된)
+    private static User instance;
+    private String ORGNZT_ID;
 
-    public String getEMPLYR_ID() {
-        return EMPLYR_ID;
+    private User() {}
+
+    public static synchronized User getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new User();
+        }
+        return instance;
     }
 
-    public String getORGNZT_ID() {
+    public String getOrgnztId()
+    {
         return ORGNZT_ID;
+    }
+
+    public void setOrgnztId(String orgnztId)
+    {
+        this.ORGNZT_ID = orgnztId;
     }
 }

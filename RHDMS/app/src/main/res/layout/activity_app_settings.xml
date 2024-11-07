@@ -126,17 +126,18 @@
 
     <Button
         android:id="@+id/back"
-        android:layout_width="50dp"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:text="@string/decrease"
+        android:layout_marginBottom="4dp"
+        android:background="@android:color/transparent"
         android:fontFamily="@font/nanumsquarer"
+        android:text="@string/decrease"
+        android:textColor="@color/black"
         android:textSize="30sp"
-        android:textColor="#000000"
-        android:background="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline3"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <TextView
         android:id="@+id/title"
@@ -147,7 +148,7 @@
         android:textSize="24sp"
         android:textColor="#000000"
         android:textAlignment="center"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
 
@@ -209,7 +210,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:text="1"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_quarter"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_quarter"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_content"
@@ -225,7 +226,7 @@
         app:layout_constraintStart_toStartOf="@id/pm_guideline_half"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_content"
         tools:text="10"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         android:textSize="20dp"
         android:fontFamily="@font/nanumsquareb"/>
 
@@ -237,7 +238,7 @@
         app:layout_constraintStart_toStartOf="@id/pm_guideline_quarter2"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_content"
         tools:text="1"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         android:textSize="20dp"
         android:fontFamily="@font/nanumsquareb"/>
 

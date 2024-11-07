@@ -151,6 +151,7 @@ public class BleActivity extends AppCompatActivity {
 
     private void initEvents()
     {
+        binding.back2.setOnClickListener(v -> finish());
         removeData.setOnClickListener(view ->
         {
             AlertDialog dialog = factory.createPopupYN("최근 데이터 삭제", "정말로 삭제하시겠습니까?",

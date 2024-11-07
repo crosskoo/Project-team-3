@@ -162,6 +162,9 @@ public class BloodSugarInfoActivity extends AppCompatActivity {
             updateDateRange(isWeek);
             transferData(isWeek);
         });
+
+        // 뒤로가기
+        binding.back.setOnClickListener(v -> finish());
     }
 
     private BloodPack loadSugarData(Boolean isWeek) // isWeek가 true이면 주간 혈당 데이터를, false이면 월간 혈당 데이터를 불러옴.
