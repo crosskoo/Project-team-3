@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.jeyun.rhdms.handler.entity.Blood;
 import com.jeyun.rhdms.handler.entity.Pill;
+import com.jeyun.rhdms.handler.entity.User;
 
 import org.sql2o.Connection;
 
@@ -46,7 +47,7 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
                         "AND SUBJECTID = %s;";
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, type, startDate, endDate, "1076");
+        String query = String.format(query_format, type, startDate, endDate, User.getInstance().getOrgnztId());
         System.out.println(query);
 
         try(Connection con = client.open())
@@ -78,7 +79,7 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
                         "AND CONVERT(varchar, mesure_de, 112) BETWEEN %s AND %s " +
                         "AND SUBJECTID = %s;";
 
-        String query = String.format(query_format, type, startDate, endDate, "1076");
+        String query = String.format(query_format, type, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {

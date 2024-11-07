@@ -51,8 +51,8 @@ public abstract class GraphActivity<T> extends AppCompatActivity
 
     protected void initUI()
     {
-        TextView tv = binding.pmTextView;
-        tv.setText(title);
+        //TextView tv = binding.pmTextView;
+        //tv.setText(title);
     }
 
     // '주' 혹은 '월'에 맞는 데이터를 불러오고 그 데이터에 맞게 fragment를 교체하는 함수.
@@ -110,6 +110,8 @@ public abstract class GraphActivity<T> extends AppCompatActivity
             loadData(tb.isChecked());
         });
         //< > 버튼의 삭제로 인한 일시적 주석 처리 */
+        // 뒤로가기
+        binding.back.setOnClickListener(v -> finish());
     }
 
     // 기본값으로는 '주'에 해당하는 데이터를 불러옴.

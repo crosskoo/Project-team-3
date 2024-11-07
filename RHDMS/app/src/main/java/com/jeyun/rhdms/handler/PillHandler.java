@@ -2,6 +2,8 @@ package com.jeyun.rhdms.handler;
 
 import android.annotation.SuppressLint;
 import com.jeyun.rhdms.handler.entity.Pill;
+import com.jeyun.rhdms.handler.entity.User;
+
 import org.sql2o.Connection;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -33,7 +35,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, "1076");
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -62,7 +64,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, "1076");
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -92,7 +94,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "AND SUBJECT_ID = %s;";
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, "1076");
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -115,7 +117,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE ARM_DT = '%s' " +
                         "AND SUBJECT_ID = '%s';";
 
-        String query = String.format(query_format, id, "1076");
+        String query = String.format(query_format, id, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -139,7 +141,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE SUBJECT_ID = '%s' " +
                         "AND ARM_DT = '%s'";
 
-        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, "1076", data.ARM_DT);
+        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, User.getInstance().getOrgnztId(), data.ARM_DT);
         System.out.println(query);
 
         try(Connection con = client.open())

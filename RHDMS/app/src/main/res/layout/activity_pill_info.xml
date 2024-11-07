@@ -5,6 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/pm_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:fontFamily="@font/nanumsquarer"
+        android:text="@string/text_bs_management"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline1"
         android:layout_width="wrap_content"
@@ -76,19 +89,6 @@
         app:layout_constraintGuide_percent="0.42" />
 
     <!--    기존 이전기간 이동 버튼-->
-
-    <TextView
-        android:id="@+id/pm_textView"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="@font/nanumsquarer"
-        android:text="@string/label_pill_management"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
-        app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
 
     <Button
         android:id="@+id/back"

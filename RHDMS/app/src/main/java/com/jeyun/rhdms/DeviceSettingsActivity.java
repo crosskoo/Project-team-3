@@ -11,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
+import com.jeyun.rhdms.databinding.ActivityDeviceSettingsBinding;
+
 import org.json.JSONObject;
 
 import java.io.OutputStream;
@@ -72,6 +74,10 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         volumeGroup = findViewById(R.id.volume_group);
 
 
+
+        // 뒤로가기 버튼
+        Button backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(v -> finish());
         // Save button logic
         // Save button logic
         Button saveButton = findViewById(R.id.save_button);
