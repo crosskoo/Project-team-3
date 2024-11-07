@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.VIBRATE" /> <!-- BLUETOOTH PERMISSION -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!--
  Needed only if your app communicates with already-paired Bluetooth
          devices.
@@ -91,7 +91,7 @@
             android:name=".BleActivity"
             android:theme="@style/AppTheme.MaterialActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".TestNewPillInfoActivity"></activity>
+        <activity android:name=".NewPillInfoActivity"></activity>
 
         <receiver android:name=".util.worker.AlarmReceiver" />
         <receiver android:name=".util.worker.CancelTodayAlarmReceiver" />

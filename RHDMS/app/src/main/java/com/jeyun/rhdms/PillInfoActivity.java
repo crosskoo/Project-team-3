@@ -1,5 +1,6 @@
 package com.jeyun.rhdms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class PillInfoActivity extends AppCompatActivity {
@@ -34,8 +34,8 @@ public class PillInfoActivity extends AppCompatActivity {
     protected CustomCalendar calendar = new MyCalendar();
     protected Executor executor = Executors.newSingleThreadExecutor();
 
-    protected Supplier<Fragment> supplier; // 자식 클래스마다 fragment가 다름.
-    protected String title; // 자식 클래스마다 title 값이 다름.
+    protected Supplier<Fragment> supplier;
+    protected String title = "복약 정보";
 
     protected void create()
     {
@@ -142,6 +142,12 @@ public class PillInfoActivity extends AppCompatActivity {
             loadData(tb.isChecked());
         });
         //< > 버튼의 삭제로 인한 일시적 주석 처리 */
+        binding.pillupdateEnter.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), NewPillInfoActivity.class);
+            startActivity(intent);
+            finish();
+        });
+        binding.back.setOnClickListener(v -> finish());
     }
 
     // 기본값으로는 '주'에 해당하는 데이터를 불러옴.

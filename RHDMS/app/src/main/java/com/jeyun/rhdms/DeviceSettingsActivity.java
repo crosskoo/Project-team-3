@@ -11,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.jeyun.rhdms.handler.entity.User;
 
+import com.jeyun.rhdms.databinding.ActivityDeviceSettingsBinding;
+
 import org.json.JSONObject;
 
 import java.io.OutputStream;
@@ -80,6 +82,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         String user_id= User.getInstance().getOrgnztId();
         pillboxId.setText(user_id);
 
+<<<<<<< HEAD
         // 뒤로가기 버튼
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> finish());
@@ -160,6 +163,14 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             }
         });
         //저장 버튼
+=======
+
+        // 뒤로가기 버튼
+        Button backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(v -> finish());
+        // Save button logic
+        // Save button logic
+>>>>>>> main
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -141,6 +141,8 @@ public class BloodPressureInfoActivity extends AppCompatActivity {
             calendar.increase(type);
             transferData(tb.isChecked());
         });
+        // 뒤로가기
+        binding.back.setOnClickListener(v -> finish());
     }
 
     private BloodPack loadBloodData(Boolean isWeek) // isWeek가 true이면 주간 혈압 데이터를, false이면 월간 혈압 데이터를 불러옴.
