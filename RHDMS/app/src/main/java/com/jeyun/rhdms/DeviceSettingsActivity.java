@@ -82,7 +82,6 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         String user_id= User.getInstance().getOrgnztId();
         pillboxId.setText(user_id);
 
-<<<<<<< HEAD
         // 뒤로가기 버튼
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> finish());
@@ -162,75 +161,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                         .show();
             }
         });
-        //저장 버튼
-=======
 
-        // 뒤로가기 버튼
-        Button backButton = findViewById(R.id.back);
-        backButton.setOnClickListener(v -> finish());
-        // Save button logic
-        // Save button logic
->>>>>>> main
-        Button saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    // 약상자 ID와 볼륨이 입력되었는지 확인
-                    if (pillboxId.getText().toString().trim().isEmpty()) {
-                        showAlert("오류", "약상자 ID를 입력하세요.");
-                        return;
-                    }
-
-                    int selectedVolumeId = volumeGroup.getCheckedRadioButtonId();
-                    if (selectedVolumeId == -1) { // 아무 볼륨도 선택되지 않은 경우
-                        showAlert("오류", "볼륨을 선택하세요.");
-                        return;
-                    }
-
-                    // settingnum 값에 따라 알람 개수를 확인
-                    int numOfAlarms = Integer.parseInt(settingnum.getText().toString());
-
-                    // settingnum이 3을 넘으면 오류 메시지 표시
-                    if (numOfAlarms > 3) {
-                        showAlert("오류", "알람 설정은 최대 3개까지만 가능합니다.");
-                        return;
-                    }
-
-                    // 첫 번째 알람의 시작 시간이 올바른지 검사
-                    if (numOfAlarms >= 1) {
-                        if (!isValidTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString())) {
-                            showAlert("오류", "첫 번째 알람의 시작 시간이 올바르지 않습니다.");
-                            return;
-                        }
-                    }
-
-                    // 두 번째 알람의 시작 시간이 올바른지 검사 (필요 시)
-                    if (numOfAlarms >= 2) {
-                        if (!isValidTime(alarmStartHour2nd.getText().toString(), alarmStartMinute2nd.getText().toString())) {
-                            showAlert("오류", "두 번째 알람의 시작 시간이 올바르지 않습니다.");
-                            return;
-                        }
-                    }
-
-                    // 세 번째 알람의 시작 시간이 올바른지 검사 (필요 시)
-                    if (numOfAlarms == 3) {
-                        if (!isValidTime(alarmStartHour3rd.getText().toString(), alarmStartMinute3rd.getText().toString())) {
-                            showAlert("오류", "세 번째 알람의 시작 시간이 올바르지 않습니다.");
-                            return;
-                        }
-                    }
-
-                    // JSON 객체 생성 및 설정 저장
-                    JSONObject settings = createSettingsJson();
-                    showSendSettingsPopup(settings);
-                    sendSettings(settings);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     // 종료 시간을 계산하는 함수
