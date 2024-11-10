@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class PillInfoActivity extends AppCompatActivity {
@@ -144,7 +143,7 @@ public class PillInfoActivity extends AppCompatActivity {
         });
         //< > 버튼의 삭제로 인한 일시적 주석 처리 */
         binding.pillupdateEnter.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), TestNewPillInfoActivity.class);
+            Intent intent = new Intent(getApplicationContext(), NewPillInfoActivity.class);
             startActivity(intent);
             finish();
         });

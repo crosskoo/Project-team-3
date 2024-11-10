@@ -1,9 +1,9 @@
 package com.jeyun.rhdms;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -11,31 +11,27 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jeyun.rhdms.bluetooth.NetworkHandler;
-import com.jeyun.rhdms.databinding.ActivityTestNewPillInfoBinding;
-import com.jeyun.rhdms.handler.entity.Pill;
+import com.jeyun.rhdms.databinding.ActivityNewPillInfoBinding;
+import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.factory.TimePickerDialogFactory;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class TestNewPillInfoActivity extends AppCompatActivity
+public class NewPillInfoActivity extends AppCompatActivity
 {
     private HashMap<String, Object> newPillInfoMap;
     private ArrayAdapter<String> dataAdapter; // 복약 상태 리스트
-    private ActivityTestNewPillInfoBinding binding;
+    private ActivityNewPillInfoBinding binding;
     private NetworkHandler networkHandler;
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -43,7 +39,7 @@ public class TestNewPillInfoActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityTestNewPillInfoBinding.inflate(getLayoutInflater()); // 뷰 바인딩
+        binding = ActivityNewPillInfoBinding.inflate(getLayoutInflater()); // 뷰 바인딩
         setContentView(binding.getRoot());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -126,6 +122,8 @@ public class TestNewPillInfoActivity extends AppCompatActivity
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PillInfoActivity.class);
+            startActivity(intent);
             finish();
         });
 
@@ -157,8 +155,27 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         }
         else
         {
-            newPillInfoMap.put("alarmDate", takenDate.replaceAll("[년월일\\s]", ""));
-            newPillInfoMap.put("closeDate",takenDate.replaceAll("[년월일\\s]", ""));
+            String year, month, day;
+            String[] dateParts = takenDate.replaceAll("[^0-9]", " ").trim().split("\\s+");
+
+            year = dateParts[0];
+
+            if (dateParts[1].length() == 1)
+                month = "0" + dateParts[1];
+            else
+                month = dateParts[1];
+
+            if (dateParts[2].length() == 1)
+                day = "0" + dateParts[2];
+            else
+                day = dateParts[2];
+
+            takenDate = year + month + day;
+            Log.d("check date", "year : " + year + ", month : " + month + ", day : " + day);
+
+
+            newPillInfoMap.put("alarmDate", takenDate);
+            newPillInfoMap.put("closeDate",takenDate);
             newPillInfoMap.put("state", takenState);
             newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
             newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
@@ -175,7 +192,7 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         {
             try
             {
-                URL url = new URL("http://211.229.106.53:8080/restful/pillbox-colct");
+                URL url = new URL("http://211.229.106.53:8080/restful/pillbox-colct.json");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("POST");
@@ -211,13 +228,8 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         String defaultCloseTime = "1150"; // 임의의 값
         String defaultBeforeWeight = "151"; // 임의의 값
         String defaultNowWeight = "80"; // 임의의 값
-        String defaultSubjectId = "1076"; // 임의의 값
         String defaultPaper = "71"; // 임의의 값
-
-        // 서버 내에서 처리할 값 (테스트 용)
-        String defaultsID = "1076"; // 임의의 값
-        String defaultauthYN = "Y"; // 임의의 값
-        String defaultfgpId = "0000"; // 임의의 값
+        String defaultSubjectId = User.getInstance().getOrgnztId();
 
         newPillInfoMap.put("deviceId", defaultDeviceId);
         newPillInfoMap.put("openTime", defaultOpenTime);
@@ -226,10 +238,5 @@ public class TestNewPillInfoActivity extends AppCompatActivity
         newPillInfoMap.put("nowWeight", defaultNowWeight);
         newPillInfoMap.put("subject_id", defaultSubjectId);
         newPillInfoMap.put("paper", defaultPaper);
-
-        // 테스트 용
-        // newPillInfoMap.put("sID", defaultsID);
-        // newPillInfoMap.put("authYN", defaultauthYN);
-        // newPillInfoMap.put("fgpId", defaultfgpId);
     }
 }
