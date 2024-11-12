@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.jeyun.rhdms.databinding.ActivityMainBinding;
+import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.handler.UserHandler;
 import com.jeyun.rhdms.util.factory.AlertFactory;
@@ -64,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         initEvent();
 
         // sharedPreference에서 orgnztId 불러오기
-        SharedPreferences sharedPref = getSharedPreferences("UserSesion", MODE_PRIVATE);
-        String savedOrgnztId = sharedPref.getString("orgnztId", null);
+        SharedPreferenceHandler handler = new SharedPreferenceHandler(this);
+        String savedOrgnztId = handler.getSavedOrgnztId();
+
+        Log.d("ksd", "savedOrgnztId : " + savedOrgnztId); // 테스트 용
 
         if (savedOrgnztId != null) // 값이 있다면 로그인 생략하고 바로 메뉴 화면으로 이동
         {
@@ -98,12 +101,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("assert login", "로그인 성공"); // 테스트 용
                 Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
 
+                SharedPreferenceHandler handler = new SharedPreferenceHandler(this);
+                handler.saveOrgnztId(orgnztId.get()); // orgnztId 저장;
                 User.getInstance().setOrgnztId(orgnztId.get()); // orgnztId 저장하는 싱글톤 클래스 생성
-
-                SharedPreferences sharedPref = getSharedPreferences("UserSesion", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("orgnztId", User.getInstance().getOrgnztId());
-                editor.apply(); // orgnztId를 sharedPref에 저장 (로그 아웃하지 않고 앱 종료 후 재실행시 유저 정보를 그대로 유지하기 위함)
 
                 Log.d("check orgnztId", User.getInstance().getOrgnztId()); // 테스트 용
 
