@@ -1,6 +1,9 @@
 package com.jeyun.rhdms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
 import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
 import com.jeyun.rhdms.handler.BloodHandler;
+import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.Blood;
 import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.SettingsManager;
@@ -83,12 +87,42 @@ public class MenuActivity extends AppCompatActivity {
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 신규 혈당 페이지 (테스트)
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
         binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
+        binding.buttonLogout.setOnClickListener(v -> Logout()); // 로그아웃
     }
 
     private <T> void switchActivity(T cls)
     {
         Intent intent = new Intent(getApplicationContext(), (Class<?>) cls);
         startActivity(intent);
+    }
+
+    private void Logout()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("로그아웃")
+                .setMessage("정말로 로그아웃 하시겠습니까?")
+                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // 저장된 orgnztId 데이터 삭제
+                        SharedPreferenceHandler handler = new SharedPreferenceHandler(getApplicationContext());
+                        handler.clearAll();
+                        User.getInstance().setOrgnztId(null);
+
+                        // 로그아웃이 정상적으로 되었는지 확인
+                        Log.d("ksd", "orgnztId : " + handler.getSavedOrgnztId());
+                        Log.d("ksd", "User orgnztId : " + User.getInstance().getOrgnztId()); // 테스트 용
+
+                        // 다시 로그인 화면으로 이동
+                        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("아니요", null)
+                .show();
     }
 
     // 최근 혈당과 혈압 정보 불러오기
