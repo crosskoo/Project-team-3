@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -61,6 +62,19 @@ public class MainActivity extends AppCompatActivity {
         checkPermission(); // 권한 승인 여부 확인
 
         initEvent();
+
+        // sharedPreference에서 orgnztId 불러오기
+        SharedPreferences sharedPref = getSharedPreferences("UserSesion", MODE_PRIVATE);
+        String savedOrgnztId = sharedPref.getString("orgnztId", null);
+
+        if (savedOrgnztId != null) // 값이 있다면 로그인 생략하고 바로 메뉴 화면으로 이동
+        {
+            User.getInstance().setOrgnztId(savedOrgnztId);
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        // 값이 없다면 기존 절차대로 로그인 수행해야 함.
     }
 
     private void initEvent()
@@ -83,7 +97,14 @@ public class MainActivity extends AppCompatActivity {
                 // 로그인 성공
                 Log.d("assert login", "로그인 성공"); // 테스트 용
                 Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
+
                 User.getInstance().setOrgnztId(orgnztId.get()); // orgnztId 저장하는 싱글톤 클래스 생성
+
+                SharedPreferences sharedPref = getSharedPreferences("UserSesion", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("orgnztId", User.getInstance().getOrgnztId());
+                editor.apply(); // orgnztId를 sharedPref에 저장 (로그 아웃하지 않고 앱 종료 후 재실행시 유저 정보를 그대로 유지하기 위함)
+
                 Log.d("check orgnztId", User.getInstance().getOrgnztId()); // 테스트 용
 
                 // 메인 화면으로 이동
