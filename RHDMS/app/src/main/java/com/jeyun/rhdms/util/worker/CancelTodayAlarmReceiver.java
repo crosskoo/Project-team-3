@@ -1,5 +1,6 @@
 package com.jeyun.rhdms.util.worker;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,12 @@ public class CancelTodayAlarmReceiver extends BroadcastReceiver {
         SettingsManager settingsManager = SettingsManager.getInstance(context);
 
         settingsManager.setDisabledAlarmDate(LocalDate.now());
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancel(1); // 알림 ID를 일치시켜야 함
+        }
+
         Log.d("CancelTodayAlarmReceiver", "오늘 알람 비활성화");
     }
 }

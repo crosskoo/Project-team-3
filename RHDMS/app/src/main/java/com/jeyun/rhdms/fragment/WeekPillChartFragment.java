@@ -109,7 +109,6 @@ public class WeekPillChartFragment extends Fragment {
                 String h = time.substring(0, 2);
                 String m = time.substring(2, 4);
                 dataTime[i] = Integer.parseInt(h) * 60 + Integer.parseInt(m);
-                Log.v("!$!@#$", ""+dataTime[i]);
                 if(maxTime < dataTime[i]) maxTime = dataTime[i];
                 if(dataTime[i] < minTime) minTime = dataTime[i];
             }
