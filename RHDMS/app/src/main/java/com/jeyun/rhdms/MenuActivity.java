@@ -79,6 +79,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
+        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
         binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
         //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
         // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
@@ -242,71 +243,76 @@ public class MenuActivity extends AppCompatActivity {
         return latestDate;
     }
 
-    //최근 복약일로부터 30일 분석.
+
     private void updateAdherenceUI() {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-                PillHandler pillHandler = new PillHandler();
-                List<Pill> pills = new ArrayList<>();
+            PillHandler pillHandler = new PillHandler();
+            List<Pill> pills = new ArrayList<>();
 
-                // Collect data for the past 12 months
-                for (int i = 0; i < 12; i++) {
-                    LocalDate date = LocalDate.now().minusMonths(i);
-                    List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
-                    pills.addAll(monthlyPills);
+            // Collect data for the past 12 months
+            for (int i = 0; i < 12; i++) {
+                LocalDate date = LocalDate.now().minusMonths(i);
+                List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
+                pills.addAll(monthlyPills);
+            }
 
-                }
+            LocalDate latestDate = getLatestMedicationDate(pills);
+            runOnUiThread(() -> {
+                if (latestDate != null) {
+                    LocalDate startDate = latestDate.minusDays(30);
 
-                LocalDate latestDate = getLatestMedicationDate(pills);
+                    // Filter pills within the last 30 days
+                    List<Pill> filteredPills = pills.stream()
+                            .filter(pill -> {
+                                LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
+                                return !pillDate.isBefore(startDate) && !pillDate.isAfter(latestDate);
+                            })
+                            .collect(Collectors.toList());
 
-                runOnUiThread(() -> {
-                    if (latestDate != null) {
+                    // Calculate adherence with delayed pills counted as 0.5
+                    double daysAdhered = filteredPills.stream()
+                            .mapToDouble(pill -> {
+                                if ("TAKEN".equals(pill.TAKEN_ST)) {
+                                    return 1.0;
+                                } else if ("DELAYTAKEN".equals(pill.TAKEN_ST)) {
+                                    return 0.5;
+                                } else {
+                                    return 0.0;
+                                }
+                            })
+                            .sum();
 
-                        LocalDate startDate = latestDate.minusDays(30);
-                        List<Pill> filteredPills = pills.stream()
-                                .filter(pill -> {
-                                    LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
-                                    return !pillDate.isBefore(startDate) && !pillDate.isAfter(latestDate);
-                                })
-                                .collect(Collectors.toList());
+                    double adherenceRate = (daysAdhered / 30) * 100;
 
-
-
-                        int daysAdhered = (int) filteredPills.stream()
-                                .filter(pill -> "TAKEN".equals(pill.TAKEN_ST))
-                                .count();
-
-                        double adherenceRate = ((double) daysAdhered / 30) * 100;
-                        String adherenceMessage;
-                        int imageResId;
-
-
-                        if (adherenceRate >= 80) {
-                            adherenceMessage = "양호";
-                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
-                            imageResId = R.drawable.good;
-                        } else if (adherenceRate >= 50) {
-                            adherenceMessage = "보통";
-                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
-                            imageResId = R.drawable.common;
-                        } else {
-                            adherenceMessage = "부족";
-                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
-                            imageResId = R.drawable.bad;
-                        }
-
-                        binding.adherenceTextView.setText(adherenceMessage);
-                        //binding.adherenceImageView.setImageResource(imageResId);
-                        binding.adherenceImageView.setVisibility(View.VISIBLE);
-
-                        String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                        binding.lastTakenTextView.setText(lastTakenMessage);
+                    // Update UI based on adherence rate
+                    String adherenceMessage;
+                    int imageResId;
+                    if (adherenceRate >= 80) {
+                        adherenceMessage = "양호";
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
+                        imageResId = R.drawable.good;
+                    } else if (adherenceRate >= 50) {
+                        adherenceMessage = "보통";
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
+                        imageResId = R.drawable.common;
                     } else {
-                        binding.adherenceTextView.setText("데이터 없음");
-                        binding.lastTakenTextView.setText("최근 복용 : 없음.");
-                        binding.adherenceImageView.setVisibility(View.GONE);
+                        adherenceMessage = "부족";
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
+                        imageResId = R.drawable.bad;
                     }
-                });
+
+                    binding.adherenceTextView.setText(adherenceMessage);
+                    binding.adherenceImageView.setVisibility(View.VISIBLE);
+
+                    String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    binding.lastTakenTextView.setText(lastTakenMessage);
+                } else {
+                    binding.adherenceTextView.setText("데이터 없음");
+                    binding.lastTakenTextView.setText("최근 복용 : 없음.");
+                    binding.adherenceImageView.setVisibility(View.GONE);
+                }
+            });
             // Get the latest medication date and time
             LocalDateTime latestDateTime = getLatestMedicationDateTime(pills);
 
@@ -318,7 +324,6 @@ public class MenuActivity extends AppCompatActivity {
                     binding.buttonPressureInfo.setText("오늘의 복약시간: 없음.");
                 }
             });
-
         });
     }
 }
