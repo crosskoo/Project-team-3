@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/recent_medication_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="최근 복약 날짜: 없음"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Title for the Statistic Activity -->
+    <TextView
+        android:id="@+id/statistic_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주간 통계"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- TextView for displaying the weekly pill average -->
+    <TextView
+        android:id="@+id/pill_avg_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주간 복약률: "
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- TextView for displaying the weekly blood sugar average -->
+    <TextView
+        android:id="@+id/sugar_avg_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주간 혈당: "
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- TextView for displaying the weekly blood pressure average -->
+    <TextView
+        android:id="@+id/pressure_avg_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주간 혈압: "
+        android:textSize="18sp"/>
+</LinearLayout>
