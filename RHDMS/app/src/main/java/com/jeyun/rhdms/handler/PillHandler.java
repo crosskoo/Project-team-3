@@ -1,6 +1,8 @@
 package com.jeyun.rhdms.handler;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.User;
 
@@ -14,9 +16,18 @@ import java.util.Optional;
 
 public class PillHandler extends DataHandler<Pill, LocalDate>
 {
+    private String orgnztId;
+
     public PillHandler()
     {
         super();
+        orgnztId = User.getInstance().getOrgnztId();
+    }
+
+    public PillHandler(Context context){
+        super();
+        SharedPreferenceHandler handler = new SharedPreferenceHandler(context);
+        orgnztId = handler.getSavedOrgnztId();
     }
 
     public List<Pill> getDataInWeek(LocalDate today)
@@ -33,9 +44,8 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE CONVERT(varchar, ARM_DT, 112) BETWEEN %s AND %s " +
                         "AND SUBJECT_ID = %s;";
 
-
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
+        String query = String.format(query_format, startDate, endDate, orgnztId);
 
         try(Connection con = client.open())
         {
@@ -64,7 +74,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
+        String query = String.format(query_format, startDate, endDate, orgnztId);
 
         try(Connection con = client.open())
         {
@@ -94,7 +104,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "AND SUBJECT_ID = %s;";
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
+        String query = String.format(query_format, startDate, endDate, orgnztId);
 
         try(Connection con = client.open())
         {
@@ -117,7 +127,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE ARM_DT = '%s' " +
                         "AND SUBJECT_ID = '%s';";
 
-        String query = String.format(query_format, id, User.getInstance().getOrgnztId());
+        String query = String.format(query_format, id, orgnztId);
 
         try(Connection con = client.open())
         {
@@ -141,7 +151,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE SUBJECT_ID = '%s' " +
                         "AND ARM_DT = '%s'";
 
-        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, User.getInstance().getOrgnztId(), data.ARM_DT);
+        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, orgnztId, data.ARM_DT);
         System.out.println(query);
 
         try(Connection con = client.open())

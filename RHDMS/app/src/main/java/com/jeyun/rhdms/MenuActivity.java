@@ -28,8 +28,6 @@ import com.jeyun.rhdms.util.worker.Inspector;
 import com.jeyun.rhdms.util.worker.MyWorkManager;
 
 import java.time.LocalDate;
-import com.jeyun.rhdms.util.worker.Inspector;
-import com.jeyun.rhdms.util.worker.MyWorkManager;
 
 import com.jeyun.rhdms.handler.PillHandler;
 import com.jeyun.rhdms.handler.entity.Pill;
@@ -65,7 +63,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(view);
         initEvents();
 
-
+        //알림 예약 작업 등록
         MyWorkManager.schedulePeriodicWork(Inspector.class, getApplicationContext());
         //test
         SettingsManager.getInstance(getApplicationContext()).setDisabledAlarmDate(LocalDate.of(2000, 10, 1));
@@ -79,7 +77,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
-        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
+        //binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
         binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
         //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
         // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
@@ -88,7 +86,11 @@ public class MenuActivity extends AppCompatActivity {
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 신규 혈당 페이지 (테스트)
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
         binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
-        binding.buttonLogout.setOnClickListener(v -> Logout()); // 로그아웃
+        binding.buttonLogout.setOnClickListener(v -> {
+            Inspector.cancelScheduledNotification(getApplicationContext(), LocalDate.now());
+            MyWorkManager.cancelPeriodicWork(getApplicationContext());
+            Logout();
+        }); // 로그아웃
     }
 
     private <T> void switchActivity(T cls)
