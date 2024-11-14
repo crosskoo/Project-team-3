@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.jeyun.rhdms.databinding.ActivityMainBinding;
+import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.handler.UserHandler;
 import com.jeyun.rhdms.util.factory.AlertFactory;
@@ -61,6 +63,21 @@ public class MainActivity extends AppCompatActivity {
         checkPermission(); // 권한 승인 여부 확인
 
         initEvent();
+
+        // sharedPreference에서 orgnztId 불러오기
+        SharedPreferenceHandler handler = new SharedPreferenceHandler(this);
+        String savedOrgnztId = handler.getSavedOrgnztId();
+
+        Log.d("ksd", "savedOrgnztId : " + savedOrgnztId); // 테스트 용
+
+        if (savedOrgnztId != null) // 값이 있다면 로그인 생략하고 바로 메뉴 화면으로 이동
+        {
+            User.getInstance().setOrgnztId(savedOrgnztId);
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        // 값이 없다면 기존 절차대로 로그인 수행해야 함.
     }
 
     private void initEvent()
@@ -83,7 +100,11 @@ public class MainActivity extends AppCompatActivity {
                 // 로그인 성공
                 Log.d("assert login", "로그인 성공"); // 테스트 용
                 Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
+
+                SharedPreferenceHandler handler = new SharedPreferenceHandler(this);
+                handler.saveOrgnztId(orgnztId.get()); // orgnztId 저장;
                 User.getInstance().setOrgnztId(orgnztId.get()); // orgnztId 저장하는 싱글톤 클래스 생성
+
                 Log.d("check orgnztId", User.getInstance().getOrgnztId()); // 테스트 용
 
                 // 메인 화면으로 이동

@@ -1,6 +1,9 @@
 package com.jeyun.rhdms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
 import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
 import com.jeyun.rhdms.handler.BloodHandler;
+import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.Blood;
 import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.SettingsManager;
@@ -75,6 +79,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
+        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
         binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
         //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
         // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
@@ -83,12 +88,42 @@ public class MenuActivity extends AppCompatActivity {
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 신규 혈당 페이지 (테스트)
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
         binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
+        binding.buttonLogout.setOnClickListener(v -> Logout()); // 로그아웃
     }
 
     private <T> void switchActivity(T cls)
     {
         Intent intent = new Intent(getApplicationContext(), (Class<?>) cls);
         startActivity(intent);
+    }
+
+    private void Logout()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("로그아웃")
+                .setMessage("정말로 로그아웃 하시겠습니까?")
+                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // 저장된 orgnztId 데이터 삭제
+                        SharedPreferenceHandler handler = new SharedPreferenceHandler(getApplicationContext());
+                        handler.clearAll();
+                        User.getInstance().setOrgnztId(null);
+
+                        // 로그아웃이 정상적으로 되었는지 확인
+                        Log.d("ksd", "orgnztId : " + handler.getSavedOrgnztId());
+                        Log.d("ksd", "User orgnztId : " + User.getInstance().getOrgnztId()); // 테스트 용
+
+                        // 다시 로그인 화면으로 이동
+                        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("아니요", null)
+                .show();
     }
 
     // 최근 혈당과 혈압 정보 불러오기
@@ -208,71 +243,76 @@ public class MenuActivity extends AppCompatActivity {
         return latestDate;
     }
 
-    //최근 복약일로부터 30일 분석.
+
     private void updateAdherenceUI() {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-                PillHandler pillHandler = new PillHandler();
-                List<Pill> pills = new ArrayList<>();
+            PillHandler pillHandler = new PillHandler();
+            List<Pill> pills = new ArrayList<>();
 
-                // Collect data for the past 12 months
-                for (int i = 0; i < 12; i++) {
-                    LocalDate date = LocalDate.now().minusMonths(i);
-                    List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
-                    pills.addAll(monthlyPills);
+            // Collect data for the past 12 months
+            for (int i = 0; i < 12; i++) {
+                LocalDate date = LocalDate.now().minusMonths(i);
+                List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
+                pills.addAll(monthlyPills);
+            }
 
-                }
+            LocalDate latestDate = getLatestMedicationDate(pills);
+            runOnUiThread(() -> {
+                if (latestDate != null) {
+                    LocalDate startDate = latestDate.minusDays(30);
 
-                LocalDate latestDate = getLatestMedicationDate(pills);
+                    // Filter pills within the last 30 days
+                    List<Pill> filteredPills = pills.stream()
+                            .filter(pill -> {
+                                LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
+                                return !pillDate.isBefore(startDate) && !pillDate.isAfter(latestDate);
+                            })
+                            .collect(Collectors.toList());
 
-                runOnUiThread(() -> {
-                    if (latestDate != null) {
+                    // Calculate adherence with delayed pills counted as 0.5
+                    double daysAdhered = filteredPills.stream()
+                            .mapToDouble(pill -> {
+                                if ("TAKEN".equals(pill.TAKEN_ST)) {
+                                    return 1.0;
+                                } else if ("DELAYTAKEN".equals(pill.TAKEN_ST)) {
+                                    return 0.5;
+                                } else {
+                                    return 0.0;
+                                }
+                            })
+                            .sum();
 
-                        LocalDate startDate = latestDate.minusDays(30);
-                        List<Pill> filteredPills = pills.stream()
-                                .filter(pill -> {
-                                    LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
-                                    return !pillDate.isBefore(startDate) && !pillDate.isAfter(latestDate);
-                                })
-                                .collect(Collectors.toList());
+                    double adherenceRate = (daysAdhered / 30) * 100;
 
-
-
-                        int daysAdhered = (int) filteredPills.stream()
-                                .filter(pill -> "TAKEN".equals(pill.TAKEN_ST))
-                                .count();
-
-                        double adherenceRate = ((double) daysAdhered / 30) * 100;
-                        String adherenceMessage;
-                        int imageResId;
-
-
-                        if (adherenceRate >= 80) {
-                            adherenceMessage = "양호";
-                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
-                            imageResId = R.drawable.good;
-                        } else if (adherenceRate >= 50) {
-                            adherenceMessage = "보통";
-                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
-                            imageResId = R.drawable.common;
-                        } else {
-                            adherenceMessage = "부족";
-                            binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
-                            imageResId = R.drawable.bad;
-                        }
-
-                        binding.adherenceTextView.setText(adherenceMessage);
-                        //binding.adherenceImageView.setImageResource(imageResId);
-                        binding.adherenceImageView.setVisibility(View.VISIBLE);
-
-                        String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                        binding.lastTakenTextView.setText(lastTakenMessage);
+                    // Update UI based on adherence rate
+                    String adherenceMessage;
+                    int imageResId;
+                    if (adherenceRate >= 80) {
+                        adherenceMessage = "양호";
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
+                        imageResId = R.drawable.good;
+                    } else if (adherenceRate >= 50) {
+                        adherenceMessage = "보통";
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
+                        imageResId = R.drawable.common;
                     } else {
-                        binding.adherenceTextView.setText("데이터 없음");
-                        binding.lastTakenTextView.setText("최근 복용 : 없음.");
-                        binding.adherenceImageView.setVisibility(View.GONE);
+                        adherenceMessage = "부족";
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
+                        imageResId = R.drawable.bad;
                     }
-                });
+
+                    binding.adherenceTextView.setText(adherenceMessage);
+                    binding.adherenceImageView.setVisibility(View.VISIBLE);
+
+                    String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    binding.lastTakenTextView.setText(lastTakenMessage);
+                } else {
+                    binding.adherenceTextView.setText("데이터 없음");
+                    binding.lastTakenTextView.setText("최근 복용 : 없음.");
+                    binding.adherenceImageView.setVisibility(View.GONE);
+                }
+            });
             // Get the latest medication date and time
             LocalDateTime latestDateTime = getLatestMedicationDateTime(pills);
 
@@ -284,7 +324,6 @@ public class MenuActivity extends AppCompatActivity {
                     binding.buttonPressureInfo.setText("오늘의 복약시간: 없음.");
                 }
             });
-
         });
     }
 }

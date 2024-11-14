@@ -52,6 +52,9 @@
 
         </activity>
         <activity
+            android:name=".StatisticActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".DeviceSettingsActivity"
             android:screenOrientation="portrait"></activity>
         <activity
