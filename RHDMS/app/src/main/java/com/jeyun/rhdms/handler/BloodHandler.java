@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.jeyun.rhdms.handler.entity.Blood;
 import com.jeyun.rhdms.handler.entity.Pill;
+import com.jeyun.rhdms.handler.entity.User;
 
 import org.sql2o.Connection;
 
@@ -46,7 +47,7 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
                         "AND SUBJECTID = %s;";
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, type, startDate, endDate, "1076");
+        String query = String.format(query_format, type, startDate, endDate, User.getInstance().getOrgnztId());
         System.out.println(query);
 
         try(Connection con = client.open())
@@ -78,7 +79,7 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
                         "AND CONVERT(varchar, mesure_de, 112) BETWEEN %s AND %s " +
                         "AND SUBJECTID = %s;";
 
-        String query = String.format(query_format, type, startDate, endDate, "1076");
+        String query = String.format(query_format, type, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -88,6 +89,31 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
 
         catch (Exception e)
         {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    //날짜를 기준으로 7일 전 데이터를 가져오는 함수.
+    public List<Blood> getDataIn7days(LocalDate today) {
+
+        LocalDate sevenDaysAgo = today.minusDays(6);
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String startDate = sevenDaysAgo.format(format);
+        String endDate = today.format(format);
+
+        String query_format =
+                "SELECT * FROM itf_lbdy_mesure_colct " +
+                        "WHERE mesure_tp = %s " +
+                        "AND CONVERT(varchar, mesure_de, 112) BETWEEN %s AND %s " +
+                        "AND SUBJECTID = %s;";
+
+        String query = String.format(query_format, type, startDate, endDate, User.getInstance().getOrgnztId());
+
+        try (Connection con = client.open()) {
+            return con.createQuery(query).executeAndFetch(Blood.class);
+        } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
         }

@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,8 +51,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-/* This Activity is imported Code, given by Jeyun */
 public class BleActivity extends AppCompatActivity {
+
 
     private TextView notifyText;
     private TextView measurementValue;
@@ -104,6 +105,7 @@ public class BleActivity extends AppCompatActivity {
         removeData          = binding.btnRemoveData;
         exitApp             = binding.btnExit;
 
+        Log.v("fdfsfd", "SDfsdf2244ds");
         initRegister();
         initUI();
         initEvents();
@@ -149,6 +151,7 @@ public class BleActivity extends AppCompatActivity {
 
     private void initEvents()
     {
+        binding.back2.setOnClickListener(v -> finish());
         removeData.setOnClickListener(view ->
         {
             AlertDialog dialog = factory.createPopupYN("최근 데이터 삭제", "정말로 삭제하시겠습니까?",

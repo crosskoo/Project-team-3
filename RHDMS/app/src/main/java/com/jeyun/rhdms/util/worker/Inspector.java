@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -45,6 +46,11 @@ public class Inspector extends Worker
     @Override
     public Result doWork()
     {
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()){
+            return Result.success();
+        }
+
         //test 현재시간 출력
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -74,7 +80,7 @@ public class Inspector extends Worker
 
     private void setAlarm(LocalDate date, Context context){
         //오늘 Pill 객체 가져오기
-        DataHandler<Pill, LocalDate> dataHandler = new PillHandler();
+        DataHandler<Pill, LocalDate> dataHandler = new PillHandler(context);
         Optional<Pill> optionalPill = dataHandler.getData(PillHandler.dateToString(date));
 
         //intent세팅
@@ -120,6 +126,22 @@ public class Inspector extends Worker
 
             Log.d("Inspector", "새 알람이 설정되었습니다: " + calendar.getTime() + " 횟수:" + repeatCount + " 주기: " + repeatDelay);
         });
+    }
+
+    // 알람 예약 취소 함수
+    public static void cancelScheduledNotification(Context context, LocalDate date){
+        int dateAsNumber = Integer.parseInt(date.format(DateTimeFormatter.BASIC_ISO_DATE));
+        PendingIntent[] pendingIntents = new PendingIntent[10];
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+
+        for (int i = 0; i < 10; i++) {
+            int requestCode = dateAsNumber*10 + i;
+            pendingIntents[i] = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            alarmManager.cancel(pendingIntents[i]);
+        }
+
+        Log.v("Inspector", "예약된 알림이 제거되었습니다.");
     }
 
     private int syncTime(int flag, int hour)
