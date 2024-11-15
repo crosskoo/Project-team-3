@@ -1,8 +1,6 @@
 package com.jeyun.rhdms.handler;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.User;
 
@@ -16,18 +14,9 @@ import java.util.Optional;
 
 public class PillHandler extends DataHandler<Pill, LocalDate>
 {
-    private String orgnztId;
-
     public PillHandler()
     {
         super();
-        orgnztId = User.getInstance().getOrgnztId();
-    }
-
-    public PillHandler(Context context){
-        super();
-        SharedPreferenceHandler handler = new SharedPreferenceHandler(context);
-        orgnztId = handler.getSavedOrgnztId();
     }
 
     public List<Pill> getDataInWeek(LocalDate today)
@@ -44,8 +33,9 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE CONVERT(varchar, ARM_DT, 112) BETWEEN %s AND %s " +
                         "AND SUBJECT_ID = %s;";
 
+
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, orgnztId);
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -74,7 +64,36 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, orgnztId);
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
+
+        try(Connection con = client.open())
+        {
+            return con.createQuery(query)
+                    .executeAndFetch(Pill.class);
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // 날짜로부터 이전으로 30일의 복약 데이터 가져오는 함수
+    public List<Pill> getDataIn30days(LocalDate today)
+    {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String startDate = today.minusDays(29).format(format);
+        String endDate = today.format(format);
+
+        String query_format =
+                "SELECT * FROM tb_drug " +
+                        "WHERE CONVERT(varchar, ARM_DT, 112) BETWEEN %s AND %s " +
+                        "AND SUBJECT_ID = %s;";
+
+
+        @SuppressLint("DefaultLocale")
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -104,7 +123,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "AND SUBJECT_ID = %s;";
 
         @SuppressLint("DefaultLocale")
-        String query = String.format(query_format, startDate, endDate, orgnztId);
+        String query = String.format(query_format, startDate, endDate, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -127,7 +146,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE ARM_DT = '%s' " +
                         "AND SUBJECT_ID = '%s';";
 
-        String query = String.format(query_format, id, orgnztId);
+        String query = String.format(query_format, id, User.getInstance().getOrgnztId());
 
         try(Connection con = client.open())
         {
@@ -151,7 +170,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                         "WHERE SUBJECT_ID = '%s' " +
                         "AND ARM_DT = '%s'";
 
-        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, orgnztId, data.ARM_DT);
+        String query = String.format(query_format, data.TAKEN_ST, data.TAKEN_TM, User.getInstance().getOrgnztId(), data.ARM_DT);
         System.out.println(query);
 
         try(Connection con = client.open())
