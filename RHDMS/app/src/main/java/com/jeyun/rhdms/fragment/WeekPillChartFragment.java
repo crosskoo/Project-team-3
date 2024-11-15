@@ -61,8 +61,12 @@ public class WeekPillChartFragment extends Fragment {
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
+        // 오늘 이후의 데이터 표시안함
+        long displayCount = ChronoUnit.DAYS.between(calendar.timeNow, LocalDate.now()) + 7;
+        if(displayCount > 7) displayCount = 7;
+
         // 출력 데이터 세팅
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < displayCount; i++){
             for (int j = 0; j < dataset.size(); j++) {
                 long daysBetween = ChronoUnit.DAYS.between(calendar.timeNow, LocalDate.parse(dataset.get(j).ARM_DT, formatter));
                 if (daysBetween == i-6){
@@ -109,7 +113,6 @@ public class WeekPillChartFragment extends Fragment {
                 String h = time.substring(0, 2);
                 String m = time.substring(2, 4);
                 dataTime[i] = Integer.parseInt(h) * 60 + Integer.parseInt(m);
-                Log.v("!$!@#$", ""+dataTime[i]);
                 if(maxTime < dataTime[i]) maxTime = dataTime[i];
                 if(dataTime[i] < minTime) minTime = dataTime[i];
             }

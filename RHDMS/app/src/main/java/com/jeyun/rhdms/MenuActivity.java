@@ -79,16 +79,17 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
-        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
-        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
-        //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
-        // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
-        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 신규 혈압 페이지 (테스트)
-        // binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
-        binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 신규 혈당 페이지 (테스트)
-        binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
+        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class)); // 통계 페이지
+        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class)); // 복약 정보
+        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 혈압 페이지
+        binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 혈당 페이지
+        binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class)); // 실시간 측정
         binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
-        binding.buttonLogout.setOnClickListener(v -> Logout()); // 로그아웃
+        binding.buttonLogout.setOnClickListener(v -> {
+            Inspector.cancelScheduledNotification(getApplicationContext(), LocalDate.now());
+            MyWorkManager.cancelPeriodicWork(getApplicationContext());
+            Logout();
+        }); // 로그아웃
     }
 
     private <T> void switchActivity(T cls)
@@ -250,49 +251,59 @@ public class MenuActivity extends AppCompatActivity {
             PillHandler pillHandler = new PillHandler();
             List<Pill> pills = new ArrayList<>();
 
-            // Collect data for the past 12 months
-            for (int i = 0; i < 12; i++) {
+            // Collect data for the past 6 months
+            for (int i = 0; i < 6; i++) {
                 LocalDate date = LocalDate.now().minusMonths(i);
-                List<Pill> monthlyPills = pillHandler.getDataInMonth(date);
+                List<Pill> monthlyPills = pillHandler.getDataIn30days(date);
                 pills.addAll(monthlyPills);
             }
 
             LocalDate latestDate = getLatestMedicationDate(pills);
+
+            // 마지막 날짜로부터 30일 정보 받아오기.
+            List<Pill> filteredPills = pillHandler.getDataIn30days(latestDate);
+
             runOnUiThread(() -> {
                 if (latestDate != null) {
-                    LocalDate startDate = latestDate.minusDays(30);
 
-                    // Filter pills within the last 30 days
-                    List<Pill> filteredPills = pills.stream()
-                            .filter(pill -> {
-                                LocalDate pillDate = LocalDate.parse(pill.ARM_DT, DateTimeFormatter.ofPattern("yyyyMMdd"));
-                                return !pillDate.isBefore(startDate) && !pillDate.isAfter(latestDate);
-                            })
-                            .collect(Collectors.toList());
 
-                    // Calculate adherence with delayed pills counted as 0.5
-                    double daysAdhered = filteredPills.stream()
-                            .mapToDouble(pill -> {
-                                if ("TAKEN".equals(pill.TAKEN_ST)) {
-                                    return 1.0;
-                                } else if ("DELAYTAKEN".equals(pill.TAKEN_ST)) {
-                                    return 0.5;
-                                } else {
-                                    return 0.0;
-                                }
-                            })
-                            .sum();
+                    // 계산
+                    double totalScore = 0;
 
-                    double adherenceRate = (daysAdhered / 30) * 100;
+                    for (Pill pill : filteredPills) {
+                        switch (pill.TAKEN_ST) {
+                            case "TAKEN":
+                                totalScore += 1;
+                                break;
+                            case "OUTTAKEN":
+                                totalScore += 1;
+                                break;
+                            case "DELAYTAKEN":
+                                totalScore += 0.5;
+                                break;
+                            case "OVERTAKEN":
+                                totalScore += 0.5;
+                                break;
+                            case "ERRTAKEN":
+                                totalScore += 0.1;
+                                break;
+                            case "UNTAKEN":
+                                totalScore += 0.1;
+                                break;
+                            default:
+                                totalScore += 0;
+                                break;
+                        }
+                    }
 
-                    // Update UI based on adherence rate
+                    // UI 업데이트
                     String adherenceMessage;
                     int imageResId;
-                    if (adherenceRate >= 80) {
+                    if (totalScore >= 80) {
                         adherenceMessage = "양호";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
                         imageResId = R.drawable.good;
-                    } else if (adherenceRate >= 50) {
+                    } else if (totalScore >= 50) {
                         adherenceMessage = "보통";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
                         imageResId = R.drawable.common;
