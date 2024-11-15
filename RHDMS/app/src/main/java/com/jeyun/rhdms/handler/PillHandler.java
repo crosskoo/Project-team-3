@@ -1,6 +1,8 @@
 package com.jeyun.rhdms.handler;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.User;
 
@@ -14,9 +16,19 @@ import java.util.Optional;
 
 public class PillHandler extends DataHandler<Pill, LocalDate>
 {
+    private String orgnztId;
+
     public PillHandler()
     {
         super();
+    }
+
+    // AlarmReceiver에서 사용하는 PillHandler 생성자
+    public PillHandler(Context context)
+    {
+        super();
+        SharedPreferenceHandler handler = new SharedPreferenceHandler(context);
+        orgnztId = handler.getSavedOrgnztId();
     }
 
     public List<Pill> getDataInWeek(LocalDate today)
