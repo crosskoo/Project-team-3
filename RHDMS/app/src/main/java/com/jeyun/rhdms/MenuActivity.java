@@ -79,16 +79,17 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
-        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
-        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
-        //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
-        // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
-        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 신규 혈압 페이지 (테스트)
-        // binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
-        binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 신규 혈당 페이지 (테스트)
-        binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
+        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class)); // 통계 페이지
+        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class)); // 복약 정보
+        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 혈압 페이지
+        binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 혈당 페이지
+        binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class)); // 실시간 측정
         binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
-        binding.buttonLogout.setOnClickListener(v -> Logout()); // 로그아웃
+        binding.buttonLogout.setOnClickListener(v -> {
+            Inspector.cancelScheduledNotification(getApplicationContext(), LocalDate.now());
+            MyWorkManager.cancelPeriodicWork(getApplicationContext());
+            Logout();
+        }); // 로그아웃
     }
 
     private <T> void switchActivity(T cls)
