@@ -161,7 +161,6 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                         .show();
             }
         });
-
     }
 
     // 종료 시간을 계산하는 함수
