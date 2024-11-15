@@ -22,7 +22,9 @@ import com.jeyun.rhdms.util.Header;
 import com.jeyun.rhdms.util.MyCalendar;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -83,12 +85,17 @@ public class PillInfoActivity extends AppCompatActivity {
                         binding.textDuration.setText(calendar.timeNow.withDayOfMonth(1).format(formatter) + " ~ " + calendar.timeNow.withDayOfMonth(calendar.timeNow.lengthOfMonth()).format(formatter));
                     }
 
+                    // 복약 순응률 계산
+                    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyyMMdd");
                     int adherenceCount = 0;
+                    int totalCount = 0;
                     for(int i = 0; i < pills.size(); i++){
+                        if(0 < ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(pills.get(i).ARM_DT, formatter2))) continue;
+                        totalCount++;
                         if(pills.get(i).TAKEN_ST.equals("TAKEN")) adherenceCount++;
                     }
-                    if(pills.size() == 0) binding.textAdherencePercentage.setText("0.0%");
-                    else binding.textAdherencePercentage.setText(String.format("%.1f", adherenceCount / (float)pills.size() * 100) + "%");
+                    if(totalCount == 0) binding.textAdherencePercentage.setText("-");
+                    else binding.textAdherencePercentage.setText(String.format("%.1f", adherenceCount / (float)totalCount * 100) + "%");
                 }
             });
 

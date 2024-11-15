@@ -43,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Executor executor = Executors.newSingleThreadExecutor();
 
         executor.execute(() -> {
-            DataHandler<Pill, LocalDate> dataHandler = new PillHandler();
+            DataHandler<Pill, LocalDate> dataHandler = new PillHandler(context);
             Optional<Pill> optionalPill = dataHandler.getData(PillHandler.dateToString(LocalDate.now()));
             optionalPill.ifPresent(pill ->
             {
