@@ -8,18 +8,6 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <Button
-        android:id="@+id/buttonStatistics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="통계" />
-
-    <Button
-        android:id="@+id/button_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"/>
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -136,6 +124,7 @@
             android:textSize="18sp" />
 
         <LinearLayout
+            android:id="@+id/ble_n_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/button_sugar_info"
@@ -152,29 +141,38 @@
                 android:text="@string/ble_text"
                 android:textSize="16sp" />
 
-            <!--다른 분이 테스트 용으로 만들어두신 거
-            <Button
-                android:id="@+id/button_test_new_pill_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:text="(테스트) 복약 입력"
-                android:textSize="20sp"
-                android:layout_below="@id/button_ble"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="50dp"
-                android:layout_centerHorizontal="true"/>
-        -->
-
             <Button
                 android:id="@+id/buttonSettings"
                 android:layout_width="156dp"
                 android:layout_height="79dp"
                 android:background="@drawable/ic_menu_mini"
-                android:text="설정" />
+                android:text="@string/text_set" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ble_n_setting"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/buttonStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners_small"
+                android:text="@string/text_statistics"
+                android:layout_marginEnd="30dp"/>
+
+            <Button
+                android:id="@+id/button_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners_small"
+                android:text="@string/button_logout"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
