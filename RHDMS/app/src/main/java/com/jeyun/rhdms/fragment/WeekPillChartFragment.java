@@ -1,5 +1,9 @@
 package com.jeyun.rhdms.fragment;
 
+import static com.jeyun.rhdms.adapter.pill.PillInfoAdapter.getIntentSwitch;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +18,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
+import com.jeyun.rhdms.PillInfoActivity;
 import com.jeyun.rhdms.R;
+import com.jeyun.rhdms.adapter.wrapper.PillInfo;
 import com.jeyun.rhdms.databinding.FragmentWeekPillChartBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.wrapper.PillBox;
@@ -97,6 +103,7 @@ public class WeekPillChartFragment extends Fragment {
         // point 이미지 뷰
         ImageView points[] = {binding.point1, binding.point2, binding.point3, binding.point4, binding.point5, binding.point6, binding.point7};
 
+
         int dataTime[] = new int[7];
         int maxTime = 0, minTime = 1440;
         for(int i = 0; i < 7; i++){
@@ -115,6 +122,14 @@ public class WeekPillChartFragment extends Fragment {
                 dataTime[i] = Integer.parseInt(h) * 60 + Integer.parseInt(m);
                 if(maxTime < dataTime[i]) maxTime = dataTime[i];
                 if(dataTime[i] < minTime) minTime = dataTime[i];
+                PillInfo pillInfo = new PillInfo(pills[i]);
+
+                //복약 정보 수정
+                points[i].setOnClickListener(v -> {
+                    Context context = v.getContext();
+                    Intent intent_switch = getIntentSwitch(context, pillInfo);
+                    startActivityForResult(intent_switch, PillInfoActivity.RESET_ADHERENCE);
+                });
             }
         }
 

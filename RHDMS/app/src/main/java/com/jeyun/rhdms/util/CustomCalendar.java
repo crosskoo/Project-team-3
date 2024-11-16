@@ -1,8 +1,9 @@
 package com.jeyun.rhdms.util;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class CustomCalendar
+public abstract class CustomCalendar implements Serializable
 {
     public LocalDate timeNow; // 현재 날짜
     public static final int WEEK = 1;

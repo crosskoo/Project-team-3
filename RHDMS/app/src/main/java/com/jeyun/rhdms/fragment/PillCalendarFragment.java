@@ -1,5 +1,9 @@
 package com.jeyun.rhdms.fragment;
 
+import static com.jeyun.rhdms.adapter.pill.PillInfoAdapter.getIntentSwitch;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,7 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.jeyun.rhdms.PillInfoActivity;
 import com.jeyun.rhdms.R;
+import com.jeyun.rhdms.adapter.wrapper.PillInfo;
 import com.jeyun.rhdms.databinding.FragmentPillCalendarBinding;
 import com.jeyun.rhdms.databinding.FragmentWeekPillChartBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
@@ -115,7 +121,14 @@ public class PillCalendarFragment extends Fragment {
                 }else {
                     pointViews[i].setBackgroundResource(R.drawable.circle_gray);
                 }
+                PillInfo pillInfo = new PillInfo(pills[i]);
 
+                //복약 정보 수정
+                pointViews[i].setOnClickListener(v -> {
+                    Context context = v.getContext();
+                    Intent intent_switch = getIntentSwitch(context, pillInfo);
+                    startActivityForResult(intent_switch, PillInfoActivity.RESET_ADHERENCE);
+                });
             }
         }
     }

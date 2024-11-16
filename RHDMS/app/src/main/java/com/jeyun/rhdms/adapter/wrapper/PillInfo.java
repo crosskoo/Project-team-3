@@ -2,6 +2,8 @@ package com.jeyun.rhdms.adapter.wrapper;
 
 import com.jeyun.rhdms.handler.entity.Pill;
 
+import java.io.Serializable;
+
 public class PillInfo
 {
     public String date;
