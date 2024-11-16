@@ -16,7 +16,7 @@
 
     <!-- 복약기 설정 페이지 가이드 라인 (바로 아래 가이드 라인만)-->
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline2"
+        android:id="@+id/pm_guideline_toggle_btn_vertical_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -30,14 +30,14 @@
         app:layout_constraintGuide_percent="0.20" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline6"
+        android:id="@+id/pm_guideline_toggle_btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline7"
+        android:id="@+id/pm_guideline_toggle_btn_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -64,7 +64,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.93" />
 
-    <!-- 알람 설정 페이지 가이드 라인 (바로 아래 가이드 라인만)-->
+    <!-- 알람 설정 페이지 가이드 라인 (바로 아래 2개 가이드 라인만)-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_alarm_set"
         android:layout_width="wrap_content"
@@ -73,32 +73,11 @@
         app:layout_constraintGuide_percent="0.23" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_alarm_end"
+        android:id="@+id/pm_guideline_alarm_frame_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.405" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_alarm_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.26" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_alarm_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.36" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_X_1end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.679" />
+        app:layout_constraintGuide_percent="0.95"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_ver_title"
@@ -155,15 +134,18 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
 
-    <!-- 토글 버튼으로 수정 필요 -->
-    <ImageView
-        android:id="@+id/selection"
+    <!-- 토글 버튼으로 수정 -->
+    <ToggleButton
+        android:id="@+id/toggle_setting"
         android:layout_width="0dp"
         android:layout_height="47dp"
-        android:background="@drawable/bg_device_selec"
-        app:layout_constraintStart_toEndOf="@id/pm_guideline6"
-        app:layout_constraintEnd_toStartOf="@id/pm_guideline7"
-        app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
+        android:text=""
+        android:textColor="@android:color/transparent"
+        android:background="@drawable/bg_setting_select"
+        android:checked="true"
+        app:layout_constraintStart_toEndOf="@id/pm_guideline_toggle_btn_start"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline_toggle_btn_end"
+        app:layout_constraintBottom_toTopOf="@id/pm_guideline_toggle_btn_vertical_end" />
 
     <!-- 토글 버튼에 따라 알람 설정 / 복약기 설정 화면으로 전환 -->
     <!-- 전환 시 layout_constraintTop_toTopOf를 바꾼다. -->
@@ -171,10 +153,12 @@
 
     <FrameLayout
         android:id="@+id/setting_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_set"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_frame_end"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
         />
 
