@@ -80,13 +80,6 @@
         app:layout_constraintGuide_percent="0.95"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_ver_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_quarter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -155,11 +148,10 @@
         android:id="@+id/setting_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
         app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_set"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
-        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_frame_end"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_frame_end"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
