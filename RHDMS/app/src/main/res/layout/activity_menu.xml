@@ -139,40 +139,33 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_menu_mini"
                 android:text="@string/ble_text"
+                android:fontFamily="@font/nanumsquareb"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/buttonSettings"
-                android:layout_width="156dp"
-                android:layout_height="79dp"
-                android:background="@drawable/ic_menu_mini"
-                android:text="@string/text_set" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ble_n_setting"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            >
-
-            <Button
-                android:id="@+id/buttonStatistics"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners_small"
-                android:text="@string/text_statistics"
-                android:layout_marginEnd="30dp"/>
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners_small"
-                android:text="@string/button_logout"/>
+                <Button
+                    android:id="@+id/buttonSettings"
+                    android:layout_width="156dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_menu_mini"
+                    android:fontFamily="@font/nanumsquareb"
+                    android:text="@string/text_set" />
+
+                <Button
+                    android:id="@+id/buttonStatistics"
+                    android:layout_width="156dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_menu_mini"
+                    android:text="@string/text_statistics"
+                    android:fontFamily="@font/nanumsquareb"
+                    android:layout_marginTop="9dp"
+                    android:layout_below="@id/buttonSettings"/>
+            </LinearLayout>
         </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

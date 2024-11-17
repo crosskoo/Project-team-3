@@ -154,6 +154,8 @@
         android:layout_height="wrap_content"
         android:text="이번 주 날짜"
         android:textSize="16sp"
+        android:fontFamily="@font/nanumsquarer"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@id/pm_guideline2"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_dateend"
         app:layout_constraintStart_toStartOf="parent"
