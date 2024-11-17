@@ -1,10 +1,14 @@
 package com.jeyun.rhdms;
 
+import android.animation.LayoutTransition;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -15,6 +19,7 @@ import androidx.fragment.app.strictmode.FragmentTagUsageViolation;
 
 import com.jeyun.rhdms.databinding.ActivitySettingBinding;
 import com.jeyun.rhdms.fragment.AppSettingsFragment;
+import com.jeyun.rhdms.fragment.DeviceSettingsFragement;
 
 public class SettingActivity extends AppCompatActivity
 {
@@ -43,13 +48,36 @@ public class SettingActivity extends AppCompatActivity
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
 
+            ConstraintLayout constraintLayout = binding.getRoot();
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+
             if (tb.isChecked()) // true : 알림 설정 화면
             {
+                constraintSet.setGuidelinePercent(R.id.pm_guideline_alarm_set, 0.23f);
+                constraintSet.setVisibility(R.id.pm_guideline_device_setting, View.GONE);
+
+                constraintSet.connect(binding.settingFrame.getId(), ConstraintSet.TOP, binding.pmGuidelineAlarmSet.getId(), ConstraintSet.BOTTOM);
+
+                constraintSet.applyTo(constraintLayout);
+
                 Fragment settingFragment = new AppSettingsFragment();
                 fragmentTransaction.replace(binding.settingFrame.getId(), settingFragment);
                 fragmentTransaction.commit();
             }
-            // false : 복약기 설정 화면
+            else // false : 복약기 설정 화면
+            {
+                constraintSet.setGuidelinePercent(R.id.pm_guideline_device_setting, 0.18f);
+                constraintSet.setVisibility(R.id.pm_guideline_alarm_set, View.GONE);
+
+                constraintSet.connect(binding.settingFrame.getId(), ConstraintSet.TOP, binding.pmGuidelineDeviceSetting.getId(), ConstraintSet.BOTTOM);
+
+                constraintSet.applyTo(constraintLayout);
+
+                Fragment settingFragment = new DeviceSettingsFragement();
+                fragmentTransaction.replace(binding.settingFrame.getId(), settingFragment);
+                fragmentTransaction.commit();
+            }
         });
     }
 

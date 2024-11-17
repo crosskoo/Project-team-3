@@ -14,9 +14,16 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.10" />
 
-    <!-- 복약기 설정 페이지 가이드 라인 (바로 아래 가이드 라인만)-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_toggle_btn_vertical_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <!-- 복약기 설정 페이지 가이드 라인 (바로 아래 가이드 라인만)-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_device_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -42,13 +49,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_main"
@@ -78,27 +78,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_quarter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_half"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline_quarter2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
 
     <Button
         android:id="@+id/back"
