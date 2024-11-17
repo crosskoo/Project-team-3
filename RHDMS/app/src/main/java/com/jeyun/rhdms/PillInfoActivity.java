@@ -2,6 +2,7 @@ package com.jeyun.rhdms;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -22,7 +23,9 @@ import com.jeyun.rhdms.util.Header;
 import com.jeyun.rhdms.util.MyCalendar;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -36,6 +39,8 @@ public class PillInfoActivity extends AppCompatActivity {
 
     protected Supplier<Fragment> supplier;
     protected String title = "복약 정보";
+
+    public static final int RESET_ADHERENCE = 56384645;
 
     protected void create()
     {
@@ -53,6 +58,14 @@ public class PillInfoActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         create();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        ToggleButton tb = binding.togglePillInfo;
+        loadData(tb.isChecked());
     }
 
     protected void initUI()
@@ -83,12 +96,8 @@ public class PillInfoActivity extends AppCompatActivity {
                         binding.textDuration.setText(calendar.timeNow.withDayOfMonth(1).format(formatter) + " ~ " + calendar.timeNow.withDayOfMonth(calendar.timeNow.lengthOfMonth()).format(formatter));
                     }
 
-                    int adherenceCount = 0;
-                    for(int i = 0; i < pills.size(); i++){
-                        if(pills.get(i).TAKEN_ST.equals("TAKEN")) adherenceCount++;
-                    }
-                    if(pills.size() == 0) binding.textAdherencePercentage.setText("0.0%");
-                    else binding.textAdherencePercentage.setText(String.format("%.1f", adherenceCount / (float)pills.size() * 100) + "%");
+                    // 복약 순응률 계산
+                    setAdherenceRate(pills);
                 }
             });
 
@@ -154,5 +163,19 @@ public class PillInfoActivity extends AppCompatActivity {
     protected void initData()
     {
         loadData(true);
+    }
+
+    //복약 순응률 설정
+    private void setAdherenceRate(List<Pill> pills){
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyyMMdd");
+        int adherenceCount = 0;
+        int totalCount = 0;
+        for(int i = 0; i < pills.size(); i++){
+            if(0 < ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(pills.get(i).ARM_DT, formatter2))) continue;
+            totalCount++;
+            if(pills.get(i).TAKEN_ST.equals("TAKEN")) adherenceCount++;
+        }
+        if(totalCount == 0) binding.textAdherencePercentage.setText("-");
+        else binding.textAdherencePercentage.setText(String.format("%.1f", adherenceCount / (float)totalCount * 100) + "%");
     }
 }

@@ -12,11 +12,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--
- Needed only if your app communicates with already-paired Bluetooth
-         devices.
-    -->
-    <!-- bibo01: hardware option -->
+
     <uses-feature
         android:name="android.hardware.bluetooth"
         android:required="false" />
@@ -36,6 +32,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -45,53 +44,52 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".graphActivity.BloodPressureInfoActivity">
-
-        </activity>
-        <activity android:name=".graphActivity.BloodSugarInfoActivity">
-
-        </activity>
+        <activity android:name=".graphActivity.BloodPressureInfoActivity"></activity>
+        <activity android:name=".graphActivity.BloodSugarInfoActivity"></activity>
+        <activity
+            android:name=".StatisticActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DeviceSettingsActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AppSettingsActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingMenuActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MenuActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PillUpdateActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".graphActivity.TestActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PillInfoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PillListActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".graphActivity.GraphActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".graphActivity.NewPillInfoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".graphActivity.PressureInfoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".graphActivity.SugarInfoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BleActivity"
-            android:theme="@style/AppTheme.MaterialActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".NewPillInfoActivity"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.MaterialActivity" />
+        <activity android:name=".NewPillInfoActivity" />
 
         <receiver android:name=".util.worker.AlarmReceiver" />
         <receiver android:name=".util.worker.CancelTodayAlarmReceiver" />

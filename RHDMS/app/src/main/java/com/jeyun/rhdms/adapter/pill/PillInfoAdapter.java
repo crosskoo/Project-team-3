@@ -46,7 +46,7 @@ public class PillInfoAdapter extends RecyclerView.Adapter<PillInfoAdapter.ItemVi
         });
     }
 
-    private static @NonNull Intent getIntentSwitch(Context context, PillInfo item)
+    public static @NonNull Intent getIntentSwitch(Context context, PillInfo item)
     {
         Intent intent_switch = new Intent(context, PillUpdateActivity.class);
         intent_switch.putExtra("SUBJECT_ID", "1076");

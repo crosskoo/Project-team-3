@@ -1,5 +1,9 @@
 package com.jeyun.rhdms.fragment;
 
+import static com.jeyun.rhdms.adapter.pill.PillInfoAdapter.getIntentSwitch;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,7 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.jeyun.rhdms.PillInfoActivity;
 import com.jeyun.rhdms.R;
+import com.jeyun.rhdms.adapter.wrapper.PillInfo;
 import com.jeyun.rhdms.databinding.FragmentPillCalendarBinding;
 import com.jeyun.rhdms.databinding.FragmentWeekPillChartBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
@@ -24,6 +30,7 @@ import com.jeyun.rhdms.util.Header;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 // 복약 기록 캘린더 fragment
@@ -76,6 +83,7 @@ public class PillCalendarFragment extends Fragment {
             binding.calendarImage.setBackgroundResource(R.drawable.bg_pill_monthdata);
         }
 
+
         // 데이터 적용
         Pill pills[] = new Pill[37];
         for(int i = 0; i < dataset.size(); i++){
@@ -84,6 +92,11 @@ public class PillCalendarFragment extends Fragment {
             pills[date + startDay - 1] = dataset.get(i);
         }
 
+        // 오늘 이후의 데이터 표시안함
+        long displayCount = ChronoUnit.DAYS.between(calendar.timeNow.withDayOfMonth(1), LocalDate.now()) + 1 + startDay;
+        if(displayCount > 37) displayCount = 37;
+
+        // 오늘까지의 복용 데이터 출력
         for(int i = 0; i < 37; i++){
             if(i < startDay || startDay + currentMonthDays <= i) {
                 dateViews[i].setVisibility(View.GONE);
@@ -92,7 +105,7 @@ public class PillCalendarFragment extends Fragment {
                 setTextViewMargin(dateViews[i], (292.0f * (i / 7) / (float) rows) + 1);
                 dateViews[i].setVisibility(View.VISIBLE);
             }
-            if(pills[i] == null) {
+            if(pills[i] == null || displayCount <= i) {
                 pointViews[i].setVisibility(View.GONE);
             }else{
                 pointViews[i].setVisibility(View.VISIBLE);
@@ -108,7 +121,14 @@ public class PillCalendarFragment extends Fragment {
                 }else {
                     pointViews[i].setBackgroundResource(R.drawable.circle_gray);
                 }
+                PillInfo pillInfo = new PillInfo(pills[i]);
 
+                //복약 정보 수정
+                pointViews[i].setOnClickListener(v -> {
+                    Context context = v.getContext();
+                    Intent intent_switch = getIntentSwitch(context, pillInfo);
+                    startActivityForResult(intent_switch, PillInfoActivity.RESET_ADHERENCE);
+                });
             }
         }
     }

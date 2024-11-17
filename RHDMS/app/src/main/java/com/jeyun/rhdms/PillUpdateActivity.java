@@ -82,6 +82,8 @@ public class PillUpdateActivity extends AppCompatActivity
                     {
                         Toast.makeText(this, pill.TAKEN_TM + " | " + pill.TAKEN_ST, Toast.LENGTH_SHORT)
                                 .show();
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK, returnIntent);
                         finish();
                     });
                 }
