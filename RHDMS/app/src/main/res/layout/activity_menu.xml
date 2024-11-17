@@ -12,23 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <!--
-        기존(프로토타입) 복약 입력 창
-            <Button
-                android:id="@+id/button_pill_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lastTakenTextView"
-                android:layout_marginTop="50dp"
-                android:backgroundTint="#454749"
-                android:text="복약 입력"
-                android:textSize="30sp"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="50dp"
-                android:layout_centerHorizontal="true"/>
-        -->
         <ImageView
             android:id="@+id/logo"
             android:layout_width="160dp"

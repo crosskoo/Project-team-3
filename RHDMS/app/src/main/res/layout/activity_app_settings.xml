@@ -304,6 +304,7 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_X_2end"/>
 
+    <!-- 로그아웃 버튼 -->
     <Button
         android:id="@+id/button_logout"
         android:layout_width="100dp"
