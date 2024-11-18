@@ -41,13 +41,6 @@
         app:layout_constraintGuide_percent="0.85" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,7 +87,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.679" />
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_guideline_X_2end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.895" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_ver_title"
@@ -152,11 +152,11 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
 
-    <ImageView
+    <Button
         android:id="@+id/selection"
         android:layout_width="0dp"
         android:layout_height="47dp"
-        android:background="@drawable/bg_device_selec"
+        android:background="@drawable/bg_app_selec"
         app:layout_constraintStart_toEndOf="@id/pm_guideline6"
         app:layout_constraintEnd_toStartOf="@id/pm_guideline7"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline2" />
@@ -169,7 +169,7 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
         app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_set"
         app:layout_constraintBottom_toBottomOf="@id/pm_guideline_alarm_end"
-        android:src="@drawable/bg_app_alarm"/>
+        android:background="@drawable/bg_app_alarm"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -246,11 +246,12 @@
 
     <ImageView
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_alarm_mute"
         app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_end"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
-        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_X_1end"/>
 
     <TextView
         android:layout_width="0dp"
@@ -265,21 +266,23 @@
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:timePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
-        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_end" />
+        app:layout_constraintTop_toTopOf="@id/pm_guideline_alarm_end"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_X_1end"/>
 
     <!-- 방해금지 시간 종료 -->
 
     <ImageView
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_alarm_mute"
         app:layout_constraintTop_toTopOf="@id/pm_guideline_X_1end"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
-        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_X_2end"/>
 
     <TextView
         android:layout_width="0dp"
@@ -294,10 +297,25 @@
     <TimePicker
         android:id="@+id/timePicker2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:timePickerMode="spinner"
         app:layout_constraintTop_toTopOf="@id/pm_guideline_X_1end"
         app:layout_constraintStart_toStartOf="@id/pm_guideline_main"
-        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"/>
+        app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
+        app:layout_constraintBottom_toBottomOf="@id/pm_guideline_X_2end"/>
+
+    <!-- 로그아웃 버튼 -->
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rounded_corners_stroke"
+        android:textSize="14sp"
+        android:text="@string/button_logout"
+        android:fontFamily="@font/nanumsquareb"
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline_X_2end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

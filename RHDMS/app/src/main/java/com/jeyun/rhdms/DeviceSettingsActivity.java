@@ -3,7 +3,9 @@ package com.jeyun.rhdms;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
     private Button SettingResetButton;
     private Button FactoryResetButton;
+    private Button ToggleButton;
+    private Button saveButton;
 
     private RadioGroup volumeGroup;
 
@@ -76,6 +80,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
         SettingResetButton = findViewById(R.id.SettingReset_button);
         FactoryResetButton = findViewById(R.id.DeviceRest_button);
+        ToggleButton = findViewById(R.id.selection);
 
         volumeGroup = findViewById(R.id.volume_group);
 
@@ -85,6 +90,28 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         // 뒤로가기 버튼
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> finish());
+
+        // 토글 버튼
+        ToggleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DeviceSettingsActivity.this, AppSettingsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
+
+        // 저장 버튼
+        saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(v -> {
+            try {
+                JSONObject updated_settings = createSettingsJson();
+                showSendSettingsPopup(updated_settings);  // 팝업으로 확인 후 전송
+                sendSettings(updated_settings);  // 서버로 전송
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        });
 
         //설정 초기화
         SettingResetButton.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +313,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         if (selectedVolume != null) {
             settings.put("volume", selectedVolume.getText().toString());
         }
+
+        Log.d("test", "JSON : " + settings);
 
         return settings;
     }
