@@ -3,6 +3,7 @@ package com.jeyun.rhdms;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
     private Button SettingResetButton;
     private Button FactoryResetButton;
+    private Button ToggleButton;
 
     private RadioGroup volumeGroup;
 
@@ -76,6 +78,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
         SettingResetButton = findViewById(R.id.SettingReset_button);
         FactoryResetButton = findViewById(R.id.DeviceRest_button);
+        ToggleButton = findViewById(R.id.selection);
 
         volumeGroup = findViewById(R.id.volume_group);
 
@@ -85,6 +88,14 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         // 뒤로가기 버튼
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> finish());
+
+        // 토글 버튼
+        ToggleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DeviceSettingsActivity.this, AppSettingsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
 
         //설정 초기화
         SettingResetButton.setOnClickListener(new View.OnClickListener() {
