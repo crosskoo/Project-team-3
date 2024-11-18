@@ -142,22 +142,22 @@ public class WeekPillChartFragment extends Fragment {
         }
 
         // 시간대 표시
+        int time[] = new int[5];
         if(maxTime < minTime){
             maxTime = 1440;
             minTime = 0;
         }
-        if(maxTime == minTime){
-            timeView[0].setVisibility(View.GONE);
-            timeView[1].setVisibility(View.GONE);
-            timeView[3].setVisibility(View.GONE);
-            timeView[4].setVisibility(View.GONE);
-        }else{
-            for(int i = 0; i < 5; i++) timeView[i].setVisibility(View.VISIBLE);
-        }
+
         for (int i = 0; i < 5; i++){
-            int time = minTime + (maxTime-minTime)*i/4;
-            timeView[i].setText(String.format("%02d:%02d", time/60, time % 60));
-            setVerticalBias(timeView[i], (i/4.0f)*0.96f + 0.02f);
+            time[i] = minTime + (maxTime-minTime)*i/4;
+            time[i] = (time[i] / 10) * 10;
+            if(i > 0 && time[i] == time[i-1]) {
+                timeView[i].setVisibility(View.GONE);
+                continue;
+            }
+            timeView[i].setVisibility(View.VISIBLE);
+            timeView[i].setText(String.format("%02d:%02d", time[i]/60, time[i] % 60));
+            setVerticalBias(timeView[i], ((time[i]-minTime)/(float)(maxTime-minTime))*0.96f + 0.02f);
         }
 
     }

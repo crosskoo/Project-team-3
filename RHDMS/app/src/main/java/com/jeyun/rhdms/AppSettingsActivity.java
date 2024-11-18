@@ -1,8 +1,11 @@
 package com.jeyun.rhdms;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +15,13 @@ import com.jeyun.rhdms.databinding.ActivityMenuBinding;
 import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
 import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
+import com.jeyun.rhdms.handler.SharedPreferenceHandler;
+import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.SettingsManager;
+import com.jeyun.rhdms.util.worker.Inspector;
+import com.jeyun.rhdms.util.worker.MyWorkManager;
+
+import java.time.LocalDate;
 
 public class AppSettingsActivity extends AppCompatActivity {
     private ActivityAppSettingsBinding binding;
@@ -76,5 +85,39 @@ public class AppSettingsActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        binding.buttonLogout.setOnClickListener(v -> {
+            Inspector.cancelScheduledNotification(getApplicationContext(), LocalDate.now());
+            MyWorkManager.cancelPeriodicWork(getApplicationContext());
+            Logout();
+        }); // 로그아웃
+    }
+
+    private void Logout()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("로그아웃")
+                .setMessage("정말로 로그아웃 하시겠습니까?")
+                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // 저장된 orgnztId 데이터 삭제
+                        SharedPreferenceHandler handler = new SharedPreferenceHandler(getApplicationContext());
+                        handler.clearAll();
+                        User.getInstance().setOrgnztId(null);
+
+                        // 로그아웃이 정상적으로 되었는지 확인
+                        Log.d("ksd", "orgnztId : " + handler.getSavedOrgnztId());
+                        Log.d("ksd", "User orgnztId : " + User.getInstance().getOrgnztId()); // 테스트 용
+
+                        // 다시 로그인 화면으로 이동
+                        Intent intent = new Intent(AppSettingsActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("아니요", null)
+                .show();
     }
 }

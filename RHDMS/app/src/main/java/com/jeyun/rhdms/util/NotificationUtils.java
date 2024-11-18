@@ -60,7 +60,7 @@ public class NotificationUtils
         );
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
