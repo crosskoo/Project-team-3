@@ -84,8 +84,8 @@ public class MenuActivity extends AppCompatActivity {
         binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 혈압 페이지
         binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 혈당 페이지
         binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class)); // 실시간 측정
-        binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
-        // binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingActivity.class)); // (테스트 용)
+        // binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
+        binding.buttonSettings.setOnClickListener(v -> switchActivity(AppSettingsActivity.class)); // 설정 페이지
         binding.buttonLogout.setOnClickListener(v -> {
             Inspector.cancelScheduledNotification(getApplicationContext(), LocalDate.now());
             MyWorkManager.cancelPeriodicWork(getApplicationContext());

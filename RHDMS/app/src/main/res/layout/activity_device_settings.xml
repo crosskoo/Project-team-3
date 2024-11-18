@@ -222,7 +222,7 @@
         app:layout_constraintBottom_toTopOf="@id/pm_guideline1"
         app:layout_constraintStart_toEndOf="@id/pm_guideline3" />
 
-    <ImageView
+    <Button
         android:id="@+id/selection"
         android:layout_width="0dp"
         android:layout_height="47dp"
