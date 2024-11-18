@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -60,7 +61,7 @@ public class NotificationUtils
         );
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.ic_noti)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
