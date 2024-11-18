@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     private Button SettingResetButton;
     private Button FactoryResetButton;
     private Button ToggleButton;
+    private Button saveButton;
 
     private RadioGroup volumeGroup;
 
@@ -95,6 +97,20 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+        });
+
+        // 저장 버튼
+        saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(v -> {
+            try {
+                JSONObject updated_settings = createSettingsJson();
+                showSendSettingsPopup(updated_settings);  // 팝업으로 확인 후 전송
+                sendSettings(updated_settings);  // 서버로 전송
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         });
 
         //설정 초기화
@@ -297,6 +313,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         if (selectedVolume != null) {
             settings.put("volume", selectedVolume.getText().toString());
         }
+
+        Log.d("test", "JSON : " + settings);
 
         return settings;
     }
