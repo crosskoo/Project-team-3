@@ -37,7 +37,15 @@
                 android:id="@+id/adherenceImageView"
                 android:layout_width="320dp"
                 android:layout_height="147dp"
-                android:src="@drawable/ic_status_soso" />
+                android:src="@drawable/common" />
+
+            <!-- 반투명한 하안색 직사각형 -->
+            <View
+                android:layout_gravity="bottom"
+                android:layout_width="320dp"
+                android:layout_height="100dp"
+                android:background="@color/white"
+                android:alpha="0.7"/>
 
             <TextView
                 android:id="@+id/adherenceTextView"
@@ -49,13 +57,22 @@
                 android:layout_gravity="center" />
 
             <TextView
+                android:id="@+id/adherencePercentTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(AdherencePercentage)"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="90dp"/>
+
+            <TextView
                 android:id="@+id/lastTakenTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Last Taken: N/A"
                 android:textSize="16sp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="100dp" />
+                android:layout_marginTop="120dp" />
 
         </FrameLayout>
 
