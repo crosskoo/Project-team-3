@@ -238,6 +238,7 @@ public class MenuActivity extends AppCompatActivity {
 
                     // 계산
                     double totalScore = 0;
+                    int maxScore = filteredPills.size();
 
                     for (Pill pill : filteredPills) {
                         switch (pill.TAKEN_ST) {
@@ -265,14 +266,16 @@ public class MenuActivity extends AppCompatActivity {
                         }
                     }
 
+                    double adherencePercentage = (totalScore / maxScore) * 100;
+
                     // UI 업데이트
                     String adherenceMessage;
                     int imageResId;
-                    if (totalScore >= 80) {
+                    if (adherencePercentage  >= 80) {
                         adherenceMessage = "양호";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
                         imageResId = R.drawable.good;
-                    } else if (totalScore >= 50) {
+                    } else if (adherencePercentage  >= 50) {
                         adherenceMessage = "보통";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
                         imageResId = R.drawable.common;
