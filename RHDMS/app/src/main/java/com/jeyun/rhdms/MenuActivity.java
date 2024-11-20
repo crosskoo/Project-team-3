@@ -242,6 +242,8 @@ public class MenuActivity extends AppCompatActivity {
 
                     for (Pill pill : filteredPills) {
                         switch (pill.TAKEN_ST) {
+                            // 정상복약, 외출복약, 지연복약까지는 복약했다고 간주
+                            // 나머지 경우는 복약하지 않았다고 간주
                             case "TAKEN":
                                 totalScore += 1;
                                 break;
@@ -249,16 +251,16 @@ public class MenuActivity extends AppCompatActivity {
                                 totalScore += 1;
                                 break;
                             case "DELAYTAKEN":
-                                totalScore += 0.5;
+                                totalScore += 1;
                                 break;
                             case "OVERTAKEN":
-                                totalScore += 0.5;
+                                totalScore += 0;
                                 break;
                             case "ERRTAKEN":
-                                totalScore += 0.1;
+                                totalScore += 0;
                                 break;
                             case "UNTAKEN":
-                                totalScore += 0.1;
+                                totalScore += 0;
                                 break;
                             default:
                                 totalScore += 0;
@@ -267,25 +269,28 @@ public class MenuActivity extends AppCompatActivity {
                     }
 
                     double adherencePercentage = (totalScore / maxScore) * 100;
+                    Log.d("test", "percent : " + adherencePercentage);
 
                     // UI 업데이트
                     String adherenceMessage;
                     int imageResId;
                     if (adherencePercentage  >= 80) {
-                        adherenceMessage = "양호";
+                        adherenceMessage = "복약 관리가 정말 탁월합니다!";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
                         imageResId = R.drawable.good;
                     } else if (adherencePercentage  >= 50) {
-                        adherenceMessage = "보통";
+                        adherenceMessage = "복약 관리에 조금 더 노력이 필요합니다.";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
                         imageResId = R.drawable.common;
                     } else {
-                        adherenceMessage = "부족";
+                        adherenceMessage = "복약 관리 상태를 점검해 주세요.";
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
                         imageResId = R.drawable.bad;
                     }
 
                     binding.adherenceTextView.setText(adherenceMessage);
+                    binding.adherenceImageView.setImageResource(imageResId);
+                    binding.adherencePercentTextView.setText("복약 순응률 : " + adherencePercentage + "%");
                     binding.adherenceImageView.setVisibility(View.VISIBLE);
 
                     String lastTakenMessage = "최근 복용 : " + latestDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
