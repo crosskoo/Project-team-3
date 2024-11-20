@@ -95,7 +95,7 @@ public class StatisticActivity extends AppCompatActivity {
         date.setText(String.format("통계 주: %s ~ %s", formattedStartOfPreviousWeek, formattedEndOfPreviousWeek));
 
         // 통계 기준
-        statistic_criteria.setOnClickListener(v -> showPillScoreCriteria());
+        pillAvg.setOnClickListener(v -> showPillScoreCriteria());
 
         // 액티비티 시작 시 기본 주간 데이터를 로드
         executor.execute(() -> loadData(today));
@@ -119,11 +119,7 @@ public class StatisticActivity extends AppCompatActivity {
                 "0.5점: 지연복약, 과복약\n" +
                 "0.1점: 오복약, 미복약\n" +
                 "0점: 그 외 상태\n\n" +
-                "상태 측정 기준:\n\n" +
-                "!!상태는 전 월과 이번 월의 데이터를 비교합니다.!!\n"+
-                "복약 동일 기준 : -1 ~ 1\n"+
-                "혈압 동일 기준 : -10 ~ 10\n"+
-                "혈당 동일 기준 : -10 ~ 10\n";
+                "월간 비교는 평균을 통해서 비교됩니다!";
 
         builder.setMessage(message);
 
@@ -256,25 +252,23 @@ public class StatisticActivity extends AppCompatActivity {
     private String evaluatePressureDifference(double systolicDiff, double diastolicDiff, LocalDate previousMonth) {
         String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 
-        if (systolicDiff > 10 || diastolicDiff > 10) {
-            return String.format("%s에 비해 평균 혈압이 상승했습니다.", previousMonthName);
-        } else if (systolicDiff < -10 || diastolicDiff < -10) {
-            return String.format("%s에 비해 평균 혈압이 감소했습니다.", previousMonthName);
-        } else {
-            return String.format("%s과 평균 혈압이 비슷합니다.", previousMonthName);
-        }
+        return String.format("%s와 비해 혈압은 (수축기: %.1f, 이완기: %.1f)\n mmHg 차이가 있습니다.",
+                previousMonthName, systolicDiff, diastolicDiff);
     }
 
     // 혈당 차이에 따라 상태를 평가하는 함수
     private String evaluateSugarDifference(double difference, LocalDate previousMonth) {
         String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 
-        if (difference > 10) {
-            return String.format("%s에 비해 평균 혈당이 상승했습니다.", previousMonthName);
-        } else if (difference < -10) {
-            return String.format("%s에 비해 평균 혈당이 감소했습니다.", previousMonthName);
+        if (difference > 0) {
+            return String.format("%s에 비해 평균혈당이 %.1f mg/dL 상승했습니다.",
+                    previousMonthName, difference);
+        } else if (difference < 0) {
+            return String.format("%s에 비해 평균혈당이 %.1f mg/dL 감소했습니다.",
+                    previousMonthName, Math.abs(difference));
         } else {
-            return String.format("%s의 평균 혈당과 비슷합니다.", previousMonthName);
+            return String.format("%s과 평균혈당이 동일합니다..",
+                    previousMonthName, difference);
         }
     }
 
@@ -282,12 +276,15 @@ public class StatisticActivity extends AppCompatActivity {
     private String evaluatePillDifference(double difference, LocalDate previousMonth) {
         String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 
-        if (difference > 0.1) {
-            return String.format("복약 상태: %s보다 복약률이 증가했습니다.", previousMonthName);
-        } else if (difference < -0.1) {
-            return String.format("복약 상태: %s보다 복약률이 떨어졌습니다.", previousMonthName);
+        if (difference > 0) {
+            return String.format("%s보다 복약률이 %.1f%% 증가했습니다.",
+                    previousMonthName, difference * 100);
+        } else if (difference < 0) {
+            return String.format("%s보다 복약률이 %.1f%% 떨어졌습니다.",
+                    previousMonthName, Math.abs(difference * 100));
         } else {
-            return String.format("복약 상태: %s의 복약률과 유사합니다.", previousMonthName);
+            return String.format("%s의 복약률과 동일합니다",
+                    previousMonthName, difference * 100);
         }
     }
 
