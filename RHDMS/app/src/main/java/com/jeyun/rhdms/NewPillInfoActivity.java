@@ -66,7 +66,7 @@ public class NewPillInfoActivity extends AppCompatActivity
     private void initSelector()
     {
         List<String> list = new ArrayList<>();
-        list.add("");
+        list.add("(복약 상태를 선택하세요)");
         list.add("OUTTAKEN");
         list.add("TAKEN");
         list.add("UNTAKEN");
@@ -149,7 +149,7 @@ public class NewPillInfoActivity extends AppCompatActivity
         String takenTime = binding.pmNewPillTakenTime.getText().toString();
         String takenState = binding.pmNewPillSelector.getSelectedItem().toString();
 
-        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() || takenTime.isEmpty() || takenState.isEmpty())
+        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() || takenTime.isEmpty() || takenState.equals("(복약 상태를 선택하세요)"))
         {
             Toast.makeText(this, "정보를 전부 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
