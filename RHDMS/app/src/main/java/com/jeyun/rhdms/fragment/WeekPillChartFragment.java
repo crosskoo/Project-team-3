@@ -5,7 +5,6 @@ import static com.jeyun.rhdms.adapter.pill.PillInfoAdapter.getIntentSwitch;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +26,10 @@ import com.jeyun.rhdms.handler.entity.wrapper.PillBox;
 import com.jeyun.rhdms.util.CustomCalendar;
 import com.jeyun.rhdms.util.Header;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 // 7일 복약 기록 차트
 public class WeekPillChartFragment extends Fragment {
@@ -111,10 +106,12 @@ public class WeekPillChartFragment extends Fragment {
                 points[i].setVisibility(View.GONE);
             }else{  // 내용 존재시 색깔, 시간에 따른 위치 비율 조정
                 points[i].setVisibility(View.VISIBLE);
-                if(pills[i].TAKEN_ST.equals("UNTAKEN")) points[i].setBackgroundResource(R.drawable.circle_red);
-                else if(pills[i].TAKEN_ST.equals("TAKEN")) points[i].setBackgroundResource(R.drawable.circle_green);
-                else if(pills[i].TAKEN_ST.equals("OVERTAKEN")) points[i].setBackgroundResource(R.drawable.circle_blue);
-                else points[i].setBackgroundResource(R.drawable.circle_gray);
+                String status = pills[i].TAKEN_ST;
+                if(status.equals("TAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_light_green);
+                else if(status.equals("DELAYTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_light_sky_blue);
+                else if(status.equals("OUTTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_mustard_yellow);
+                else if(status.equals("ERRTAKEN") || status.equals("N/D")) points[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
+                else points[i].setBackgroundResource(R.drawable.ic_medication_gray);
 
                 String time = pills[i].TAKEN_TM;
                 String h = time.substring(0, 2);

@@ -12,103 +12,165 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.5">
 
         <ImageView
-            android:id="@+id/circle_red"
+            android:id="@+id/status_taken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/circle_red"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ic_medication_light_green"
             app:layout_constraintEnd_toStartOf="@+id/text_view1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/circle_green"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/circle_green"
-            app:layout_constraintStart_toEndOf="@+id/text_view1"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/circle_blue"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/circle_blue"
-            app:layout_constraintStart_toEndOf="@+id/text_view2"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/circle_gray"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/circle_gray"
-            app:layout_constraintStart_toEndOf="@+id/text_view3"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/text_view1"
+            android:id="@+id/text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="20dp"
+            android:text="복용"
             android:textColor="@color/black"
-            android:text="미복용"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/circle_red"
+            app:layout_constraintStart_toEndOf="@id/status_taken"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/status_delayTaken"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_medication_light_sky_blue"
+            app:layout_constraintStart_toEndOf="@+id/text_view"
+            app:layout_constraintTop_toTopOf="@+id/status_taken" />
 
         <TextView
             android:id="@+id/text_view2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="45dp"
-            android:text="정상 복욕"
+            android:text="지연복용"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_green"
+            app:layout_constraintStart_toEndOf="@+id/status_delayTaken"
+            app:layout_constraintTop_toTopOf="@+id/text_view" />
+
+        <ImageView
+            android:id="@+id/status_untaken"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/ic_medication_gray"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/circle_green2"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_medication_coral_pink"
+            app:layout_constraintStart_toEndOf="@+id/text_view1"
+            app:layout_constraintTop_toTopOf="@+id/status_untaken" />
+
+        <ImageView
+            android:id="@+id/circle_blue2"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_medication_mustard_yellow"
+            app:layout_constraintStart_toEndOf="@+id/text_view2"
+            app:layout_constraintTop_toTopOf="@+id/status_taken" />
+
+        <ImageView
+            android:id="@+id/circle_gray2"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_medication_coral_pink"
+            app:layout_constraintStart_toEndOf="@+id/text_view3"
+            app:layout_constraintTop_toTopOf="@+id/status_taken" />
+
+
+        <TextView
+            android:id="@+id/text_view5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="N/D 측정하지 않음"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/circle_green2"
+            app:layout_constraintTop_toTopOf="@+id/text_view1" />
+
+        <TextView
+            android:id="@+id/text_view6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="N/A 해당사항 없음"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/circle_blue"
+            app:layout_constraintTop_toTopOf="@+id/text_view1" />
+
+
+        <ImageView
+            android:id="@+id/circle_blue"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_medication_gray"
+            app:layout_constraintStart_toEndOf="@+id/text_view5"
+            app:layout_constraintTop_toTopOf="@+id/status_untaken" />
+
+        <TextView
+            android:id="@+id/text_view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="44dp"
+            android:text="미복용"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/status_taken"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/text_view3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="45dp"
-            android:text="과복용"
+            android:text="외출복용"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_blue"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/circle_blue2"
+            app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <TextView
             android:id="@+id/text_view4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="45dp"
-            android:text="지연"
-            android:textSize="12sp"
+            android:text="오복용"
             android:textColor="@color/black"
+            android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_gray"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/circle_gray2"
+            app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <TextView
             android:id="@+id/date1"
@@ -264,7 +326,7 @@
             android:id="@+id/point1"
             android:layout_width="12dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date1"
             app:layout_constraintStart_toStartOf="@+id/date1"
@@ -274,7 +336,7 @@
             android:id="@+id/point7"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date7"
             app:layout_constraintStart_toStartOf="@+id/date7"
@@ -284,7 +346,7 @@
             android:id="@+id/point6"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date6"
             app:layout_constraintStart_toStartOf="@+id/date6"
@@ -294,7 +356,7 @@
             android:id="@+id/point5"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date5"
             app:layout_constraintStart_toStartOf="@+id/date5"
@@ -304,7 +366,7 @@
             android:id="@+id/point4"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date4"
             app:layout_constraintStart_toStartOf="@+id/date4"
@@ -314,7 +376,7 @@
             android:id="@+id/point3"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date3"
             app:layout_constraintStart_toStartOf="@+id/date3"
@@ -324,7 +386,7 @@
             android:id="@+id/point2"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/circle_red"
+            android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintBottom_toBottomOf="@+id/line_view1"
             app:layout_constraintEnd_toEndOf="@+id/date2"
             app:layout_constraintStart_toStartOf="@+id/date2"
