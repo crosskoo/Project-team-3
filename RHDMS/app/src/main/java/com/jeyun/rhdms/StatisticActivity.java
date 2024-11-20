@@ -1,6 +1,8 @@
 package com.jeyun.rhdms;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.jeyun.rhdms.handler.BloodHandler;
@@ -14,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class StatisticActivity extends AppCompatActivity {
 
@@ -52,11 +56,25 @@ public class StatisticActivity extends AppCompatActivity {
 
         date = findViewById(R.id.week_date_range);
 
+        // 기준 관련.
+        Button statistic_criteria = findViewById(R.id.statistic_criteria);
+
+        // back 버튼 참조
+        Button backButton = findViewById(R.id.back);
+
+        // back 버튼 클릭 시 메뉴 화면으로 이동
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(StatisticActivity.this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish(); // 현재 액티비티 종료
+        });
+
         pillHandler = new PillHandler();
         bloodSugarHandler = new BloodHandler("31"); // 31은 혈당(Blood Sugar)을 의미
         bloodPressureHandler = new BloodHandler("21"); // 21은 혈압(Blood Pressure)을 의미
 
-        LocalDate today = LocalDate.of(2024, 8, 23);// 예시 날짜
+        LocalDate today = LocalDate.now();
 
         // 이전 주간의 시작일과 종료일 계산 (오늘 포함한 일주일)
         LocalDate startOfPreviousWeek = today.minusDays(6); // 오늘을 포함하여 6일 전이 시작일
@@ -72,6 +90,9 @@ public class StatisticActivity extends AppCompatActivity {
         // TextView에 이전 주간 날짜 범위 출력
         date.setText(String.format("통계 주: %s ~ %s", formattedStartOfPreviousWeek, formattedEndOfPreviousWeek));
 
+        // 통계 기준
+        statistic_criteria.setOnClickListener(v -> showPillScoreCriteria());
+
         // 액티비티 시작 시 기본 주간 데이터를 로드
         executor.execute(() -> loadData(today));
 
@@ -80,6 +101,42 @@ public class StatisticActivity extends AppCompatActivity {
 
         // 최근 복약 데이터를 로드하고 표시
         executor.execute(this::loadRecentMedicationDate);
+    }
+
+    // 통계 기준표를 보여주는 함수
+    private void showPillScoreCriteria() {
+        // AlertDialog.Builder를 사용하여 팝업 생성
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("통계 기준");
+
+        // 복약 점수 기준 설명
+        String message = "복약 점수는 다음과 같이 계산됩니다:\n\n" +
+                "1점: 정상복약, 외출복약\n" +
+                "0.5점: 지연복약, 과복약\n" +
+                "0.1점: 오복약, 미복약\n" +
+                "0점: 그 외 상태\n\n" +
+                "상태 측정 기준:\n\n" +
+                "복약 상태:\n" +
+                "- 1 이상 증가: 복약률이 상승했습니다.\n" +
+                "- 1 이상 감소: 복약률이 감소했습니다.\n" +
+                "- 그 외: 복약률이 동일합니다.\n\n" +
+                "혈당 상태:\n" +
+                "- 10 이상 증가: 혈당이 상승했습니다.\n" +
+                "- 10 이상 감소: 혈당이 감소했습니다.\n" +
+                "- 그 외: 혈당이 동일합니다.\n\n" +
+                "혈압 상태:\n" +
+                "- 수축기/이완기 10 이상 증가: 혈압이 상승했습니다.\n" +
+                "- 수축기/이완기 10 이상 감소: 혈압이 감소했습니다.\n" +
+                "- 그 외: 혈압이 동일합니다.";
+
+        builder.setMessage(message);
+
+        // 확인 버튼 추가
+        builder.setPositiveButton("확인", (dialog, which) -> dialog.dismiss());
+
+        // 다이얼로그 보여주기
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /*
@@ -392,7 +449,7 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate sugarMaxDate = LocalDate.parse(maxBloodSugarRecord.mesure_de, inputFormatter);
                     String formattedSugarMaxDate = sugarMaxDate.format(outputFormatter);
-                    maxBloodSugar.setText(String.format("최고 혈당: %s mg/dL (%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
+                    maxBloodSugar.setText(String.format("주간 최고 혈당: %s mg/dL (%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
                     maxBloodSugar.setText("최고 혈당 기록이 없습니다.");
@@ -405,7 +462,7 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate pressureMaxDate = LocalDate.parse(maxBloodPressureRecord.mesure_de, inputFormatter);
                     String formattedPressureMaxDate = pressureMaxDate.format(outputFormatter);
-                    maxBloodPressure.setText(String.format("최고 혈압: %s mmHg (%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
+                    maxBloodPressure.setText(String.format("주간 최고 혈압: %s mmHg (%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
                     maxBloodPressure.setText("최고 혈압 기록이 없습니다.");
