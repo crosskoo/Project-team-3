@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.64" />
+        app:layout_constraintGuide_percent="0.66" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_guideline_bsstart"
@@ -358,10 +358,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/rounded_corners_small"
-        app:layout_constraintTop_toBottomOf="@id/pm_guideline_bpstart"
         app:layout_constraintBottom_toTopOf="@id/pm_guideline_bpend"
+        app:layout_constraintEnd_toStartOf="@id/pm_guideline_mainend"
         app:layout_constraintStart_toEndOf="@id/pm_guideline_main"
-        app:layout_constraintEnd_toStartOf="@id/pm_guideline_mainend"/>
+        app:layout_constraintTop_toBottomOf="@id/pm_guideline_bpstart" />
 
     <ImageView
         android:id="@+id/weekly_bp"
@@ -374,7 +374,7 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_half"
         android:layout_marginTop="18dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginEnd="5dp"/>
 
     <ImageView
@@ -388,7 +388,7 @@
         app:layout_constraintEnd_toEndOf="@id/pm_guideline_mainend"
         android:layout_marginTop="18dp"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginEnd="10dp"/>
 
     <!-- 혈압 평균을 표시하는 텍스트 뷰 -->
