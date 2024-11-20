@@ -166,7 +166,7 @@
         android:id="@+id/statistic_criteria"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="복약 점수 기준 보기"
+        android:text="통계 기준 보기."
         android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"/>
 
