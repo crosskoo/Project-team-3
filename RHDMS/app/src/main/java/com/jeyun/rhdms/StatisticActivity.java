@@ -14,9 +14,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import android.app.AlertDialog;
+import java.time.format.TextStyle;
 import android.content.DialogInterface;
 
 public class StatisticActivity extends AppCompatActivity {
@@ -74,7 +76,9 @@ public class StatisticActivity extends AppCompatActivity {
         bloodSugarHandler = new BloodHandler("31"); // 31은 혈당(Blood Sugar)을 의미
         bloodPressureHandler = new BloodHandler("21"); // 21은 혈압(Blood Pressure)을 의미
 
-        LocalDate today = LocalDate.now();
+        //LocalDate today = LocalDate.now();
+        //TEST용
+        LocalDate today = LocalDate.of(2024, 8, 23);
 
         // 이전 주간의 시작일과 종료일 계산 (오늘 포함한 일주일)
         LocalDate startOfPreviousWeek = today.minusDays(6); // 오늘을 포함하여 6일 전이 시작일
@@ -116,18 +120,10 @@ public class StatisticActivity extends AppCompatActivity {
                 "0.1점: 오복약, 미복약\n" +
                 "0점: 그 외 상태\n\n" +
                 "상태 측정 기준:\n\n" +
-                "복약 상태:\n" +
-                "- 1 이상 증가: 복약률이 상승했습니다.\n" +
-                "- 1 이상 감소: 복약률이 감소했습니다.\n" +
-                "- 그 외: 복약률이 동일합니다.\n\n" +
-                "혈당 상태:\n" +
-                "- 10 이상 증가: 혈당이 상승했습니다.\n" +
-                "- 10 이상 감소: 혈당이 감소했습니다.\n" +
-                "- 그 외: 혈당이 동일합니다.\n\n" +
-                "혈압 상태:\n" +
-                "- 수축기/이완기 10 이상 증가: 혈압이 상승했습니다.\n" +
-                "- 수축기/이완기 10 이상 감소: 혈압이 감소했습니다.\n" +
-                "- 그 외: 혈압이 동일합니다.";
+                "!!상태는 전 월과 이번 월의 데이터를 비교합니다.!!\n"+
+                "복약 동일 기준 : -1 ~ 1\n"+
+                "혈압 동일 기준 : -10 ~ 10\n"+
+                "혈당 동일 기준 : -10 ~ 10\n";
 
         builder.setMessage(message);
 
@@ -171,10 +167,10 @@ public class StatisticActivity extends AppCompatActivity {
         double pressureDifferenceSystolic = currentPressureAverages[0] - previousPressureAverages[0];
         double pressureDifferenceDiastolic = currentPressureAverages[1] - previousPressureAverages[1];
 
-        // 상태 평가 및 UI 업데이트
-        String pillStatus = evaluatePillDifference(pillDifference);
-        String sugarStatus = evaluateSugarDifference(sugarDifference);
-        String pressureStatus = evaluatePressureDifference(pressureDifferenceSystolic, pressureDifferenceDiastolic);
+        // 상태 평가
+        String pillStatus = evaluatePillDifference(pillDifference, previousMonth);  // 전달의 월 정보 추가
+        String sugarStatus = evaluateSugarDifference(sugarDifference, previousMonth);  // 전달의 월 정보 추가
+        String pressureStatus = evaluatePressureDifference(pressureDifferenceSystolic, pressureDifferenceDiastolic, previousMonth);  // 전달의 월 정보 추가
 
         /*
         // 전달과 이번 달의 데이터를 UI에 출력
@@ -186,11 +182,40 @@ public class StatisticActivity extends AppCompatActivity {
         });
         */
 
-
         runOnUiThread(() -> {
-            pillstatus.setText(pillStatus);
-            sugarstatus.setText(sugarStatus);
-            pressurestatus.setText(pressureStatus);
+            // 복약률 상태 출력
+            if (currentPillAverage == 0 && previousPillAverage == 0) {
+                pillstatus.setText("2달간 복약 데이터가 없습니다.");
+            } else if (currentPillAverage == 0) {
+                pillstatus.setText("이번달 복약 데이터가 없습니다.");
+            } else if (previousPillAverage == 0) {
+                pillstatus.setText("전달 복약 데이터가 없습니다.");
+            } else {
+                pillstatus.setText(pillStatus);
+            }
+
+            // 혈당 상태 출력
+            if (currentSugarAverage == 0 && previousSugarAverage == 0) {
+                sugarstatus.setText("2달간 혈당 데이터가 없습니다.");
+            } else if (currentSugarAverage == 0) {
+                sugarstatus.setText("이번달 혈당 데이터가 없습니다.");
+            } else if (previousSugarAverage == 0) {
+                sugarstatus.setText("전달 혈당 데이터가 없습니다.");
+            } else {
+                sugarstatus.setText(sugarStatus);
+            }
+
+            // 혈압 상태 출력
+            if (currentPressureAverages[0] == 0 && currentPressureAverages[1] == 0 &&
+                    previousPressureAverages[0] == 0 && previousPressureAverages[1] == 0) {
+                pressurestatus.setText("2달간 혈압 데이터가 없습니다.");
+            } else if (currentPressureAverages[0] == 0 && currentPressureAverages[1] == 0) {
+                pressurestatus.setText("이번달 혈압 데이터가 없습니다.");
+            } else if (previousPressureAverages[0] == 0 && previousPressureAverages[1] == 0) {
+                pressurestatus.setText("전달 혈압 데이터가 없습니다.");
+            } else {
+                pressurestatus.setText(pressureStatus);
+            }
         });
 
     }
@@ -228,35 +253,41 @@ public class StatisticActivity extends AppCompatActivity {
 
 
     // 혈압 차이에 따른 상태 평가 함수
-    private String evaluatePressureDifference(double systolicDiff, double diastolicDiff) {
+    private String evaluatePressureDifference(double systolicDiff, double diastolicDiff, LocalDate previousMonth) {
+        String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
         if (systolicDiff > 10 || diastolicDiff > 10) {
-            return "혈압 상태: 혈압이 상승했습니다.";
+            return String.format("혈압 상태: %s에 비해 평균 혈압이 상승했습니다.", previousMonthName);
         } else if (systolicDiff < -10 || diastolicDiff < -10) {
-            return "혈압 상태: 혈압이 감소했습니다.";
+            return String.format("혈압 상태: %s에 비해 평균 혈압이 감소했습니다.", previousMonthName);
         } else {
-            return "혈압 상태: 동일합니다.";
+            return String.format("혈압 상태: %s과 평균 혈압이 비슷합니다.", previousMonthName);
         }
     }
 
     // 혈당 차이에 따라 상태를 평가하는 함수
-    private String evaluateSugarDifference(double difference) {
+    private String evaluateSugarDifference(double difference, LocalDate previousMonth) {
+        String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
         if (difference > 10) {
-            return "혈당 상태: 혈당이 상승했습니다. ";
+            return String.format("혈당 상태: %s에 비해 평균 혈당이 상승했습니다.", previousMonthName);
         } else if (difference < -10) {
-            return "혈당 상태: 혈당이 감소했습니다. ";
+            return String.format("혈당 상태: %s에 비해 평균 혈당이 감소했습니다.", previousMonthName);
         } else {
-            return "혈당 상태: 동일합니다. ";
+            return String.format("혈당 상태: %s의 평균 혈당과 비슷합니다.", previousMonthName);
         }
     }
 
     // 복약 차이에 따라 상태를 평가하는 함수
-    private String evaluatePillDifference(double difference) {
+    private String evaluatePillDifference(double difference, LocalDate previousMonth) {
+        String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
         if (difference > 0.1) {
-            return "복약 상태: 복약률이 증가했습니다. ";
+            return String.format("복약 상태: %s보다 복약률이 증가했습니다.", previousMonthName);
         } else if (difference < -0.1) {
-            return "복약 상태: 복약률이 떨어졌습니다. ";
+            return String.format("복약 상태: %s보다 복약률이 떨어졌습니다.", previousMonthName);
         } else {
-            return "복약 상태: 복약률이 유사합니다. ";
+            return String.format("복약 상태: %s의 복약률과 유사합니다.", previousMonthName);
         }
     }
 
