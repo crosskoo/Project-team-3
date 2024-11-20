@@ -276,15 +276,15 @@ public class MenuActivity extends AppCompatActivity {
                     int imageResId;
                     if (adherencePercentage  >= 80) {
                         adherenceMessage = "복약 관리가 정말 탁월합니다!";
-                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.green));
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.good));
                         imageResId = R.drawable.good;
                     } else if (adherencePercentage  >= 50) {
                         adherenceMessage = "복약 관리에 조금 더 노력이 필요합니다.";
-                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.yellow));
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.common));
                         imageResId = R.drawable.common;
                     } else {
                         adherenceMessage = "복약 관리 상태를 점검해 주세요.";
-                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.red));
+                        binding.adherenceTextView.setTextColor(getResources().getColor(R.color.bad));
                         imageResId = R.drawable.bad;
                     }
 

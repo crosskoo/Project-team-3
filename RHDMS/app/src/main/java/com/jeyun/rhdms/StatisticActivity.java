@@ -257,11 +257,11 @@ public class StatisticActivity extends AppCompatActivity {
         String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 
         if (systolicDiff > 10 || diastolicDiff > 10) {
-            return String.format("혈압 상태: %s에 비해 평균 혈압이 상승했습니다.", previousMonthName);
+            return String.format("%s에 비해 평균 혈압이 상승했습니다.", previousMonthName);
         } else if (systolicDiff < -10 || diastolicDiff < -10) {
-            return String.format("혈압 상태: %s에 비해 평균 혈압이 감소했습니다.", previousMonthName);
+            return String.format("%s에 비해 평균 혈압이 감소했습니다.", previousMonthName);
         } else {
-            return String.format("혈압 상태: %s과 평균 혈압이 비슷합니다.", previousMonthName);
+            return String.format("%s과 평균 혈압이 비슷합니다.", previousMonthName);
         }
     }
 
@@ -270,11 +270,11 @@ public class StatisticActivity extends AppCompatActivity {
         String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 
         if (difference > 10) {
-            return String.format("혈당 상태: %s에 비해 평균 혈당이 상승했습니다.", previousMonthName);
+            return String.format("%s에 비해 평균 혈당이 상승했습니다.", previousMonthName);
         } else if (difference < -10) {
-            return String.format("혈당 상태: %s에 비해 평균 혈당이 감소했습니다.", previousMonthName);
+            return String.format("%s에 비해 평균 혈당이 감소했습니다.", previousMonthName);
         } else {
-            return String.format("혈당 상태: %s의 평균 혈당과 비슷합니다.", previousMonthName);
+            return String.format("%s의 평균 혈당과 비슷합니다.", previousMonthName);
         }
     }
 
@@ -464,13 +464,13 @@ public class StatisticActivity extends AppCompatActivity {
             if (sugaravg == 0) {
                 sugarAvg.setText("최근 혈당 정보가 없습니다.");
             } else {
-                sugarAvg.setText(String.format("주간 혈당: %.2f mg/dL", sugaravg));
+                sugarAvg.setText(String.format("주간 혈당\n\n%.2f mg/dL", sugaravg));
             }
 
             if (systolicavg == 0 && diastolicavg == 0) {
                 pressureAvg.setText("최근 혈압 정보가 없습니다.");
             } else {
-                pressureAvg.setText(String.format("주간 혈압\n수축기 %.2f mmHg\n이완기 %.2f mmHg", systolicavg, diastolicavg));
+                pressureAvg.setText(String.format("주간 혈압\n\n수축기 %.2f\n이완기 %.2f", systolicavg, diastolicavg));
             }
 
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -480,7 +480,7 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate sugarMaxDate = LocalDate.parse(maxBloodSugarRecord.mesure_de, inputFormatter);
                     String formattedSugarMaxDate = sugarMaxDate.format(outputFormatter);
-                    maxBloodSugar.setText(String.format("주간 최고 혈당: %s mg/dL (%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
+                    maxBloodSugar.setText(String.format("주간 최고 혈당\n\n%s mg/dL\n(%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
                     maxBloodSugar.setText("최고 혈당 기록이 없습니다.");
@@ -493,7 +493,7 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate pressureMaxDate = LocalDate.parse(maxBloodPressureRecord.mesure_de, inputFormatter);
                     String formattedPressureMaxDate = pressureMaxDate.format(outputFormatter);
-                    maxBloodPressure.setText(String.format("주간 최고 혈압: %s mmHg (%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
+                    maxBloodPressure.setText(String.format("주간 최고 혈압\n\n%s mmHg\n(%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
                     maxBloodPressure.setText("최고 혈압 기록이 없습니다.");
