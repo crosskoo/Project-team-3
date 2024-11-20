@@ -21,13 +21,11 @@ import com.jeyun.rhdms.PillInfoActivity;
 import com.jeyun.rhdms.R;
 import com.jeyun.rhdms.adapter.wrapper.PillInfo;
 import com.jeyun.rhdms.databinding.FragmentPillCalendarBinding;
-import com.jeyun.rhdms.databinding.FragmentWeekPillChartBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.wrapper.PillBox;
 import com.jeyun.rhdms.util.CustomCalendar;
 import com.jeyun.rhdms.util.Header;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
@@ -70,7 +68,7 @@ public class PillCalendarFragment extends Fragment {
 
     private void setupChart(){
         // 헤더 설정
-        binding.calendarHeader.setText(calendar.timeNow.getYear() + "년 " + calendar.timeNow.getMonthValue() + "월");
+        //binding.calendarHeader.setText(calendar.timeNow.getYear() + "년 " + calendar.timeNow.getMonthValue() + "월");
 
         // 캘린더 출력 형태 설정
         int currentMonthDays = YearMonth.from(calendar.timeNow).lengthOfMonth();
@@ -112,15 +110,12 @@ public class PillCalendarFragment extends Fragment {
                 if(rows == 6) setTextViewMargin(pointViews[i], (292.0f * (i / 7) / (float) rows) + 24);
                 else setTextViewMargin(pointViews[i], (292.0f * (i / 7) / (float) rows) + 28);
 
-                if(pills[i].TAKEN_ST.equals("UNTAKEN")){
-                    pointViews[i].setBackgroundResource(R.drawable.circle_red);
-                } else if (pills[i].TAKEN_ST.equals("TAKEN")){
-                    pointViews[i].setBackgroundResource(R.drawable.circle_green);
-                }else if (pills[i].TAKEN_ST.equals("OVERTAKEN")){
-                    pointViews[i].setBackgroundResource(R.drawable.circle_blue);
-                }else {
-                    pointViews[i].setBackgroundResource(R.drawable.circle_gray);
-                }
+                String status = pills[i].TAKEN_ST;
+                if(status.equals("TAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_light_green);
+                else if(status.equals("DELAYTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_light_sky_blue);
+                else if(status.equals("OUTTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_mustard_yellow);
+                else if(status.equals("ERRTAKEN") || status.equals("N/D")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
+                else pointViews[i].setBackgroundResource(R.drawable.ic_medication_gray);
                 PillInfo pillInfo = new PillInfo(pills[i]);
 
                 //복약 정보 수정

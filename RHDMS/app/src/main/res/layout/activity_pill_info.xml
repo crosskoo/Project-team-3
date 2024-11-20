@@ -194,7 +194,7 @@
         android:layout_height="372dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pm_guideline_data">
+        app:layout_constraintTop_toTopOf="@+id/pillInfo_data">
 
     </FrameLayout>
 
