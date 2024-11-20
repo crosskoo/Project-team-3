@@ -116,6 +116,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.88" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_update_text_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.53" />
+
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -158,8 +165,7 @@
         android:textSize="24sp"
         android:textAlignment="center"
         android:fontFamily="@font/nanumsquarer"
-        android:focusable="false"
-        android:clickable="true"
+        android:enabled="false"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@id/pm_update_guideline2"
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
@@ -179,7 +185,20 @@
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend"/>
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="복용한 시각과 복약 상태를 수정하세요"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nanumsquareb"
+        app:layout_constraintBottom_toTopOf="@id/pm_update_guideline_update_text_bottom"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"/>
+
     <ImageView
+        android:id="@+id/bg_time"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/rounded_white"
@@ -190,17 +209,6 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
-
-    <Spinner
-        android:id="@+id/pm_update_selector"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="25sp"
-        app:layout_constraintTop_toBottomOf="@id/pm_update_taken_time"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend">
-    </Spinner>
 
     <TextView
         android:id="@+id/pm_update_taken_time"
@@ -218,6 +226,16 @@
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"
         app:layout_constraintTop_toBottomOf="@id/pm_update_guideline6"/>
+
+    <Spinner
+        android:id="@+id/pm_update_selector"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/pm_update_taken_time"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend">
+    </Spinner>
 
     <Button
         android:id="@+id/pm_update_cancel"
