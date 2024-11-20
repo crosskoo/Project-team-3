@@ -6,11 +6,11 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/pm_update_guideline1"
+        android:id="@+id/pm_update_guideline_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.13" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_update_guideline2"
@@ -45,52 +45,151 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.10" />
+        app:layout_constraintGuide_percent="0.07" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_update_guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.90" />
+        app:layout_constraintGuide_percent="0.93" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.450" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.550" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_titleend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_titleleft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_titleright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_contentend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pm_update_guideline_mainend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/rounded_corners_stroke"
+        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline_title"
+        app:layout_constraintBottom_toTopOf="@id/pm_update_guideline_titleend"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_titleleft"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_titleright"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
-        android:text="@string/label_pill_info_update"
-        android:textSize="35sp"
-        android:textStyle="bold"
+        android:text="복약 정보 갱신"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nanumsquareb"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline1"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4" />
+        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline_title"
+        app:layout_constraintBottom_toTopOf="@id/pm_update_guideline_titleend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/rounded_corners"
+        app:layout_constraintStart_toEndOf="@id/pm_update_guideline3"
+        app:layout_constraintEnd_toStartOf="@id/pm_update_guideline4"
+        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline_content"
+        app:layout_constraintBottom_toTopOf="@id/pm_update_guideline_contentend"/>
+
 
     <EditText
         android:id="@+id/pm_update_date"
+        android:inputType="datetime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="datetime"
-        android:textSize="25sp"
+        android:hint="복약 날짜를 선택하세요."
+        android:textSize="24sp"
         android:textAlignment="center"
-        android:enabled="false"
+        android:fontFamily="@font/nanumsquarer"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@id/pm_update_guideline2"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"/>
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend"/>
 
     <EditText
         android:id="@+id/pm_update_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="datetime"
-        android:textSize="25sp"
+        android:textSize="24sp"
         android:textAlignment="center"
+        android:fontFamily="@font/nanumsquarer"
         android:enabled="false"
+        android:hint="기존 복약 시간"
         app:layout_constraintTop_toBottomOf="@id/pm_update_date"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"/>
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/rounded_white"
+        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline6"
+        app:layout_constraintStart_toEndOf="@id/pm_update_guideline3"
+        app:layout_constraintEnd_toStartOf="@id/pm_update_guideline4"
+        app:layout_constraintBottom_toTopOf="@id/pm_update_guideline_contentend"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
     <Spinner
         android:id="@+id/pm_update_selector"
@@ -99,8 +198,8 @@
         android:layout_marginTop="15dp"
         android:textSize="25sp"
         app:layout_constraintTop_toBottomOf="@id/pm_update_taken_time"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4">
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend">
     </Spinner>
 
     <TextView
@@ -112,7 +211,10 @@
         android:background="?attr/selectableItemBackground"
         android:textSize="25sp"
         android:hint="@string/placeholder_taken_tm"
+        android:fontFamily="@font/nanumsquarer"
+        android:textColor="@color/black"
         android:textAlignment="center"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"
         app:layout_constraintTop_toBottomOf="@id/pm_update_guideline6"/>
@@ -124,10 +226,11 @@
         android:text="@string/pm_update_cancel"
         android:textSize="20sp"
         android:layout_marginRight="10dp"
+        android:fontFamily="@font/nanumsquareb"
         android:textColor="#FFFFFF"
         android:backgroundTint="#454749"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
-        app:layout_constraintEnd_toStartOf="@id/pm_update_ok"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
+        app:layout_constraintEnd_toStartOf="@id/pm_update_guideline8"
         app:layout_constraintTop_toBottomOf="@id/pm_update_guideline7"/>
 
     <Button
@@ -136,12 +239,12 @@
         android:layout_height="wrap_content"
         android:text="@string/pm_update_ok"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumsquareb"
         android:textColor="#FFFFFF"
         android:backgroundTint="#454749"
         android:layout_marginLeft="10dp"
-        app:layout_constraintStart_toEndOf="@id/pm_update_cancel"
-        app:layout_constraintEnd_toStartOf="@id/pm_update_guideline4"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline9"
         app:layout_constraintTop_toBottomOf="@id/pm_update_guideline7" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
