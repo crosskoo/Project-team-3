@@ -1,5 +1,9 @@
 package com.jeyun.rhdms.fragment;
 
+import static com.jeyun.rhdms.adapter.pill.PillInfoAdapter.getIntentSwitch;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +18,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
+import com.jeyun.rhdms.PillInfoActivity;
 import com.jeyun.rhdms.R;
+import com.jeyun.rhdms.adapter.wrapper.PillInfo;
 import com.jeyun.rhdms.databinding.FragmentWeekPillChartBinding;
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.wrapper.PillBox;
@@ -61,8 +67,12 @@ public class WeekPillChartFragment extends Fragment {
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
+        // 오늘 이후의 데이터 표시안함
+        long displayCount = ChronoUnit.DAYS.between(calendar.timeNow, LocalDate.now()) + 7;
+        if(displayCount > 7) displayCount = 7;
+
         // 출력 데이터 세팅
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < displayCount; i++){
             for (int j = 0; j < dataset.size(); j++) {
                 long daysBetween = ChronoUnit.DAYS.between(calendar.timeNow, LocalDate.parse(dataset.get(j).ARM_DT, formatter));
                 if (daysBetween == i-6){
@@ -93,6 +103,7 @@ public class WeekPillChartFragment extends Fragment {
         // point 이미지 뷰
         ImageView points[] = {binding.point1, binding.point2, binding.point3, binding.point4, binding.point5, binding.point6, binding.point7};
 
+
         int dataTime[] = new int[7];
         int maxTime = 0, minTime = 1440;
         for(int i = 0; i < 7; i++){
@@ -111,6 +122,14 @@ public class WeekPillChartFragment extends Fragment {
                 dataTime[i] = Integer.parseInt(h) * 60 + Integer.parseInt(m);
                 if(maxTime < dataTime[i]) maxTime = dataTime[i];
                 if(dataTime[i] < minTime) minTime = dataTime[i];
+                PillInfo pillInfo = new PillInfo(pills[i]);
+
+                //복약 정보 수정
+                points[i].setOnClickListener(v -> {
+                    Context context = v.getContext();
+                    Intent intent_switch = getIntentSwitch(context, pillInfo);
+                    startActivityForResult(intent_switch, PillInfoActivity.RESET_ADHERENCE);
+                });
             }
         }
 
@@ -123,22 +142,22 @@ public class WeekPillChartFragment extends Fragment {
         }
 
         // 시간대 표시
+        int time[] = new int[5];
         if(maxTime < minTime){
             maxTime = 1440;
             minTime = 0;
         }
-        if(maxTime == minTime){
-            timeView[0].setVisibility(View.GONE);
-            timeView[1].setVisibility(View.GONE);
-            timeView[3].setVisibility(View.GONE);
-            timeView[4].setVisibility(View.GONE);
-        }else{
-            for(int i = 0; i < 5; i++) timeView[i].setVisibility(View.VISIBLE);
-        }
+
         for (int i = 0; i < 5; i++){
-            int time = minTime + (maxTime-minTime)*i/4;
-            timeView[i].setText(String.format("%02d:%02d", time/60, time % 60));
-            setVerticalBias(timeView[i], (i/4.0f)*0.96f + 0.02f);
+            time[i] = minTime + (maxTime-minTime)*i/4;
+            time[i] = (time[i] / 10) * 10;
+            if(i > 0 && time[i] == time[i-1]) {
+                timeView[i].setVisibility(View.GONE);
+                continue;
+            }
+            timeView[i].setVisibility(View.VISIBLE);
+            timeView[i].setText(String.format("%02d:%02d", time[i]/60, time[i] % 60));
+            setVerticalBias(timeView[i], ((time[i]-minTime)/(float)(maxTime-minTime))*0.96f + 0.02f);
         }
 
     }

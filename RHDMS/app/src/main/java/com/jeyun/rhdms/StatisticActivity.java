@@ -1,6 +1,8 @@
 package com.jeyun.rhdms;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.jeyun.rhdms.handler.BloodHandler;
@@ -12,8 +14,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import android.app.AlertDialog;
+import java.time.format.TextStyle;
+import android.content.DialogInterface;
 
 public class StatisticActivity extends AppCompatActivity {
 
@@ -52,11 +58,27 @@ public class StatisticActivity extends AppCompatActivity {
 
         date = findViewById(R.id.week_date_range);
 
+        // 기준 관련.
+        Button statistic_criteria = findViewById(R.id.statistic_criteria);
+
+        // back 버튼 참조
+        Button backButton = findViewById(R.id.back);
+
+        // back 버튼 클릭 시 메뉴 화면으로 이동
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(StatisticActivity.this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish(); // 현재 액티비티 종료
+        });
+
         pillHandler = new PillHandler();
         bloodSugarHandler = new BloodHandler("31"); // 31은 혈당(Blood Sugar)을 의미
         bloodPressureHandler = new BloodHandler("21"); // 21은 혈압(Blood Pressure)을 의미
 
-        LocalDate today = LocalDate.of(2024, 8, 23);// 예시 날짜
+        //LocalDate today = LocalDate.now();
+        //TEST용
+        LocalDate today = LocalDate.of(2024, 8, 23);
 
         // 이전 주간의 시작일과 종료일 계산 (오늘 포함한 일주일)
         LocalDate startOfPreviousWeek = today.minusDays(6); // 오늘을 포함하여 6일 전이 시작일
@@ -72,212 +94,201 @@ public class StatisticActivity extends AppCompatActivity {
         // TextView에 이전 주간 날짜 범위 출력
         date.setText(String.format("통계 주: %s ~ %s", formattedStartOfPreviousWeek, formattedEndOfPreviousWeek));
 
+        // 통계 기준
+        statistic_criteria.setOnClickListener(v -> showPillScoreCriteria());
+
         // 액티비티 시작 시 기본 주간 데이터를 로드
         executor.execute(() -> loadData(today));
 
-        // 4주간 데이터를 로드하고 처리
-        executor.execute(() -> loadMonthlyData(today));
+        // 이번달과 저번달을 비교.
+        executor.execute(() -> loadMonthlyComparison(today));
 
         // 최근 복약 데이터를 로드하고 표시
         executor.execute(this::loadRecentMedicationDate);
     }
 
+    // 통계 기준표를 보여주는 함수
+    private void showPillScoreCriteria() {
+        // AlertDialog.Builder를 사용하여 팝업 생성
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("통계 기준");
+
+        // 복약 점수 기준 설명
+        String message = "복약 점수는 다음과 같이 계산됩니다:\n\n" +
+                "1점: 정상복약, 외출복약\n" +
+                "0.5점: 지연복약, 과복약\n" +
+                "0.1점: 오복약, 미복약\n" +
+                "0점: 그 외 상태\n\n" +
+                "상태 측정 기준:\n\n" +
+                "!!상태는 전 월과 이번 월의 데이터를 비교합니다.!!\n"+
+                "복약 동일 기준 : -1 ~ 1\n"+
+                "혈압 동일 기준 : -10 ~ 10\n"+
+                "혈당 동일 기준 : -10 ~ 10\n";
+
+        builder.setMessage(message);
+
+        // 확인 버튼 추가
+        builder.setPositiveButton("확인", (dialog, which) -> dialog.dismiss());
+
+        // 다이얼로그 보여주기
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     /*
-    4주간 데이터를 통계.
+    이번 달고 저번 달 비교.
     */
 
-    // 4주간의 데이터를 불러오고 처리하는 함수
-    private void loadMonthlyData(LocalDate today) {
-        List<List<Pill>> weeklyPillsData = new ArrayList<>();
-        List<List<Blood>> weeklyBloodSugarData = new ArrayList<>();
-        List<List<Blood>> weeklyBloodPressureData = new ArrayList<>();
+    private void loadMonthlyComparison(LocalDate today) {
+        // 이번 달 데이터 가져오기
+        List<Pill> currentMonthPills = pillHandler.getDataInMonth(today);
+        List<Blood> currentMonthBloodSugar = bloodSugarHandler.getDataInMonth(today);
+        List<Blood> currentMonthBloodPressure = bloodPressureHandler.getDataInMonth(today);
 
-        // 최근 4주 동안의 데이터를 가져옴
-        for (int i = 0; i < 4; i++) {
-            LocalDate weekStartDate = today.minusWeeks(i);
+        // 전달 데이터 가져오기
+        LocalDate previousMonth = today.minusMonths(1); // 전달 계산
+        List<Pill> previousMonthPills = pillHandler.getDataInMonth(previousMonth);
+        List<Blood> previousMonthBloodSugar = bloodSugarHandler.getDataInMonth(previousMonth);
+        List<Blood> previousMonthBloodPressure = bloodPressureHandler.getDataInMonth(previousMonth);
 
-            // 복약 데이터
-            List<Pill> weeklyPills = pillHandler.getDataIn7days(weekStartDate);
-            weeklyPillsData.add(weeklyPills);
+        // 각 달의 평균 계산
+        double currentPillAverage = calculatePillScoreAverages(currentMonthPills);
+        double previousPillAverage = calculatePillScoreAverages(previousMonthPills);
 
-            // 혈당 데이터
-            List<Blood> weeklyBloodSugar = bloodSugarHandler.getDataIn7days(weekStartDate);
-            weeklyBloodSugarData.add(weeklyBloodSugar);
+        double currentSugarAverage = calculateBloodAverage(currentMonthBloodSugar);
+        double previousSugarAverage = calculateBloodAverage(previousMonthBloodSugar);
 
-            // 혈압 데이터
-            List<Blood> weeklyBloodPressure = bloodPressureHandler.getDataIn7days(weekStartDate);
-            weeklyBloodPressureData.add(weeklyBloodPressure);
-        }
+        double[] currentPressureAverages = calculateBloodPressureAverages(currentMonthBloodPressure);
+        double[] previousPressureAverages = calculateBloodPressureAverages(previousMonthBloodPressure);
 
-        // 각 주의 평균 계산
-        List<Double> weeklyPillAverages = calculateWeeklyAverages(weeklyPillsData);
-        List<Double> weeklySugarAverages = calculatemonthlyBloodAverages(weeklyBloodSugarData);
-        List<double[]> weeklyPressureAverages = calculatemonthlyBloodPressureAverages(weeklyBloodPressureData);
+        // 차이 계산
+        double pillDifference = currentPillAverage - previousPillAverage;
+        double sugarDifference = currentSugarAverage - previousSugarAverage;
+        double pressureDifferenceSystolic = currentPressureAverages[0] - previousPressureAverages[0];
+        double pressureDifferenceDiastolic = currentPressureAverages[1] - previousPressureAverages[1];
 
-        // 최근 한 주와 이전 3주의 평균 차이 계산 (복약, 혈당, 혈압)
-        double pillDifference = calculateTotalDifference(weeklyPillAverages);
-        double sugarDifference = calculateTotalDifference(weeklySugarAverages);
-        double pressureDifference = calculateTotalPressureDifference(weeklyPressureAverages);
+        // 상태 평가
+        String pillStatus = evaluatePillDifference(pillDifference, previousMonth);  // 전달의 월 정보 추가
+        String sugarStatus = evaluateSugarDifference(sugarDifference, previousMonth);  // 전달의 월 정보 추가
+        String pressureStatus = evaluatePressureDifference(pressureDifferenceSystolic, pressureDifferenceDiastolic, previousMonth);  // 전달의 월 정보 추가
 
-        // 상태 평가 및 UI 업데이트
-        String pillStatus = evaluatePillDifference(pillDifference);
-        String sugarStatus = evaluateSugarDifference(sugarDifference);
-        String pressureStatus = evaluatePressureDifference(pressureDifference);
+        /*
+        // 전달과 이번 달의 데이터를 UI에 출력
+        runOnUiThread(() -> {
+            pillstatus.setText(String.format("이번달 복약률: %.2f, 전달 복약률: %.2f", currentPillAverage, previousPillAverage));
+            sugarstatus.setText(String.format("이번달 혈당 평균: %.2f mg/dL, 전달 혈당 평균: %.2f mg/dL", currentSugarAverage, previousSugarAverage));
+            pressurestatus.setText(String.format("이번달 혈압 평균: 수축기 %.2f / 이완기 %.2f mmHg\n전달 혈압 평균: 수축기 %.2f / 이완기 %.2f mmHg",
+                    currentPressureAverages[0], currentPressureAverages[1], previousPressureAverages[0], previousPressureAverages[1]));
+        });
+        */
 
         runOnUiThread(() -> {
-            pillstatus.setText(pillStatus);
-            sugarstatus.setText(sugarStatus);
-            pressurestatus.setText(pressureStatus);
+            // 복약률 상태 출력
+            if (currentPillAverage == 0 && previousPillAverage == 0) {
+                pillstatus.setText("2달간 복약 데이터가 없습니다.");
+            } else if (currentPillAverage == 0) {
+                pillstatus.setText("이번달 복약 데이터가 없습니다.");
+            } else if (previousPillAverage == 0) {
+                pillstatus.setText("전달 복약 데이터가 없습니다.");
+            } else {
+                pillstatus.setText(pillStatus);
+            }
+
+            // 혈당 상태 출력
+            if (currentSugarAverage == 0 && previousSugarAverage == 0) {
+                sugarstatus.setText("2달간 혈당 데이터가 없습니다.");
+            } else if (currentSugarAverage == 0) {
+                sugarstatus.setText("이번달 혈당 데이터가 없습니다.");
+            } else if (previousSugarAverage == 0) {
+                sugarstatus.setText("전달 혈당 데이터가 없습니다.");
+            } else {
+                sugarstatus.setText(sugarStatus);
+            }
+
+            // 혈압 상태 출력
+            if (currentPressureAverages[0] == 0 && currentPressureAverages[1] == 0 &&
+                    previousPressureAverages[0] == 0 && previousPressureAverages[1] == 0) {
+                pressurestatus.setText("2달간 혈압 데이터가 없습니다.");
+            } else if (currentPressureAverages[0] == 0 && currentPressureAverages[1] == 0) {
+                pressurestatus.setText("이번달 혈압 데이터가 없습니다.");
+            } else if (previousPressureAverages[0] == 0 && previousPressureAverages[1] == 0) {
+                pressurestatus.setText("전달 혈압 데이터가 없습니다.");
+            } else {
+                pressurestatus.setText(pressureStatus);
+            }
         });
+
     }
 
-    // 각 주의 혈당 평균 계산
-    private List<Double> calculatemonthlyBloodAverages(List<List<Blood>> weeklyData) {
-        List<Double> weeklyAverages = new ArrayList<>();
 
-        for (List<Blood> weekData : weeklyData) {
-            double totalScore = 0;
-            int count = 0;
+    public double calculatePillScoreAverages(List<Pill> pills) {
+        if (pills == null || pills.isEmpty()) return 0;
 
-            for (Blood record : weekData) {
-                try {
-                    totalScore += Double.parseDouble(record.mesure_val);
-                    count++;
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
+        double totalScore = 0;
+        int count=0;
+
+        for (Pill pill : pills) {
+            switch (pill.TAKEN_ST) {
+                case "TAKEN":
+                case "OUTTAKEN":
+                    totalScore += 1;
+                    break;
+                case "DELAYTAKEN":
+                case "OVERTAKEN":
+                    totalScore += 0.5;
+                    break;
+                case "ERRTAKEN":
+                case "UNTAKEN":
+                    totalScore += 0.1;
+                    break;
+                default:
+                    totalScore += 0;
+                    break;
             }
-
-            double average = count > 0 ? totalScore / count : 0;
-            weeklyAverages.add(average);
+            count++;
         }
 
-        return weeklyAverages;
+        return totalScore/count;
     }
 
-    // 각 주의 혈압 평균 계산
-    private List<double[]> calculatemonthlyBloodPressureAverages(List<List<Blood>> weeklyData) {
-        List<double[]> weeklyAverages = new ArrayList<>();
-
-        for (List<Blood> weekData : weeklyData) {
-            double systolicSum = 0;
-            double diastolicSum = 0;
-            int count = 0;
-
-            for (Blood record : weekData) {
-                try {
-                    String[] parts = record.mesure_val.split("/");
-                    if (parts.length == 2) {
-                        systolicSum += Double.parseDouble(parts[0].trim());
-                        diastolicSum += Double.parseDouble(parts[1].trim());
-                        count++;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            double avgSystolic = count > 0 ? systolicSum / count : 0;
-            double avgDiastolic = count > 0 ? diastolicSum / count : 0;
-
-            weeklyAverages.add(new double[]{avgSystolic, avgDiastolic});
-        }
-
-        return weeklyAverages;
-    }
-
-    // 최근 한 주와 이전 3주의 평균 차이를 계산하는 함수
-    private double calculateTotalDifference(List<Double> weeklyAverages) {
-        if (weeklyAverages.size() < 4)
-            return 0;
-
-        double diff1 = weeklyAverages.get(0) - weeklyAverages.get(1);
-        double diff2 = weeklyAverages.get(0) - weeklyAverages.get(2);
-        double diff3 = weeklyAverages.get(0) - weeklyAverages.get(3);
-
-        return diff1 + diff2 + diff3;
-    }
-    // 최근 한 주와 이전 3주의 혈압 차이를 계산하는 함수
-    private double calculateTotalPressureDifference(List<double[]> weeklyAverages) {
-        if (weeklyAverages.size() < 4) return 0;
-
-        double systolicDiff1 = weeklyAverages.get(1)[0] - weeklyAverages.get(0)[0];
-        double systolicDiff2 = weeklyAverages.get(2)[0] - weeklyAverages.get(0)[0];
-        double systolicDiff3 = weeklyAverages.get(3)[0] - weeklyAverages.get(0)[0];
-
-        double diastolicDiff1 = weeklyAverages.get(1)[1] - weeklyAverages.get(0)[1];
-        double diastolicDiff2 = weeklyAverages.get(2)[1] - weeklyAverages.get(0)[1];
-        double diastolicDiff3 = weeklyAverages.get(3)[1] - weeklyAverages.get(0)[1];
-
-        // 수축기와 이완기의 차이를 합산하여 반환
-        return (systolicDiff1 + systolicDiff2 + systolicDiff3) + (diastolicDiff1 + diastolicDiff2 + diastolicDiff3);
-    }
 
     // 혈압 차이에 따른 상태 평가 함수
-    private String evaluatePressureDifference(double difference) {
-        if (difference > 10) {
-            return "혈압 상태: 혈압이 상승했습니다. ";
-        } else if (difference < -10) {
-            return "혈압 상태: 혈압이 감소했습니다. ";
+    private String evaluatePressureDifference(double systolicDiff, double diastolicDiff, LocalDate previousMonth) {
+        String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
+        if (systolicDiff > 10 || diastolicDiff > 10) {
+            return String.format("혈압 상태: %s에 비해 평균 혈압이 상승했습니다.", previousMonthName);
+        } else if (systolicDiff < -10 || diastolicDiff < -10) {
+            return String.format("혈압 상태: %s에 비해 평균 혈압이 감소했습니다.", previousMonthName);
         } else {
-            return "혈압 상태: 동일합니다. ";
+            return String.format("혈압 상태: %s과 평균 혈압이 비슷합니다.", previousMonthName);
         }
     }
 
     // 혈당 차이에 따라 상태를 평가하는 함수
-    private String evaluateSugarDifference(double difference) {
+    private String evaluateSugarDifference(double difference, LocalDate previousMonth) {
+        String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
         if (difference > 10) {
-            return "혈당 상태: 혈당이 상승했습니다. ";
+            return String.format("혈당 상태: %s에 비해 평균 혈당이 상승했습니다.", previousMonthName);
         } else if (difference < -10) {
-            return "혈당 상태: 혈당이 감소했습니다. ";
+            return String.format("혈당 상태: %s에 비해 평균 혈당이 감소했습니다.", previousMonthName);
         } else {
-            return "혈당 상태: 동일합니다. ";
+            return String.format("혈당 상태: %s의 평균 혈당과 비슷합니다.", previousMonthName);
         }
     }
 
     // 복약 차이에 따라 상태를 평가하는 함수
-    private String evaluatePillDifference(double difference) {
-        if (difference > 1) {
-            return "복약 상태: 복약률이 증가했습니다. ";
-        } else if (difference < -1) {
-            return "복약 상태: 복약률이 떨어졌습니다. ";
+    private String evaluatePillDifference(double difference, LocalDate previousMonth) {
+        String previousMonthName = previousMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
+        if (difference > 0.1) {
+            return String.format("복약 상태: %s보다 복약률이 증가했습니다.", previousMonthName);
+        } else if (difference < -0.1) {
+            return String.format("복약 상태: %s보다 복약률이 떨어졌습니다.", previousMonthName);
         } else {
-            return "복약 상태: 복약률이 동일합니다. ";
+            return String.format("복약 상태: %s의 복약률과 유사합니다.", previousMonthName);
         }
-    }
-
-    // 각 주의 복약 점수를 계산하는 함수
-    private List<Double> calculateWeeklyAverages(List<List<Pill>> weeklyData) {
-        List<Double> weeklyAverages = new ArrayList<>();
-        int count=0;
-
-        for (List<Pill> weekData : weeklyData) {
-            double totalScore = 0;
-            for (Pill pill : weekData) {
-                count++;
-                switch (pill.TAKEN_ST) {
-                    case "TAKEN":
-                    case "OUTTAKEN":
-                        totalScore += 1;
-                        break;
-                    case "DELAYTAKEN":
-                    case "OVERTAKEN":
-                        totalScore += 0.5;
-                        break;
-                    case "ERRTAKEN":
-                    case "UNTAKEN":
-                        totalScore += 0.1;
-                        break;
-                    default:
-                        totalScore += 0;
-                        break;
-                }
-            }
-            double average = weekData.isEmpty() ? 0 : totalScore;
-            weeklyAverages.add(average);
-        }
-
-        return weeklyAverages;
     }
 
     /*
@@ -469,7 +480,7 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate sugarMaxDate = LocalDate.parse(maxBloodSugarRecord.mesure_de, inputFormatter);
                     String formattedSugarMaxDate = sugarMaxDate.format(outputFormatter);
-                    maxBloodSugar.setText(String.format("최고 혈당: %s mg/dL (%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
+                    maxBloodSugar.setText(String.format("주간 최고 혈당: %s mg/dL (%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
                     maxBloodSugar.setText("최고 혈당 기록이 없습니다.");
@@ -482,7 +493,7 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate pressureMaxDate = LocalDate.parse(maxBloodPressureRecord.mesure_de, inputFormatter);
                     String formattedPressureMaxDate = pressureMaxDate.format(outputFormatter);
-                    maxBloodPressure.setText(String.format("최고 혈압: %s mmHg (%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
+                    maxBloodPressure.setText(String.format("주간 최고 혈압: %s mmHg (%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
                     maxBloodPressure.setText("최고 혈압 기록이 없습니다.");

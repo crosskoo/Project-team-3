@@ -79,16 +79,13 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initEvents()
     {
-        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class));
-        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class));
-        //binding.buttonPillList.setOnClickListener(v -> switchActivity(PillListActivity.class));
-        // binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(PressureInfoActivity.class)); // 기존 혈압 페이지 비활성화
-        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 신규 혈압 페이지 (테스트)
-        // binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(SugarInfoActivity.class));
-        binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 신규 혈당 페이지 (테스트)
-        binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class));
-        binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
-        binding.buttonLogout.setOnClickListener(v -> Logout()); // 로그아웃
+        binding.buttonStatistics.setOnClickListener(v -> switchActivity(StatisticActivity.class)); // 통계 페이지
+        binding.buttonPillInfo.setOnClickListener(v -> switchActivity(PillInfoActivity.class)); // 복약 정보
+        binding.buttonPressureInfo.setOnClickListener(v -> switchActivity(BloodPressureInfoActivity.class)); // 혈압 페이지
+        binding.buttonSugarInfo.setOnClickListener(v -> switchActivity(BloodSugarInfoActivity.class)); // 혈당 페이지
+        binding.buttonBle.setOnClickListener(v -> switchActivity(BleActivity.class)); // 실시간 측정
+        // binding.buttonSettings.setOnClickListener(v -> switchActivity(SettingMenuActivity.class));  //설정 관련해서 추가.
+        binding.buttonSettings.setOnClickListener(v -> switchActivity(AppSettingsActivity.class)); // 설정 페이지
     }
 
     private <T> void switchActivity(T cls)
@@ -97,34 +94,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void Logout()
-    {
-        new AlertDialog.Builder(this)
-                .setTitle("로그아웃")
-                .setMessage("정말로 로그아웃 하시겠습니까?")
-                .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        // 저장된 orgnztId 데이터 삭제
-                        SharedPreferenceHandler handler = new SharedPreferenceHandler(getApplicationContext());
-                        handler.clearAll();
-                        User.getInstance().setOrgnztId(null);
-
-                        // 로그아웃이 정상적으로 되었는지 확인
-                        Log.d("ksd", "orgnztId : " + handler.getSavedOrgnztId());
-                        Log.d("ksd", "User orgnztId : " + User.getInstance().getOrgnztId()); // 테스트 용
-
-                        // 다시 로그인 화면으로 이동
-                        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton("아니요", null)
-                .show();
-    }
 
     // 최근 혈당과 혈압 정보 불러오기
     private void loadRecentBloodData() {

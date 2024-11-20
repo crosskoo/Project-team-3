@@ -3,7 +3,9 @@ package com.jeyun.rhdms;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
     private Button SettingResetButton;
     private Button FactoryResetButton;
+    private Button ToggleButton;
+    private Button saveButton;
 
     private RadioGroup volumeGroup;
 
@@ -76,6 +80,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
         SettingResetButton = findViewById(R.id.SettingReset_button);
         FactoryResetButton = findViewById(R.id.DeviceRest_button);
+        ToggleButton = findViewById(R.id.selection);
 
         volumeGroup = findViewById(R.id.volume_group);
 
@@ -85,6 +90,83 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         // 뒤로가기 버튼
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> finish());
+
+        // 토글 버튼
+        ToggleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DeviceSettingsActivity.this, AppSettingsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
+
+        // 저장 버튼
+        saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // 약상자 ID와 볼륨이 입력되었는지 확인
+                    if (pillboxId.getText().toString().trim().isEmpty()) {
+                        showAlert("오류", "약상자 ID를 불러오지 못했습니다.");
+                        return;
+                    }
+
+                    int selectedVolumeId = volumeGroup.getCheckedRadioButtonId();
+                    if (selectedVolumeId == -1) { // 아무 볼륨도 선택되지 않은 경우
+                        showAlert("오류", "볼륨을 선택하세요.");
+                        return;
+                    }
+
+                    // settingnum 값이 입력되었는지 확인
+                    String settingNumText = settingnum.getText().toString().trim();
+                    if (settingNumText.isEmpty()) {
+                        showAlert("오류", "알람 개수를 입력하세요.");
+                        return;
+                    }
+
+                    // settingnum 값에 따라 알람 개수를 확인
+                    int numOfAlarms = Integer.parseInt(settingnum.getText().toString());
+
+                    // settingnum이 3을 넘으면 오류 메시지 표시
+                    if (numOfAlarms > 3) {
+                        showAlert("오류", "알람 설정은 최대 3개까지만 가능합니다.");
+                        return;
+                    }
+
+                    // 첫 번째 알람의 시작 시간이 올바른지 검사
+                    if (numOfAlarms >= 1) {
+                        if (!isValidTime(alarmStartHour1st.getText().toString(), alarmStartMinute1st.getText().toString())) {
+                            showAlert("오류", "첫 번째 알람의 시작 시간이 올바르지 않습니다.");
+                            return;
+                        }
+                    }
+
+                    // 두 번째 알람의 시작 시간이 올바른지 검사 (필요 시)
+                    if (numOfAlarms >= 2) {
+                        if (!isValidTime(alarmStartHour2nd.getText().toString(), alarmStartMinute2nd.getText().toString())) {
+                            showAlert("오류", "두 번째 알람의 시작 시간이 올바르지 않습니다.");
+                            return;
+                        }
+                    }
+
+                    // 세 번째 알람의 시작 시간이 올바른지 검사 (필요 시)
+                    if (numOfAlarms == 3) {
+                        if (!isValidTime(alarmStartHour3rd.getText().toString(), alarmStartMinute3rd.getText().toString())) {
+                            showAlert("오류", "세 번째 알람의 시작 시간이 올바르지 않습니다.");
+                            return;
+                        }
+                    }
+
+                    // JSON 객체 생성 및 설정 저장
+                    JSONObject settings = createSettingsJson();
+                    showSendSettingsPopup(settings);
+                    sendSettings(settings);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         //설정 초기화
         SettingResetButton.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +368,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         if (selectedVolume != null) {
             settings.put("volume", selectedVolume.getText().toString());
         }
+
+        Log.d("test", "JSON : " + settings);
 
         return settings;
     }
