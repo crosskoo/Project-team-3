@@ -11,6 +11,9 @@
     <color name="taken">#57b65f</color>
     <color name="overtaken">#3399ff</color>
     <color name="delaytaken">#999999</color>
+    <color name="good">#006400</color>
+    <color name="common">#B27f00</color>
+    <color name="bad">#8B0000</color>
 
     <color name="my_light_primary">#D9D9D9</color>
     <color name="my_light_primary_variant">#3700B3</color>
