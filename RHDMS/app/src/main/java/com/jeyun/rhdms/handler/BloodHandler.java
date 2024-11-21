@@ -119,6 +119,31 @@ public class BloodHandler extends DataHandler<Blood, LocalDate>
         }
     }
 
+    //날짜를 기준으로 7일 전 데이터를 가져오는 함수.
+    public List<Blood> getDataIn30days(LocalDate today) {
+
+        LocalDate sevenDaysAgo = today.minusDays(29);
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String startDate = sevenDaysAgo.format(format);
+        String endDate = today.format(format);
+
+        String query_format =
+                "SELECT * FROM itf_lbdy_mesure_colct " +
+                        "WHERE mesure_tp = %s " +
+                        "AND CONVERT(varchar, mesure_de, 112) BETWEEN %s AND %s " +
+                        "AND SUBJECTID = %s;";
+
+        String query = String.format(query_format, type, startDate, endDate, User.getInstance().getOrgnztId());
+
+        try (Connection con = client.open()) {
+            return con.createQuery(query).executeAndFetch(Blood.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
     @Override
     @Deprecated
     public Optional<Blood> getData(String id)
