@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import android.app.AlertDialog;
 import java.time.format.TextStyle;
 import android.content.DialogInterface;
+import android.widget.ToggleButton;
 
 public class StatisticActivity extends AppCompatActivity {
 
@@ -58,6 +59,7 @@ public class StatisticActivity extends AppCompatActivity {
 
         date = findViewById(R.id.week_date_range);
 
+
         // 기준 관련.
         Button statistic_criteria = findViewById(R.id.statistic_criteria);
 
@@ -72,31 +74,34 @@ public class StatisticActivity extends AppCompatActivity {
             finish(); // 현재 액티비티 종료
         });
 
+
         pillHandler = new PillHandler();
         bloodSugarHandler = new BloodHandler("31"); // 31은 혈당(Blood Sugar)을 의미
         bloodPressureHandler = new BloodHandler("21"); // 21은 혈압(Blood Pressure)을 의미
 
-        LocalDate today = LocalDate.now();
+        //LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.of(2024, 8, 31);
 
-        // 이전 주간의 시작일과 종료일 계산 (오늘 포함한 일주일)
-        LocalDate startOfPreviousWeek = today.minusDays(6); // 오늘을 포함하여 6일 전이 시작일
-        LocalDate endOfPreviousWeek = today; // 오늘이 종료일
+        // date 클릭 시 이벤트 설정
+        date.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("기간 선택");
+            builder.setMessage("통계 기간을 선택하세요.");
+            builder.setPositiveButton("7일", (dialog, which) -> {
+                executor.execute(() -> loadWeeklyData(today));
+            });
+            builder.setNegativeButton("30일", (dialog, which) -> {
+                executor.execute(() -> loadMonthlyData(today));
+            });
+            builder.show();
+        });
 
-        // 포맷터 설정 (yyyy-MM-dd 형식)
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // 시작일과 종료일을 포맷팅하여 문자열로 변환
-        String formattedStartOfPreviousWeek = startOfPreviousWeek.format(formatter);
-        String formattedEndOfPreviousWeek = endOfPreviousWeek.format(formatter);
-
-        // TextView에 이전 주간 날짜 범위 출력
-        date.setText(String.format("통계 주: %s ~ %s", formattedStartOfPreviousWeek, formattedEndOfPreviousWeek));
 
         // 통계 기준
-        pillAvg.setOnClickListener(v -> showPillScoreCriteria());
+        statistic_criteria.setOnClickListener(v -> showPillScoreCriteria());
 
-        // 액티비티 시작 시 기본 주간 데이터를 로드
-        executor.execute(() -> loadData(today));
+        // 기본적으로 주간 데이터를 로드
+        executor.execute(() -> loadMonthlyData(today));
 
         // 이번달과 저번달을 비교.
         executor.execute(() -> loadMonthlyComparison(today));
@@ -228,9 +233,9 @@ public class StatisticActivity extends AppCompatActivity {
                     totalScore += 1;
                     break;
                 case "DELAYTAKEN":
-                case "OVERTAKEN":
                     totalScore += 0.5;
                     break;
+                case "OVERTAKEN":
                 case "ERRTAKEN":
                 case "UNTAKEN":
                     totalScore += 0.1;
@@ -290,29 +295,6 @@ public class StatisticActivity extends AppCompatActivity {
     여기서 부터 주간 평균 구하기.
      */
 
-    private void loadData(LocalDate today) {
-        calculateWeeklyAverages(today);
-    }
-
-    private void calculateWeeklyAverages(LocalDate today) {
-        List<Pill> pills = pillHandler.getDataIn7days(today); // 주간 복약 데이터 가져오기
-        Collections.reverse(pills);
-        double pillAverage = calculatePillScore(pills); // 주간 복약률 계산
-
-        List<Blood> bloodSugarData = bloodSugarHandler.getDataIn7days(today);
-        Collections.reverse(bloodSugarData);
-
-        List<Blood> bloodPressureData = bloodPressureHandler.getDataIn7days(today);
-        Collections.reverse(bloodPressureData);
-
-        double bloodSugarAverage = calculateBloodAverage(bloodSugarData);
-        double[] bloodPressureAverages = calculateBloodPressureAverages(bloodPressureData);
-
-        Blood maxBloodSugarRecord = findMaxValue(bloodSugarData);
-        Blood maxBloodPressureRecord = findMaxBloodPressure(bloodPressureData);
-
-        displayAverages(pillAverage, bloodSugarAverage, bloodPressureAverages[0], bloodPressureAverages[1], maxBloodSugarRecord, maxBloodPressureRecord);
-    }
 
     private void loadRecentMedicationDate() {
         LocalDate today = LocalDate.now(); // 현재 날짜
@@ -367,9 +349,9 @@ public class StatisticActivity extends AppCompatActivity {
                     totalScore += 1;
                     break;
                 case "DELAYTAKEN":
-                case "OVERTAKEN":
                     totalScore += 0.5;
                     break;
+                case "OVERTAKEN":
                 case "ERRTAKEN":
                 case "UNTAKEN":
                     totalScore += 0.1;
@@ -446,26 +428,74 @@ public class StatisticActivity extends AppCompatActivity {
         return Collections.max(data, (record1, record2) -> Double.compare(Double.parseDouble(record1.mesure_val.split("/")[0]), Double.parseDouble(record2.mesure_val.split("/")[0])));
     }
 
-    private void displayAverages(double pillavg, double sugaravg, double systolicavg, double diastolicavg, Blood maxBloodSugarRecord, Blood maxBloodPressureRecord) {
+    // 주간 데이터 로드 함수
+    private void loadWeeklyData(LocalDate today) {
+        List<Pill> pills = pillHandler.getDataIn7days(today); // 주간 복약 데이터 가져오기
+        List<Blood> bloodSugarData = bloodSugarHandler.getDataIn7days(today); // 주간 혈당 데이터 가져오기
+        List<Blood> bloodPressureData = bloodPressureHandler.getDataIn7days(today); // 주간 혈압 데이터 가져오기
+
+        calculateAndDisplayStatistics(pills, bloodSugarData, bloodPressureData, "7일");
+    }
+
+    // 월간 데이터 로드 함수
+    private void loadMonthlyData(LocalDate today) {
+        List<Pill> pills = pillHandler.getDataIn30days(today); // 월간 복약 데이터 가져오기
+        List<Blood> bloodSugarData = bloodSugarHandler.getDataIn30days(today); // 월간 혈당 데이터 가져오기
+        List<Blood> bloodPressureData = bloodPressureHandler.getDataIn30days(today); // 월간 혈압 데이터 가져오기
+
+        calculateAndDisplayStatistics(pills, bloodSugarData, bloodPressureData, "30일");
+    }
+
+    // 통계 계산 및 UI 업데이트 함수
+    private void calculateAndDisplayStatistics(List<Pill> pills, List<Blood> bloodSugarData, List<Blood> bloodPressureData, String period) {
+        double pillAverage = calculatePillScore(pills); // 복약 점수 계산
+        double bloodSugarAverage = calculateBloodAverage(bloodSugarData); // 혈당 평균 계산
+        double[] bloodPressureAverages = calculateBloodPressureAverages(bloodPressureData); // 혈압 평균 계산
+
+        Blood maxBloodSugarRecord = findMaxValue(bloodSugarData); // 최고 혈당 기록 찾기
+        Blood maxBloodPressureRecord = findMaxBloodPressure(bloodPressureData); // 최고 혈압 기록 찾기
 
         runOnUiThread(() -> {
+            //LocalDate today = LocalDate.now();
+            LocalDate today = LocalDate.of(2024, 8, 31);
 
-            if (pillavg == 0) {
-                pillAvg.setText("최근 복약 정보가 없습니다.");
+            // 주간 또는 월간에 따라 날짜 범위를 계산하고 표시
+            if (period.equals("7일")) {
+                // 주간: 최근 7일의 시작일과 종료일 계산
+                LocalDate startDate = today.minusDays(6); // 오늘 포함 6일 전이 시작일
+                LocalDate endDate = today; // 오늘이 종료일
+                date.setText(String.format("통계 기간: %s ~ %s",
+                        startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                ));
+            } else if (period.equals("30일")) {
+                // 월간: 이번 달의 시작일과 종료일 계산
+                LocalDate startDate = today.withDayOfMonth(1); // 이번 달의 첫날
+                LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth()); // 이번 달의 마지막 날
+                date.setText(String.format("통계 기간: %s ~ %s",
+                        startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                ));
+            } // 주/월 표시 업데이트
+
+            if (pillAverage == 0) {
+                pillAvg.setText(period + " 복약 정보가 없습니다.");
             } else {
-                pillAvg.setText(String.format("주간 복약 점수: %.1f / 7 점", pillavg));
+                // 최대 점수를 주간(7점) 또는 월간(30점)으로 설정
+                int maxScore = period.equals("7일") ? 7 : 30;
+                pillAvg.setText(String.format("복약 점수: %.1f / %d 점", pillAverage, maxScore));
             }
 
-            if (sugaravg == 0) {
-                sugarAvg.setText("최근 혈당 정보가 없습니다.");
+            if (bloodSugarAverage == 0) {
+                sugarAvg.setText(period + " 혈당 정보가\n없습니다.");
             } else {
-                sugarAvg.setText(String.format("주간 혈당\n\n%.2f mg/dL", sugaravg));
+                sugarAvg.setText(String.format("평균 혈당\n\n%.1f mg/dL", bloodSugarAverage));
             }
 
-            if (systolicavg == 0 && diastolicavg == 0) {
-                pressureAvg.setText("최근 혈압 정보가 없습니다.");
+            if (bloodPressureAverages[0] == 0 && bloodPressureAverages[1] == 0) {
+                pressureAvg.setText(period + " 혈압 정보가\n없습니다.");
             } else {
-                pressureAvg.setText(String.format("주간 혈압\n\n수축기 %.2f\n이완기 %.2f", systolicavg, diastolicavg));
+                pressureAvg.setText(String.format("평균 혈압\n\n수축기 %.1f\n이완기 %.1f", bloodPressureAverages[0], bloodPressureAverages[1]));
             }
 
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -475,26 +505,26 @@ public class StatisticActivity extends AppCompatActivity {
                 try {
                     LocalDate sugarMaxDate = LocalDate.parse(maxBloodSugarRecord.mesure_de, inputFormatter);
                     String formattedSugarMaxDate = sugarMaxDate.format(outputFormatter);
-                    maxBloodSugar.setText(String.format("주간 최고 혈당\n\n%s mg/dL\n(%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
+                    maxBloodSugar.setText(String.format("최고 혈당\n\n%s mg/dL\n(%s)", maxBloodSugarRecord.mesure_val, formattedSugarMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    maxBloodSugar.setText("최고 혈당 기록이 없습니다.");
+                    maxBloodSugar.setText("최고 혈당 기록이\n없습니다.");
                 }
             } else {
-                maxBloodSugar.setText("최고 혈당 기록이 없습니다.");
+                maxBloodSugar.setText("최고 혈당 기록이\n없습니다.");
             }
 
             if (maxBloodPressureRecord != null) {
                 try {
                     LocalDate pressureMaxDate = LocalDate.parse(maxBloodPressureRecord.mesure_de, inputFormatter);
                     String formattedPressureMaxDate = pressureMaxDate.format(outputFormatter);
-                    maxBloodPressure.setText(String.format("주간 최고 혈압\n\n%s mmHg\n(%s)", maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
+                    maxBloodPressure.setText(String.format("최고 혈압\n\n%s mmHg\n(%s)",maxBloodPressureRecord.mesure_val, formattedPressureMaxDate));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    maxBloodPressure.setText("최고 혈압 기록이 없습니다.");
+                    maxBloodPressure.setText("최고 혈압 기록이\n없습니다.");
                 }
             } else {
-                maxBloodPressure.setText("최고 혈압 기록이 없습니다.");
+                maxBloodPressure.setText("최고 혈압 기록이\n없습니다.");
             }
         });
     }
