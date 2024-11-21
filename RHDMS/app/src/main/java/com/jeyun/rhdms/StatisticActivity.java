@@ -76,9 +76,7 @@ public class StatisticActivity extends AppCompatActivity {
         bloodSugarHandler = new BloodHandler("31"); // 31은 혈당(Blood Sugar)을 의미
         bloodPressureHandler = new BloodHandler("21"); // 21은 혈압(Blood Pressure)을 의미
 
-        //LocalDate today = LocalDate.now();
-        //TEST용
-        LocalDate today = LocalDate.of(2024, 8, 23);
+        LocalDate today = LocalDate.now();
 
         // 이전 주간의 시작일과 종료일 계산 (오늘 포함한 일주일)
         LocalDate startOfPreviousWeek = today.minusDays(6); // 오늘을 포함하여 6일 전이 시작일
