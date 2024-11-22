@@ -105,7 +105,6 @@ public class NewPillInfoActivity extends AppCompatActivity
         list.add("(복약 상태를 선택하세요)");
         list.add("복용");
         list.add("외출 복용");
-        list.add("미복용");
         list.add("지연 복용");
 
         this.dataAdapter = new ArrayAdapter<>
@@ -139,21 +138,6 @@ public class NewPillInfoActivity extends AppCompatActivity
             datePickerDialog.show();
         });
 
-        /*
-        // 복약 시작 시간 뷰 클릭 -> 시작 시간 선택
-        binding.pmNewPillStartTime.setOnClickListener(v -> {
-            TimePickerDialogFactory.showTimePickerDialog(this, time -> {
-                binding.pmNewPillStartTime.setText(time);
-            });
-        });
-        // 복약 종료 시간 뷰 클릭 -> 종료 시간 선택
-        binding.pmNewPillEndTime.setOnClickListener(v -> {
-            TimePickerDialogFactory.showTimePickerDialog(this, time -> {
-                binding.pmNewPillEndTime.setText(time);
-            });
-        });
-         */
-
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), PillInfoActivity.class);
@@ -184,9 +168,6 @@ public class NewPillInfoActivity extends AppCompatActivity
                 break;
             case "외출 복용":
                 takenState = "OUTTAKEN";
-                break;
-            case "미복용":
-                takenState = "UNTAKEN";
                 break;
             case "지연 복용":
                 takenState = "DELAYTAKEN";
