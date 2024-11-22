@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="320dp"
-        android:layout_height="378dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,10 +17,9 @@
             android:id="@+id/status_taken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/ic_medication_light_green"
-            app:layout_constraintEnd_toStartOf="@+id/text_view1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +40,7 @@
             android:id="@+id/status_delayTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/ic_medication_light_sky_blue"
             app:layout_constraintStart_toEndOf="@+id/text_view"
             app:layout_constraintTop_toTopOf="@+id/status_taken" />
@@ -62,26 +61,16 @@
             android:id="@+id/status_untaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/ic_medication_gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/circle_green2"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/ic_medication_coral_pink"
-            app:layout_constraintStart_toEndOf="@+id/text_view1"
-            app:layout_constraintTop_toTopOf="@+id/status_untaken" />
+            app:layout_constraintStart_toEndOf="@+id/text_view4"
+            app:layout_constraintTop_toTopOf="@+id/status_taken" />
 
         <ImageView
             android:id="@+id/status_outTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/ic_medication_mustard_yellow"
             app:layout_constraintStart_toEndOf="@+id/text_view2"
             app:layout_constraintTop_toTopOf="@+id/status_taken" />
@@ -90,59 +79,23 @@
             android:id="@+id/status_errTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/ic_medication_coral_pink"
             app:layout_constraintStart_toEndOf="@+id/text_view3"
             app:layout_constraintTop_toTopOf="@+id/status_taken" />
 
-
-
-        <TextView
-            android:id="@+id/text_view5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="N/D 측정하지 않음"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_green2"
-            app:layout_constraintTop_toTopOf="@+id/text_view1" />
-
-        <TextView
-            android:id="@+id/text_view6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="N/A 해당사항 없음"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_blue"
-            app:layout_constraintTop_toTopOf="@+id/text_view1" />
-
-
-        <ImageView
-            android:id="@+id/circle_blue"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/ic_medication_gray"
-            app:layout_constraintStart_toEndOf="@+id/text_view5"
-            app:layout_constraintTop_toTopOf="@+id/status_untaken" />
 
         <TextView
             android:id="@+id/text_view1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="44dp"
             android:text="미복용"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/status_taken"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/status_untaken"
+            app:layout_constraintTop_toTopOf="@+id/text_view" />
 
 
         <TextView
@@ -169,40 +122,39 @@
             app:layout_constraintStart_toEndOf="@+id/status_errTaken"
             app:layout_constraintTop_toTopOf="@+id/text_view" />
 
-        <ImageView
-            android:id="@+id/calendar_image"
-            android:layout_width="0dp"
-            android:layout_height="292dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_pill_monthdata"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="22dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/calendar_image"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toBottomOf="@+id/status_taken"
+            app:layout_constraintVertical_bias="0.0">
+
+            <ImageView
+                android:id="@+id/calendar_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_pill_monthdata"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/text_day0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -212,8 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -224,8 +176,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -235,8 +187,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -246,8 +198,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -257,8 +209,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -268,8 +220,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -279,8 +231,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -290,8 +242,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -302,8 +254,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -313,8 +265,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -324,8 +276,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -335,8 +287,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -346,8 +298,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -357,8 +309,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -368,8 +320,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -380,8 +332,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -391,8 +343,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -402,8 +354,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -413,8 +365,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -424,8 +376,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -435,8 +387,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -446,8 +398,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -458,8 +410,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -469,8 +421,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -480,8 +432,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -491,8 +443,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -502,8 +454,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -513,8 +465,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -524,8 +476,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -536,8 +488,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -547,8 +499,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -558,8 +510,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -569,8 +521,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -580,8 +532,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -591,8 +543,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -602,8 +554,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="10sp"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -613,387 +565,387 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.14335664" />
+                app:layout_constraintGuide_percent="0.14285715" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="248dp" />
+                app:layout_constraintGuide_percent="0.8544974" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="205dp" />
+                app:layout_constraintGuide_percent="0.71" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="164dp" />
+                app:layout_constraintGuide_percent="0.569" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.43" />
+                app:layout_constraintGuide_percent="0.42857143" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="204dp" />
+                app:layout_constraintGuide_percent="0.2857143" />
 
             <ImageView
                 android:id="@+id/calendar_point0"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point1"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point3"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point4"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point5"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point6"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point7"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point8"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point9"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point10"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point11"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point12"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point13"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point14"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point15"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point16"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point17"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point18"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point19"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point20"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point21"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point22"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point23"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point24"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point25"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point26"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point27"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point28"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point29"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point30"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point31"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point32"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point33"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point34"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point35"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/calendar_point36"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
+                app:background="@drawable/ic_medication_coral_pink"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:background="@drawable/ic_medication_coral_pink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
