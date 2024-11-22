@@ -151,9 +151,11 @@ public class PillCalendarFragment extends Fragment {
 
         // 비율 기반 y값 계산
         if(mode == 0){
-            margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 8 - 5 * density);
+            if(rows < 6) margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 8 - 5 * density);
+            else margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 6 - 5 * density);
         }else{
-            margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 4 + (parentHeight / rows / 8 * 3 - 10 * density));
+            if(rows < 6) margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 4 + (parentHeight / rows / 8 * 3 - 10 * density));
+            else margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 3 + (parentHeight / rows / 3 - 10 * density));
         }
 
 
