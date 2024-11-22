@@ -39,6 +39,7 @@ public class PillCalendarFragment extends Fragment {
     private ArrayList<Pill> dataset; // 복약 정보를 저장할 리스트
     private TextView[] dateViews;   // 날짜 출력 텍스트들
     private ImageView[] pointViews; // 시간을 표시할 점들
+    private int parentHeight;
 
     @Nullable
     @Override
@@ -96,47 +97,71 @@ public class PillCalendarFragment extends Fragment {
 
         // 오늘까지의 복용 데이터 출력
         for(int i = 0; i < 37; i++){
-            if(i < startDay || startDay + currentMonthDays <= i) {
-                dateViews[i].setVisibility(View.GONE);
-            }else {
-                dateViews[i].setText(""+ (i-startDay+1));
-                setTextViewMargin(dateViews[i], (292.0f * (i / 7) / (float) rows) + 1);
-                dateViews[i].setVisibility(View.VISIBLE);
-            }
-            if(pills[i] == null || displayCount <= i) {
+            dateViews[i].setVisibility(View.GONE);
+            pointViews[i].setVisibility(View.GONE);
+
+            if(i < startDay || startDay + currentMonthDays <= i) continue;
+
+            dateViews[i].setText(""+ (i-startDay+1));
+            setViewMargin(dateViews[i], ((i / 7) / (float) rows), rows, 0);
+
+            if(pills[i] == null || displayCount <= i) continue;
+
+            setViewMargin(pointViews[i], ((i / 7) / (float) rows), rows, 1);
+
+            String status = pills[i].TAKEN_ST;
+            if(status.equals("TAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_light_green);
+            else if(status.equals("DELAYTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_light_sky_blue);
+            else if(status.equals("OUTTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_mustard_yellow);
+            else if(status.equals("ERRTAKEN") || status.equals("OVERTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
+            else if(status.equals("UNTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_gray);
+            else {
                 pointViews[i].setVisibility(View.GONE);
-            }else{
-                pointViews[i].setVisibility(View.VISIBLE);
-                if(rows == 6) setTextViewMargin(pointViews[i], (292.0f * (i / 7) / (float) rows) + 24);
-                else setTextViewMargin(pointViews[i], (292.0f * (i / 7) / (float) rows) + 28);
-
-                String status = pills[i].TAKEN_ST;
-                if(status.equals("TAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_light_green);
-                else if(status.equals("DELAYTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_light_sky_blue);
-                else if(status.equals("OUTTAKEN")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_mustard_yellow);
-                else if(status.equals("ERRTAKEN") || status.equals("N/D")) pointViews[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
-                else pointViews[i].setBackgroundResource(R.drawable.ic_medication_gray);
-                PillInfo pillInfo = new PillInfo(pills[i]);
-
-                //복약 정보 수정
-                pointViews[i].setOnClickListener(v -> {
-                    Context context = v.getContext();
-                    Intent intent_switch = getIntentSwitch(context, pillInfo);
-                    startActivityForResult(intent_switch, PillInfoActivity.RESET_ADHERENCE);
-                });
+                continue;
             }
+
+            PillInfo pillInfo = new PillInfo(pills[i]);
+
+            //복약 정보 수정
+            pointViews[i].setOnClickListener(v -> {
+                Context context = v.getContext();
+                Intent intent_switch = getIntentSwitch(context, pillInfo);
+                startActivityForResult(intent_switch, PillInfoActivity.RESET_ADHERENCE);
+            });
         }
     }
 
     //view의 위치 설정
-    private void setTextViewMargin(View view, float y) {
-        // LayoutParams를 가져온 후 마진 값을 설정
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+    private void setViewMargin(View view, float ratio, int rows, int mode) {
+        Context context = getContext();
+        // 부모 레이아웃의 높이 가져오기
+        ConstraintLayout parentLayout = (ConstraintLayout) view.getParent(); // 부모 레이아웃 가져오기
 
-        // 마진 값 설정 (dp 단위로 지정할 경우 px로 변환 필요)
-        int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, y, getResources().getDisplayMetrics());
+        //높이가 측정되지 않은 경우 처리 (View가 아직 레이아웃에 배치되지 않았을 때)
+        if (parentHeight == 0) {
+            parentLayout.post(() -> {
+                parentHeight = parentLayout.getHeight();
+                setViewMargin(view, ratio, rows, mode);
+            }); // 레이아웃 배치 후 다시 호출
+            return;
+        }
+
+        float density = context.getResources().getDisplayMetrics().density;
+        int margin;
+
+        // 비율 기반 y값 계산
+        if(mode == 0){
+            margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 8 - 5 * density);
+        }else{
+            margin = (int) (parentHeight * ratio) + (int)(parentHeight / rows / 4 + (parentHeight / rows / 8 * 3 - 10 * density));
+        }
+
+
+        // LayoutParams를 가져온 후 마진 값 설정
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
         params.setMargins(params.leftMargin, margin, params.rightMargin, params.bottomMargin); // 위 마진 설정
 
+        view.setVisibility(View.VISIBLE);
         view.setLayoutParams(params); // 변경된 LayoutParams 적용
     }
 }
