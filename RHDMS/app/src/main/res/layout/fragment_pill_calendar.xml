@@ -78,7 +78,7 @@
             app:layout_constraintTop_toTopOf="@+id/status_untaken" />
 
         <ImageView
-            android:id="@+id/circle_blue2"
+            android:id="@+id/status_outTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginStart="12dp"
@@ -87,7 +87,7 @@
             app:layout_constraintTop_toTopOf="@+id/status_taken" />
 
         <ImageView
-            android:id="@+id/circle_gray2"
+            android:id="@+id/status_errTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginStart="12dp"
@@ -154,7 +154,7 @@
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_blue2"
+            app:layout_constraintStart_toEndOf="@+id/status_outTaken"
             app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <TextView
@@ -166,7 +166,7 @@
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_gray2"
+            app:layout_constraintStart_toEndOf="@+id/status_errTaken"
             app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <ImageView

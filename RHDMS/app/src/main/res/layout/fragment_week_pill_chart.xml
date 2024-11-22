@@ -12,10 +12,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/status_taken"
@@ -24,7 +24,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/ic_medication_light_green"
-            app:layout_constraintEnd_toStartOf="@+id/text_view1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,23 +65,13 @@
             android:id="@+id/status_untaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/ic_medication_gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/circle_green2"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
             android:layout_marginStart="12dp"
-            android:background="@drawable/ic_medication_coral_pink"
-            app:layout_constraintStart_toEndOf="@+id/text_view1"
-            app:layout_constraintTop_toTopOf="@+id/status_untaken" />
+            android:background="@drawable/ic_medication_gray"
+            app:layout_constraintStart_toEndOf="@+id/text_view4"
+            app:layout_constraintTop_toTopOf="@+id/status_taken" />
 
         <ImageView
-            android:id="@+id/circle_blue2"
+            android:id="@+id/status_outTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginStart="12dp"
@@ -91,7 +80,7 @@
             app:layout_constraintTop_toTopOf="@+id/status_taken" />
 
         <ImageView
-            android:id="@+id/circle_gray2"
+            android:id="@+id/status_errTaken"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginStart="12dp"
@@ -101,52 +90,16 @@
 
 
         <TextView
-            android:id="@+id/text_view5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="N/D 측정하지 않음"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_green2"
-            app:layout_constraintTop_toTopOf="@+id/text_view1" />
-
-        <TextView
-            android:id="@+id/text_view6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="N/A 해당사항 없음"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_blue"
-            app:layout_constraintTop_toTopOf="@+id/text_view1" />
-
-
-        <ImageView
-            android:id="@+id/circle_blue"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/ic_medication_gray"
-            app:layout_constraintStart_toEndOf="@+id/text_view5"
-            app:layout_constraintTop_toTopOf="@+id/status_untaken" />
-
-        <TextView
             android:id="@+id/text_view1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="44dp"
             android:text="미복용"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/status_taken"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintStart_toEndOf="@+id/status_untaken"
+            app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <TextView
             android:id="@+id/text_view3"
@@ -157,7 +110,7 @@
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_blue2"
+            app:layout_constraintStart_toEndOf="@+id/status_outTaken"
             app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <TextView
@@ -169,7 +122,7 @@
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/circle_gray2"
+            app:layout_constraintStart_toEndOf="@+id/status_errTaken"
             app:layout_constraintTop_toTopOf="@+id/text_view" />
 
         <TextView
