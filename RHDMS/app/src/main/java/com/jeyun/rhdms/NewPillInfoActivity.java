@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jeyun.rhdms.bluetooth.NetworkHandler;
 import com.jeyun.rhdms.databinding.ActivityNewPillInfoBinding;
 import com.jeyun.rhdms.handler.entity.User;
+import com.jeyun.rhdms.util.MyCalendar;
 import com.jeyun.rhdms.util.factory.TimePickerDialogFactory;
 
 import java.io.OutputStream;
@@ -20,10 +21,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -59,6 +64,37 @@ public class NewPillInfoActivity extends AppCompatActivity
     {
         // 복약 상태 드롭다운 리스트 설정
         initSelector();
+
+        // 현재 시각
+        LocalDateTime curDate = LocalDateTime.now();
+        Log.d("curdate", curDate.toString()); // 테스트용
+        String state = "";
+
+        // 현재 날짜를 newPillDate EditText에 설정
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+        String currentDate = curDate.format(dateFormat);
+        // Log.d("ui","date : " + currentDate); // 테스트용
+        binding.pmNewPillDate.setText(currentDate);
+
+        // 현재 시각을 newPillStartTime EditText에 설정
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+        String currentTime = curDate.format(timeFormat);
+        // Log.d("ui","time : " + currentTime); // 테스트용
+        binding.pmNewPillTakenTime.setText(currentTime);
+
+        // 복약 스케줄과 현재 시각에 맞춰서 설정
+        // 현재 시각이 복약 스케줄 안에 있으면 복약 상태를 복용으로 기본 설정
+        // 현재 시각이 복약 스케줄 밖에 있으면 지연 복용으로 기본 설정
+        if (curDate.isAfter(User.getInstance().getARM_ST_TM()) && curDate.isBefore(User.getInstance().getARM_ED_TM()))
+        {
+            state = "복용";
+        }
+        else
+        {
+            state = "지연 복용";
+        }
+        binding.pmNewPillSelector.setSelection(dataAdapter.getPosition(state));
+
         // 이벤트 설정
         initEvents();
     }
@@ -103,6 +139,7 @@ public class NewPillInfoActivity extends AppCompatActivity
             datePickerDialog.show();
         });
 
+        /*
         // 복약 시작 시간 뷰 클릭 -> 시작 시간 선택
         binding.pmNewPillStartTime.setOnClickListener(v -> {
             TimePickerDialogFactory.showTimePickerDialog(this, time -> {
@@ -115,6 +152,7 @@ public class NewPillInfoActivity extends AppCompatActivity
                 binding.pmNewPillEndTime.setText(time);
             });
         });
+         */
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
@@ -164,15 +202,21 @@ public class NewPillInfoActivity extends AppCompatActivity
     {
         newPillInfoMap = new HashMap<String, Object>();
 
-        String takenDate = binding.pmNewPillDate.getText().toString();
-        String scheduledStartTime = binding.pmNewPillStartTime.getText().toString();
-        String scheduledEndTime = binding.pmNewPillEndTime.getText().toString();
+        String takenDate = binding.pmNewPillDate.getText().toString(); // 복약 날짜 설정
+
+        LocalDateTime arm_st_tm = User.getInstance().getARM_ST_TM(); // 알람 시작 시각
+        LocalDateTime arm_ed_tm = User.getInstance().getARM_ED_TM(); // 알람 종료 시각
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String scheduledStartTime = arm_st_tm.format(formatter);
+        String scheduledEndTime = arm_ed_tm.format(formatter);
+
         String takenTime = binding.pmNewPillTakenTime.getText().toString();
 
         String selectedState = binding.pmNewPillSelector.getSelectedItem().toString();
         String takenState = setTakenState(selectedState);
 
-        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() || takenTime.isEmpty() || takenState.isEmpty())
+        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() ||takenTime.isEmpty() || takenState.isEmpty())
         {
             Toast.makeText(this, "정보를 전부 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
@@ -236,12 +280,14 @@ public class NewPillInfoActivity extends AppCompatActivity
                 System.out.println("ResponseCode:" + responseCode); // 응답 코드 확인
 
                 conn.disconnect();
+
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
         });
+
     }
 
     private void setJsonData()
