@@ -87,9 +87,24 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         String user_id= User.getInstance().getOrgnztId();
         pillboxId.setText(user_id);
 
+        // 기본값 설정
+        alarmStartHour1st.setText("09");
+        alarmStartMinute1st.setText("00");
+
+        alarmStartHour2nd.setText("12");
+        alarmStartMinute2nd.setText("00");
+
+        alarmStartHour3rd.setText("18");
+        alarmStartMinute3rd.setText("00");
+
+        alarmDuration1st.setText("10");
+        alarmDuration2nd.setText("10");
+        alarmDuration3rd.setText("10");
+
         // 뒤로가기 버튼
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> finish());
+
 
         // 토글 버튼
         ToggleButton.setOnClickListener(v -> {
@@ -244,6 +259,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // 종료 시간을 계산하는 함수
     private String calculateEndTime(String startHourStr, String startMinuteStr, String durationStr) {
