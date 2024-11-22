@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.43" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pm_update_guideline7"
@@ -165,45 +165,6 @@
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend"/>
 
-    <EditText
-        android:id="@+id/pm_new_pill_start_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="복약 시작 시간"
-        android:textSize="20sp"
-        android:fontFamily="@font/nanumsquarer"
-        android:textAlignment="center"
-        android:focusable="false"
-        android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_date"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline8"/>
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="~"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_date"
-        app:layout_constraintStart_toEndOf="@id/pm_new_pill_start_time"
-        app:layout_constraintEnd_toStartOf="@id/pm_new_pill_end_time"
-        app:layout_constraintBottom_toBottomOf="@id/pm_new_pill_start_time"/>
-
-    <EditText
-        android:id="@+id/pm_new_pill_end_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="복약 종료 시간"
-        android:textSize="20sp"
-        android:fontFamily="@font/nanumsquarer"
-        android:textAlignment="center"
-        android:focusable="false"
-        android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_date"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline9"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend"/>
-
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -216,15 +177,19 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
 
-    <Spinner
-        android:id="@+id/pm_new_pill_selector"
+    <TextView
+        android:id="@+id/pm_new_pill_taken_time_title"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:textSize="25sp"
-        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_taken_time"
-        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
-        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend">
-    </Spinner>
+        android:layout_height="wrap_content"
+        android:text="복용한 시간"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:fontFamily="@font/nanumsquarer"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"
+        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline6"/>
 
     <TextView
         android:id="@+id/pm_new_pill_taken_time"
@@ -241,7 +206,32 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
         app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"
-        app:layout_constraintTop_toBottomOf="@id/pm_update_guideline6"/>
+        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_taken_time_title"/>
+
+    <TextView
+        android:id="@+id/pm_new_pill_selector_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="복약 상태"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/nanumsquarer"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline3"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline4"
+        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_taken_time"
+        app:layout_constraintBottom_toTopOf="@id/pm_new_pill_selector"/>
+
+    <Spinner
+        android:id="@+id/pm_new_pill_selector"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/pm_new_pill_selector_title"
+        app:layout_constraintStart_toStartOf="@id/pm_update_guideline_main"
+        app:layout_constraintEnd_toEndOf="@id/pm_update_guideline_mainend">
+    </Spinner>
 
     <Button
         android:id="@+id/pm_new_pill_cancel"
