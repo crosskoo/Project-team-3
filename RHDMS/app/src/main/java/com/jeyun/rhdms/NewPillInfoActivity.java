@@ -67,14 +67,10 @@ public class NewPillInfoActivity extends AppCompatActivity
     {
         List<String> list = new ArrayList<>();
         list.add("(복약 상태를 선택하세요)");
-        list.add("OUTTAKEN");
-        list.add("TAKEN");
-        list.add("UNTAKEN");
-        list.add("OVERTAKEN");
-        list.add("DELAYTAKEN");
-        list.add("ERRTAKEN");
-        list.add("N/A");
-        list.add("N/D");
+        list.add("복용");
+        list.add("외출 복용");
+        list.add("미복용");
+        list.add("지연 복용");
 
         this.dataAdapter = new ArrayAdapter<>
                 (
@@ -139,6 +135,31 @@ public class NewPillInfoActivity extends AppCompatActivity
         });
     }
 
+    private String setTakenState(String selectedString)
+    {
+        String takenState = "";
+
+        switch (selectedString)
+        {
+            case "복용":
+                takenState = "TAKEN";
+                break;
+            case "외출 복용":
+                takenState = "OUTTAKEN";
+                break;
+            case "미복용":
+                takenState = "UNTAKEN";
+                break;
+            case "지연 복용":
+                takenState = "DELAYTAKEN";
+                break;
+            default:
+
+                break;
+        }
+        return takenState;
+    }
+
     private void transferNewPillInfo() // 복약 정보를 서버에 전송
     {
         newPillInfoMap = new HashMap<String, Object>();
@@ -147,9 +168,11 @@ public class NewPillInfoActivity extends AppCompatActivity
         String scheduledStartTime = binding.pmNewPillStartTime.getText().toString();
         String scheduledEndTime = binding.pmNewPillEndTime.getText().toString();
         String takenTime = binding.pmNewPillTakenTime.getText().toString();
-        String takenState = binding.pmNewPillSelector.getSelectedItem().toString();
 
-        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() || takenTime.isEmpty() || takenState.equals("(복약 상태를 선택하세요)"))
+        String selectedState = binding.pmNewPillSelector.getSelectedItem().toString();
+        String takenState = setTakenState(selectedState);
+
+        if (takenDate.isEmpty() || scheduledStartTime.isEmpty() || scheduledEndTime.isEmpty() || takenTime.isEmpty() || takenState.isEmpty())
         {
             Toast.makeText(this, "정보를 전부 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
