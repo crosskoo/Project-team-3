@@ -414,7 +414,11 @@ public class MenuActivity extends AppCompatActivity {
             // 복약 스케줄 설정
             User.getInstance().setARM_ST_TM(latestDateTime);
             User.getInstance().setARM_ED_TM(latestEndTime);
-            Log.d("schedule", "latestDateTime : " + latestDateTime + "latestEndTime : " + latestEndTime);
+            Log.d("schedule",
+                    "latestDateTime : " +
+                    User.getInstance().getARM_ST_TM() +
+                    "latestEndTime : " +
+                    User.getInstance().getARM_ED_TM());
 
             runOnUiThread(() -> {
                 if (latestDateTime != null) {
