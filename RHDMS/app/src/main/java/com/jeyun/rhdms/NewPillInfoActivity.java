@@ -67,8 +67,6 @@ public class NewPillInfoActivity extends AppCompatActivity
 
         // 현재 시각
         LocalDateTime curDate = LocalDateTime.now();
-        Log.d("curdate", curDate.toString()); // 테스트용
-        String state = "";
 
         // 현재 날짜를 newPillDate EditText에 설정
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
@@ -82,15 +80,22 @@ public class NewPillInfoActivity extends AppCompatActivity
         // Log.d("ui","time : " + currentTime); // 테스트용
         binding.pmNewPillTakenTime.setText(currentTime);
 
+        // Log.d("arm", User.getInstance().getARM_ST_TM().toString());
+        // Log.d("arm", User.getInstance().getARM_ED_TM().toString());
+        // Log.d("arm", curDate.toString());
+
+        String state = "";
         // 복약 스케줄과 현재 시각에 맞춰서 설정
         // 현재 시각이 복약 스케줄 안에 있으면 복약 상태를 복용으로 기본 설정
         // 현재 시각이 복약 스케줄 밖에 있으면 지연 복용으로 기본 설정
         if (curDate.isAfter(User.getInstance().getARM_ST_TM()) && curDate.isBefore(User.getInstance().getARM_ED_TM()))
         {
+            // Log.d("arm", "현재 시각이 복용 스케줄 안에 있습니다");
             state = "복용";
         }
         else
         {
+            // Log.d("arm","현재 시각이 복용 스케줄 바깥에 있습니다");
             state = "지연 복용";
         }
         binding.pmNewPillSelector.setSelection(dataAdapter.getPosition(state));
