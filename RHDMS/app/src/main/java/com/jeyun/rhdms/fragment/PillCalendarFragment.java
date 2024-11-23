@@ -54,10 +54,21 @@ public class PillCalendarFragment extends Fragment {
                 binding.calendarPoint0, binding.calendarPoint1, binding.calendarPoint2, binding.calendarPoint3, binding.calendarPoint4, binding.calendarPoint5, binding.calendarPoint6, binding.calendarPoint7, binding.calendarPoint8, binding.calendarPoint9, binding.calendarPoint10, binding.calendarPoint11, binding.calendarPoint12, binding.calendarPoint13, binding.calendarPoint14, binding.calendarPoint15, binding.calendarPoint16, binding.calendarPoint17, binding.calendarPoint18, binding.calendarPoint19, binding.calendarPoint20, binding.calendarPoint21, binding.calendarPoint22, binding.calendarPoint23, binding.calendarPoint24, binding.calendarPoint25, binding.calendarPoint26, binding.calendarPoint27, binding.calendarPoint28, binding.calendarPoint29, binding.calendarPoint30, binding.calendarPoint31, binding.calendarPoint32, binding.calendarPoint33, binding.calendarPoint34, binding.calendarPoint35, binding.calendarPoint36
         };
 
+        initEvent();
         loadData(); // 데이터 불러오기.
         setupChart(); // chart 설정.
 
         return v;
+    }
+
+    private void initEvent(){
+        // 기간 이동 이벤트
+        binding.buttonDecrease.setOnClickListener(v -> {
+            ((PillInfoActivity)getContext()).goToPreviousPeriod();
+        });
+        binding.buttonIncrease.setOnClickListener(v -> {
+            ((PillInfoActivity)getContext()).goToNextPeriod();
+        });
     }
 
     private void loadData(){
@@ -69,7 +80,7 @@ public class PillCalendarFragment extends Fragment {
 
     private void setupChart(){
         // 헤더 설정
-        //binding.calendarHeader.setText(calendar.timeNow.getYear() + "년 " + calendar.timeNow.getMonthValue() + "월");
+        binding.calendarHeader.setText(calendar.timeNow.getYear() + "년 " + calendar.timeNow.getMonthValue() + "월");
 
         // 캘린더 출력 형태 설정
         int currentMonthDays = YearMonth.from(calendar.timeNow).lengthOfMonth();

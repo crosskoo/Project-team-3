@@ -132,30 +132,13 @@ public class PillInfoActivity extends AppCompatActivity {
             supplier = isWeek ? WeekPillChartFragment::new : PillCalendarFragment::new;
             loadData(isWeek);
         });
-
-        // 토글 버튼에 설정된 값만큼 날짜가 증가하고 그 날짜에 해당하는 데이터를 불러옴.
-        binding.buttonIncrease.setOnClickListener(v ->
-        {
-            ToggleButton tb = binding.togglePillInfo;
-            int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
-            calendar.increase(type);
-            loadData(tb.isChecked());
-        });
-
-        // 토글 버튼에 설정된 값만큼 날짜가 줄어들고 그 날짜에 해당하는 데이터를 불러옴.
-        binding.buttonDecrease.setOnClickListener(v ->
-        {
-            ToggleButton tb = binding.togglePillInfo;
-            int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
-            calendar.decrease(type);
-            loadData(tb.isChecked());
-        });
-        //< > 버튼의 삭제로 인한 일시적 주석 처리 */
+        // 복약 수동 입력 창 열기
         binding.pillupdateEnter.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), NewPillInfoActivity.class);
             startActivity(intent);
             finish();
         });
+        
         binding.back.setOnClickListener(v -> finish());
     }
 
@@ -177,5 +160,20 @@ public class PillInfoActivity extends AppCompatActivity {
         }
         if(totalCount == 0) binding.textAdherencePercentage.setText("-");
         else binding.textAdherencePercentage.setText(String.format("%.1f", adherenceCount / (float)totalCount * 100) + "%");
+    }
+    
+    // 이전 기간 데이터 로드 함수
+    public void goToPreviousPeriod(){
+        ToggleButton tb = binding.togglePillInfo;
+        int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
+        calendar.decrease(type);
+        loadData(tb.isChecked());
+    }
+    // 이후 기간 데이터 로드 함수
+    public void goToNextPeriod(){
+        ToggleButton tb = binding.togglePillInfo;
+        int type = tb.isChecked() ? CustomCalendar.WEEK : CustomCalendar.MONTH;
+        calendar.increase(type);
+        loadData(tb.isChecked());
     }
 }

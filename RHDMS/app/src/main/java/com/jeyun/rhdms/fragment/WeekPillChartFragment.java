@@ -51,9 +51,20 @@ public class WeekPillChartFragment extends Fragment {
         constraintLayout = v.findViewById(R.id.innerLayout);
         line = v.findViewById(R.id.line_view1);
 
+        initEvent();
         loadData(); // 데이터 불러오기.
         setupChart(); // chart 설정.
         return v;
+    }
+
+    private void initEvent(){
+        // 기간 이동 이벤트
+        binding.buttonDecrease.setOnClickListener(v -> {
+            ((PillInfoActivity)getContext()).goToPreviousPeriod();
+        });
+        binding.buttonIncrease.setOnClickListener(v -> {
+            ((PillInfoActivity)getContext()).goToNextPeriod();
+        });
     }
 
 
