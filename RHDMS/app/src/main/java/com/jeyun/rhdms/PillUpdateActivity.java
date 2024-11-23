@@ -111,15 +111,13 @@ public class PillUpdateActivity extends AppCompatActivity
         String day = pill.ARM_DT.substring(6, 8);
         binding.pmUpdateDate.setText(String.format("%s년 %s월 %s일", year, month, day));
 
-        String formatted = pill.ARM_TP.equals("1") ? "오전" : "오후";
-        binding.pmUpdateTime.setText(String.format("%s %s ~ %s",  formatted, pill.ARM_ST_TM, pill.ARM_ED_TM));
-
         String hour = pill.TAKEN_TM.substring(0, 2);
         String minutes = pill.TAKEN_TM.substring(2, 4);
         binding.pmUpdateTakenTime.setText(String.format("%s:%s", hour, minutes));
 
         initSelector();
         String setText = changeTakenStateIntoString(pill.TAKEN_ST);
+        // Log.d("test", "setText: " + setText); // 테스트용"
         binding.pmUpdateSelector.setSelection(dataAdapter.getPosition(setText));
     }
 
@@ -167,6 +165,9 @@ public class PillUpdateActivity extends AppCompatActivity
                 break;
             case "ERRTAKEN":
                 setText = "오복용";
+                break;
+            case "OVERTAKEN":
+                setText = "오복용"; // 과복용도 오복용에 포함
                 break;
             default:
                 setText = "복약 상태 Error"; // 예외 처리
