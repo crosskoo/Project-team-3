@@ -144,7 +144,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/rounded_corners"
+        android:src="@drawable/bg_pill_rounded_corners"
         app:layout_constraintStart_toEndOf="@id/pm_update_guideline3"
         app:layout_constraintEnd_toStartOf="@id/pm_update_guideline4"
         app:layout_constraintTop_toBottomOf="@id/pm_update_guideline_content"

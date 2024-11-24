@@ -136,7 +136,6 @@ public class PillInfoActivity extends AppCompatActivity {
         binding.pillupdateEnter.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), NewPillInfoActivity.class);
             startActivity(intent);
-            finish();
         });
         
         binding.back.setOnClickListener(v -> finish());

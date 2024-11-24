@@ -145,13 +145,14 @@ public class NewPillInfoActivity extends AppCompatActivity
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), PillInfoActivity.class);
-            startActivity(intent);
             finish();
         });
 
         // 확인 버튼 클릭 -> 복약 정보를 서버에 전송
-        binding.pmNewPillOk.setOnClickListener(v -> transferNewPillInfo());
+        binding.pmNewPillOk.setOnClickListener(v -> {
+            transferNewPillInfo();
+            finish();
+        });
 
         // 복약 시각 뷰 클릭 -> 시간 선택 다이얼로그 띄움
         binding.pmNewPillTakenTime.setOnClickListener(v ->
