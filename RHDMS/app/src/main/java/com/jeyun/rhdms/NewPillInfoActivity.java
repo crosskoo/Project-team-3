@@ -141,6 +141,7 @@ public class NewPillInfoActivity extends AppCompatActivity
                     },
                     year, month, day);
             datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis()); // 현재 날짜 이후의 데이터 선택 불가
         });
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
