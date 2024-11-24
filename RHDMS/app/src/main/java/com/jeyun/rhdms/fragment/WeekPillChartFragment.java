@@ -51,9 +51,20 @@ public class WeekPillChartFragment extends Fragment {
         constraintLayout = v.findViewById(R.id.innerLayout);
         line = v.findViewById(R.id.line_view1);
 
+        initEvent();
         loadData(); // 데이터 불러오기.
         setupChart(); // chart 설정.
         return v;
+    }
+
+    private void initEvent(){
+        // 기간 이동 이벤트
+        binding.buttonDecrease.setOnClickListener(v -> {
+            ((PillInfoActivity)getContext()).goToPreviousPeriod();
+        });
+        binding.buttonIncrease.setOnClickListener(v -> {
+            ((PillInfoActivity)getContext()).goToNextPeriod();
+        });
     }
 
 
@@ -110,8 +121,9 @@ public class WeekPillChartFragment extends Fragment {
                 if(status.equals("TAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_light_green);
                 else if(status.equals("DELAYTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_light_sky_blue);
                 else if(status.equals("OUTTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_mustard_yellow);
-                else if(status.equals("ERRTAKEN") || status.equals("N/D")) points[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
-                else points[i].setBackgroundResource(R.drawable.ic_medication_gray);
+                else if(status.equals("ERRTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
+                else if(status.equals("UNTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_gray);
+                else points[i].setVisibility(View.GONE);
 
                 String time = pills[i].TAKEN_TM;
                 String h = time.substring(0, 2);
@@ -134,7 +146,7 @@ public class WeekPillChartFragment extends Fragment {
         for(int i = 0; i < 7; i++){
             if(pills[i] == null) continue;
             // y위치 비율 조정
-            float bias = (dataTime[i]-minTime)*1.0f/(maxTime-minTime)*0.96f+0.02f;
+            float bias = (dataTime[i]-minTime)*1.0f/(maxTime-minTime)*0.95f+0.025f;
             setVerticalBias(points[i], bias);
         }
 
@@ -154,7 +166,7 @@ public class WeekPillChartFragment extends Fragment {
             }
             timeView[i].setVisibility(View.VISIBLE);
             timeView[i].setText(String.format("%02d:%02d", time[i]/60, time[i] % 60));
-            setVerticalBias(timeView[i], ((time[i]-minTime)/(float)(maxTime-minTime))*0.96f + 0.02f);
+            setVerticalBias(timeView[i], ((time[i]-minTime)/(float)(maxTime-minTime)));
         }
 
     }

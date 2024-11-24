@@ -16,9 +16,6 @@ import androidx.work.WorkManager;
 import com.jeyun.rhdms.databinding.ActivityMenuBinding;
 import com.jeyun.rhdms.graphActivity.BloodPressureInfoActivity;
 import com.jeyun.rhdms.graphActivity.BloodSugarInfoActivity;
-import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
-import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
-import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
 import com.jeyun.rhdms.handler.BloodHandler;
 import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.Blood;
@@ -288,6 +285,24 @@ public class MenuActivity extends AppCompatActivity {
         return latestDateTime;
     }
 
+    // 최근 복약시간 불러오기 ( 알림 종료시간을 불러옴. )
+    private LocalDateTime getLatestMedicationEndTime(List<Pill> pills) {
+        LocalDateTime latestEndTime = null;
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm"); // 시간 형식이 'HHmm'이라고 가정
+
+        for (Pill pill : pills) {
+            LocalDate pillDate = LocalDate.parse(pill.ARM_DT, dateFormatter);
+            LocalTime pillTime = LocalTime.parse(pill.ARM_ED_TM, timeFormatter); // 복약 시간 파싱
+            LocalDateTime pillDateTime = LocalDateTime.of(pillDate, pillTime);
+
+            if (latestEndTime == null || pillDateTime.isAfter(latestEndTime)) {
+                latestEndTime = pillDateTime;
+            }
+        }
+        return latestEndTime;
+    }
+    
 
     //최근 복약 날짜 불러오기
     private LocalDate getLatestMedicationDate(List<Pill> pills) {
@@ -391,6 +406,16 @@ public class MenuActivity extends AppCompatActivity {
             });
             // Get the latest medication date and time
             LocalDateTime latestDateTime = getLatestMedicationDateTime(pills);
+            LocalDateTime latestEndTime = getLatestMedicationEndTime(pills);
+
+            // 복약 스케줄 설정
+            User.getInstance().setARM_ST_TM(latestDateTime);
+            User.getInstance().setARM_ED_TM(latestEndTime);
+            Log.d("schedule",
+                    "latestDateTime : " +
+                    User.getInstance().getARM_ST_TM() +
+                    "latestEndTime : " +
+                    User.getInstance().getARM_ED_TM());
 
             runOnUiThread(() -> {
                 if (latestDateTime != null) {

@@ -1,25 +1,9 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
-    android:viewportWidth="1336"
-    android:viewportHeight="1550"
-    android:width="1336dp"
-    android:height="1550dp">
-    <path
-        android:pathData="M0 0L94 0.5L81.5 2L60.5 8Q36 18 20 36.5Q4.4 52.9 0.5 81L0 0Z"
-        android:fillColor="#D9D9D9"
-        android:fillAlpha="0.4588235"
-        android:strokeColor="#D9D9D9"
-        android:strokeAlpha="0.4588235"
-        android:strokeWidth="1" />
-    <path
-        android:pathData="M1240.5 0L1335.5 0L1336 0.5L1336 1550L0.5 1550L0 1549.5L0 1438.5L1 1438.5L1 1446.5L3 1457.5L11 1482.5Q23 1510 44.5 1528L62.5 1540Q71.5 1541.5 77.5 1546L93.5 1549L1240.5 1549L1256.5 1546Q1262.5 1541.5 1271.5 1540L1289.5 1528L1304 1513.5Q1317.1 1498.1 1325 1477.5L1331 1457.5L1333 1446.5L1333 1438.5L1334 1437.5L1334 452.5L1335 451.5L1335 437.5L1334 436.5L1334 82.5L1331 67.5L1324 50.5Q1316 37 1304.5 27Q1291.2 15.3 1273.5 8L1252.5 2L1240.5 1L1240.5 0Z"
-        android:fillColor="#D9D9D9"
-        android:fillAlpha="0.4588235"
-        android:strokeColor="#D9D9D9"
-        android:strokeAlpha="0.4588235"
-        android:strokeWidth="1" />
-    <path
-        android:pathData="M94.5 0L1239.5 0L1240.5 1L1252.5 2L1273.5 8Q1298 18 1314 36.5L1327 56.5L1331 67.5L1334 82.5L1334 436.5L1335 437.5L1335 451.5L1334 452.5L1334 1437.5L1333 1438.5L1333 1446.5L1331 1457.5L1323 1482.5Q1311 1510 1289.5 1528L1271.5 1540Q1262.5 1541.5 1256.5 1546L1240.5 1549L93.5 1549L77.5 1546Q71.5 1541.5 62.5 1540L44.5 1528L30 1513.5Q16.9 1498.1 9 1477.5L3 1457.5L1 1446.5L1 1438.5L0 1437.5L0 81.5L3 67.5L10 50.5Q18 37 29.5 27Q42.8 15.3 60.5 8L81.5 2L93.5 1L94.5 0Z"
-        android:fillColor="#D9D9D9"
-        android:strokeColor="#D9D9D9"
-        android:strokeWidth="1" />
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#D9D9D9"/>
+
+    <corners android:radius="24dp"/>
+
+</shape>
