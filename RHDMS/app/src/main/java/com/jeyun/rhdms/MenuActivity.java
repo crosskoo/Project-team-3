@@ -24,6 +24,7 @@ import com.jeyun.rhdms.util.SettingsManager;
 import com.jeyun.rhdms.util.worker.Inspector;
 import com.jeyun.rhdms.util.worker.MyWorkManager;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import com.jeyun.rhdms.util.worker.Inspector;
 import com.jeyun.rhdms.util.worker.MyWorkManager;
@@ -418,11 +419,40 @@ public class MenuActivity extends AppCompatActivity {
                     User.getInstance().getARM_ED_TM());
 
             runOnUiThread(() -> {
+                List<Pill> todayPills = pillHandler.getTodayMedicationData(today);
+
                 if (latestDateTime != null) {
-                    String lastTakenMessage = "오늘의 복약시간: " + latestDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-                    binding.buttonPillInfo.setText(lastTakenMessage);
+                    LocalDateTime now = LocalDateTime.now(); // 현재 시간 가져오기
+                    String message;
+
+                    // 현재 시간과 복약 시간의 차이 계산
+                    long minutesDifference = Duration.between(now, latestDateTime).toMinutes();
+
+                    if (minutesDifference >= 0 && minutesDifference <= 30) {
+                        // 복약 시간이 현재 시간의 30분 이내인 경우
+                        message = "현재 복약을 해야 합니다!!";
+                    } else if (now.isAfter(latestDateTime)) {
+                        // 현재 시간이 복약 시간 이후인 경우
+                        if (todayPills.isEmpty()) {
+                            // 오늘 복약 데이터가 없는 경우
+                            message = "오늘 복약을 하지 않았습니다!";
+                        } else {
+                            Pill todayPill = todayPills.get(0); // 오늘의 복약 정보.
+                            if ("TAKEN".equals(todayPill.TAKEN_ST)) {
+                                message = "오늘 복약을 완료했습니다.\n( 복약 시간: " + todayPill.TAKEN_TM + " )";
+                            } else {
+                                message = "오늘 복약을 하지 않았습니다!";
+                            }
+                        }
+                    } else {
+                        // 복약 시간이 아직 멀리 있는 경우
+                        message = "오늘의 복약 시간: " + latestDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                    }
+
+                    binding.buttonPillInfo.setText(message); // 버튼 텍스트 업데이트
                 } else {
-                    binding.buttonPressureInfo.setText("오늘의 복약시간: 없음.");
+                    // 복약 시간이 없을 경우
+                    binding.buttonPillInfo.setText("오늘의 복약시간: 없음.");
                 }
             });
         });
