@@ -158,6 +158,8 @@ public class NewPillInfoActivity extends AppCompatActivity
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
+            Intent returnIntent = new Intent();
+            setResult(RESULT_CANCELED, returnIntent);
             finish();
         });
 
@@ -259,6 +261,8 @@ public class NewPillInfoActivity extends AppCompatActivity
                                 {
                                     runOnUiThread(() -> {
                                         Toast.makeText(this, "성공적으로 입력되었습니다.", Toast.LENGTH_LONG).show();
+                                        Intent returnIntent = new Intent();
+                                        setResult(RESULT_OK, returnIntent);
                                         finish();
                                     });
                                 }
@@ -275,15 +279,19 @@ public class NewPillInfoActivity extends AppCompatActivity
                 newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
                 newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
 
+                /*
                 newPillDataString.put("NewAlarmDate", takenDate);
                 newPillDataString.put("NewCloseDate",takenDate);
                 newPillDataString.put("NewState", takenState);
                 newPillDataString.put("NewAlarmStartTime", scheduledStartTime.replace(":", ""));
                 newPillDataString.put("NewAlarmEndTime", scheduledEndTime.replace(":", ""));
                 newPillDataString.put("NewTakenTime", takenTime.replace(":", ""));
+                 */
 
                 HttpPostRequest();
                 Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
                 finish();
             }
         }
