@@ -11,6 +11,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -218,6 +219,31 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         }
     }
 
+    public boolean updateData(String takenState, String takenTime, String takenDate)
+    {
+        String query_format =
+                "UPDATE tb_drug " +
+                        "SET TAKEN_ST = '%s', " +
+                        "TAKEN_TM = '%s' " +
+                        "WHERE SUBJECT_ID = '%s' " +
+                        "AND ARM_DT = '%s'";
+
+        String query = String.format(query_format, takenState, takenTime, User.getInstance().getOrgnztId(), takenDate);
+        System.out.println(query);
+
+        try(Connection con = client.open())
+        {
+            con.createQuery(query).executeUpdate();
+            return true;
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static String dateToString(LocalDate date)
     {
         int year = date.getYear();
@@ -226,4 +252,62 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
 
         return String.format("%d%02d%02d", year, month, day);
     }
+
+    public Optional<Pill> getLatestPillData()
+    {
+        String query =
+                "SELECT * FROM tb_drug " +
+                        "WHERE DRUG_NO = (SELECT MAX(DRUG_NO) FROM tb_drug);";
+
+        try(Connection con = client.open())
+        {
+            return Optional.ofNullable(con.createQuery(query).executeAndFetchFirst(Pill.class));
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    /*
+    public boolean insertNewPillData(HashMap<String, Object> newPillData)
+    {
+        String query = "INSERT INTO tb_drug ("
+                + "SUBJECT_ID, ARM_DT, ARM_TP, ARM_ST_TM, ARM_ED_TM, TAKEN_ST, "
+                + "TAKEN_TM, APPLC_YN, TAKEN_DT, DRG_WEIGHT, DRG_BEFORE, DRG_AFTER, "
+                + "PAPER, LOG_ID, REG_DT, USE_YN) "
+                + "VALUES (:subjectId, :armDt, :armTp, :armStTm, :armEdTm, :takenSt, "
+                + ":takenTm, :applcYn, :takenDt, :drgWeight, :drgBefore, :drgAfter, "
+                + ":paper, :logId, :regDt, :useYn)";
+
+        try (Connection con = client.open()) {
+            con.createQuery(query)
+                    .addParameter("subjectId", newPillData.get("NewSubjectId"))
+                    .addParameter("armDt", newPillData.get("NewAlarmDate"))
+                    .addParameter("armTp", newPillData.get("NewARM_TP"))
+                    .addParameter("armStTm", newPillData.get("NewAlarmStartTime"))
+                    .addParameter("armEdTm", newPillData.get("NewAlarmEndTime"))
+                    .addParameter("takenSt", newPillData.get("NewState"))
+                    .addParameter("takenTm", newPillData.get("NewTakenTime"))
+                    .addParameter("applcYn", newPillData.get("NewAPPLC_YN"))
+                    .addParameter("takenDt", newPillData.get("NewAlarmDate"))
+                    .addParameter("drgWeight", newPillData.get("NewDRG_WEIGHT"))
+                    .addParameter("drgBefore", newPillData.get("NewDRG_BEFORE"))
+                    .addParameter("drgAfter", newPillData.get("NewDRG_AFTER"))
+                    .addParameter("paper", newPillData.get("NewPAPER"))
+                    .addParameter("logId", newPillData.get("NewLogId"))
+                    .addParameter("regDt", newPillData.get("NewReg_DT"))
+                    .addParameter("useYn", newPillData.get("NewUSE_YN"))
+                    .executeUpdate();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+     */
 }
