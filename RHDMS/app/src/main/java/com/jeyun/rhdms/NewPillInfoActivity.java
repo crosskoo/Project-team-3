@@ -2,16 +2,20 @@ package com.jeyun.rhdms;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jeyun.rhdms.bluetooth.NetworkHandler;
 import com.jeyun.rhdms.databinding.ActivityNewPillInfoBinding;
+import com.jeyun.rhdms.handler.PillHandler;
+import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.MyCalendar;
 import com.jeyun.rhdms.util.factory.TimePickerDialogFactory;
@@ -27,9 +31,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NewPillInfoActivity extends AppCompatActivity
@@ -38,7 +47,10 @@ public class NewPillInfoActivity extends AppCompatActivity
     private ArrayAdapter<String> dataAdapter; // 복약 상태 리스트
     private ActivityNewPillInfoBinding binding;
     private NetworkHandler networkHandler;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private HashMap<String, Object> newPillDataString;
+    // private Optional<Pill> lastPillData;
+    private PillHandler pillHandler = new PillHandler();
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -141,17 +153,21 @@ public class NewPillInfoActivity extends AppCompatActivity
                     },
                     year, month, day);
             datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis()); // 현재 날짜 이후의 데이터 선택 불가
         });
 
         // 취소 버튼 클릭 -> 해당 창이 닫힘
         binding.pmNewPillCancel.setOnClickListener(v -> {
+            Intent returnIntent = new Intent();
+            setResult(RESULT_CANCELED, returnIntent);
             finish();
         });
 
         // 확인 버튼 클릭 -> 복약 정보를 서버에 전송
         binding.pmNewPillOk.setOnClickListener(v -> {
             transferNewPillInfo();
-            finish();
+            // setNewData(lastPillData);
+            // finish();
         });
 
         // 복약 시각 뷰 클릭 -> 시간 선택 다이얼로그 띄움
@@ -188,6 +204,7 @@ public class NewPillInfoActivity extends AppCompatActivity
     private void transferNewPillInfo() // 복약 정보를 서버에 전송
     {
         newPillInfoMap = new HashMap<String, Object>();
+        newPillDataString = new HashMap<String, Object>();
 
         String takenDate = binding.pmNewPillDate.getText().toString(); // 복약 날짜 설정
 
@@ -227,15 +244,56 @@ public class NewPillInfoActivity extends AppCompatActivity
             takenDate = year + month + day;
             Log.d("check date", "year : " + year + ", month : " + month + ", day : " + day);
 
+            Boolean isExist = existDuplicatedPillData(takenDate);
 
-            newPillInfoMap.put("alarmDate", takenDate);
-            newPillInfoMap.put("closeDate",takenDate);
-            newPillInfoMap.put("state", takenState);
-            newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
-            newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
+            if (isExist) // 이미 존재하는 복약 데이터면 덮어쓸건지 물어 본다.
+            {
+                new AlertDialog.Builder(this)
+                        .setTitle("복약 데이터 덮어쓰기")
+                        .setMessage("이미 존재하는 복약 데이터가 있습니다. 덮어쓰시겠습니까?")
+                        .setNegativeButton("아니요", (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .setPositiveButton("예", (dialog, which) -> {
+                            // 데이터 덮어쓰기
+                            executor.execute(() -> {
+                                if (pillHandler.updateData(takenState, takenTime.replace(":", ""), year + month + day))
+                                {
+                                    runOnUiThread(() -> {
+                                        Toast.makeText(this, "성공적으로 입력되었습니다.", Toast.LENGTH_LONG).show();
+                                        Intent returnIntent = new Intent();
+                                        setResult(RESULT_OK, returnIntent);
+                                        finish();
+                                    });
+                                }
+                            });
+                        })
+                        .setCancelable(false)
+                        .show();
+            }
+            else // 없는 복약 데이터면
+            {
+                newPillInfoMap.put("alarmDate", takenDate);
+                newPillInfoMap.put("closeDate",takenDate);
+                newPillInfoMap.put("state", takenState);
+                newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
+                newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
 
-            HttpPostRequest();
-            Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
+                /*
+                newPillDataString.put("NewAlarmDate", takenDate);
+                newPillDataString.put("NewCloseDate",takenDate);
+                newPillDataString.put("NewState", takenState);
+                newPillDataString.put("NewAlarmStartTime", scheduledStartTime.replace(":", ""));
+                newPillDataString.put("NewAlarmEndTime", scheduledEndTime.replace(":", ""));
+                newPillDataString.put("NewTakenTime", takenTime.replace(":", ""));
+                 */
+
+                HttpPostRequest();
+                Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
         }
     }
 
@@ -284,7 +342,7 @@ public class NewPillInfoActivity extends AppCompatActivity
         String defaultCloseTime = "1150"; // 임의의 값
         String defaultBeforeWeight = "151"; // 임의의 값
         String defaultNowWeight = "80"; // 임의의 값
-        String defaultPaper = "71"; // 임의의 값
+        String defaultPaper = "7"; // 임의의 값
         String defaultSubjectId = User.getInstance().getOrgnztId();
 
         newPillInfoMap.put("deviceId", defaultDeviceId);
@@ -295,4 +353,51 @@ public class NewPillInfoActivity extends AppCompatActivity
         newPillInfoMap.put("subject_id", defaultSubjectId);
         newPillInfoMap.put("paper", defaultPaper);
     }
+
+    private Boolean existDuplicatedPillData(String takenDate) // 중복된 복약 데이터가 있는지 확인하는 함수
+    {
+        Callable<Optional<Pill>> task = () -> {
+            return pillHandler.getData(takenDate);
+        };
+
+        try
+        {
+            return executor.submit(task).get().isPresent();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /*
+    private void setNewData(Optional<Pill> lastPillData)
+    {
+        if (!lastPillData.isPresent())
+            return;
+
+        System.out.println(lastPillData);
+        Integer NewDragWeight = Integer.parseInt(lastPillData.get().DRG_WEIGHT);
+        Integer NewDragBefore = Integer.parseInt(lastPillData.get().DRG_AFTER);
+        Integer NewDragAfter = NewDragBefore - NewDragWeight;
+
+        newPillDataString.put("NewSubjectId", User.getInstance().getOrgnztId());
+        newPillDataString.put("NewARM_TP", lastPillData.get().ARM_TP);
+        newPillDataString.put("NewAPPLC_YN", lastPillData.get().APPLC_YN);
+        newPillDataString.put("NewDRG_WEIGHT", NewDragWeight.toString());
+        newPillDataString.put("NewDRG_BEFORE", NewDragBefore.toString());
+        newPillDataString.put("NewDRG_AFTER", NewDragAfter.toString());
+        newPillDataString.put("NewPAPER", lastPillData.get().PAPER);
+        newPillDataString.put("NewLogId", lastPillData.get().LOG_ID + 3);
+        newPillDataString.put("NewReg_DT", LocalDateTime.now().toString());
+        newPillDataString.put("NewUSE_YN", lastPillData.get().USE_YN);
+
+        Iterator<Map.Entry<String, Object>> iterator = newPillDataString.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+    */
 }

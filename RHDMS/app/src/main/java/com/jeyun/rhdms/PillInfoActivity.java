@@ -64,8 +64,17 @@ public class PillInfoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        ToggleButton tb = binding.togglePillInfo;
-        loadData(tb.isChecked());
+        Log.d("test", "onActivityResult"); // 테스트
+        if (resultCode == RESULT_OK)
+        {
+            Log.d("test", "onActivityResult : RESULT OK"); // 테스트
+            ToggleButton tb = binding.togglePillInfo;
+            loadData(tb.isChecked());
+        }
+        else if (resultCode == RESULT_CANCELED)
+        {
+            Log.d("test", "onActivityResult : RESULT CANCELED"); // 테스트
+        }
     }
 
     protected void initUI()
@@ -135,7 +144,7 @@ public class PillInfoActivity extends AppCompatActivity {
         // 복약 수동 입력 창 열기
         binding.pillupdateEnter.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), NewPillInfoActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, PillInfoActivity.RESET_ADHERENCE);
         });
         
         binding.back.setOnClickListener(v -> finish());

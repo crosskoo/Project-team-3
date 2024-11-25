@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jeyun.rhdms.databinding.ActivityAppSettingsBinding;
 import com.jeyun.rhdms.databinding.ActivityMenuBinding;
-import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
-import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
-import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
+// import com.jeyun.rhdms.graphActivity.NewPillInfoActivity;
+// import com.jeyun.rhdms.graphActivity.PressureInfoActivity;
+// import com.jeyun.rhdms.graphActivity.SugarInfoActivity;
 import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.User;
 import com.jeyun.rhdms.util.SettingsManager;
