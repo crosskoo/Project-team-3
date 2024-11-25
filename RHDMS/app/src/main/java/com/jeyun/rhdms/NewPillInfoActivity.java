@@ -41,6 +41,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/* 현재 json 데이터를 생성해서 REST API 주소로 보내는 메소드는 주석처리 되어 있음 */
+/* DB에 직접 접근하여 복약 데이터를 생성하는 메소드가 활성화 되어 있음 */
+
 public class NewPillInfoActivity extends AppCompatActivity
 {
     private HashMap<String, Object> newPillInfoMap;
@@ -49,7 +52,7 @@ public class NewPillInfoActivity extends AppCompatActivity
     private NetworkHandler networkHandler;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private HashMap<String, Object> newPillDataString;
-    // private Optional<Pill> lastPillData;
+    private Optional<Pill> lastPillData;
     private PillHandler pillHandler = new PillHandler();
 
     protected void onCreate(Bundle savedInstanceState)
@@ -114,6 +117,15 @@ public class NewPillInfoActivity extends AppCompatActivity
 
         // 이벤트 설정
         initEvents();
+
+        loadLastPillData();
+    }
+
+    private void loadLastPillData()
+    {
+        executor.execute(() -> {
+            lastPillData = pillHandler.getLatestPillData();
+        });
     }
 
     private void initSelector()
@@ -165,8 +177,7 @@ public class NewPillInfoActivity extends AppCompatActivity
 
         // 확인 버튼 클릭 -> 복약 정보를 서버에 전송
         binding.pmNewPillOk.setOnClickListener(v -> {
-            transferNewPillInfo();
-            // setNewData(lastPillData);
+            setNewPillInfo();
             // finish();
         });
 
@@ -201,7 +212,7 @@ public class NewPillInfoActivity extends AppCompatActivity
         return takenState;
     }
 
-    private void transferNewPillInfo() // 복약 정보를 서버에 전송
+    private void setNewPillInfo() // 새롭게 넣을 복약 정보 세팅
     {
         newPillInfoMap = new HashMap<String, Object>();
         newPillDataString = new HashMap<String, Object>();
@@ -279,20 +290,17 @@ public class NewPillInfoActivity extends AppCompatActivity
                 newPillInfoMap.put("alarmStartTime", scheduledStartTime.replace(":", ""));
                 newPillInfoMap.put("alarmEndTime", scheduledEndTime.replace(":", ""));
 
-                /*
+
                 newPillDataString.put("NewAlarmDate", takenDate);
                 newPillDataString.put("NewCloseDate",takenDate);
                 newPillDataString.put("NewState", takenState);
                 newPillDataString.put("NewAlarmStartTime", scheduledStartTime.replace(":", ""));
                 newPillDataString.put("NewAlarmEndTime", scheduledEndTime.replace(":", ""));
                 newPillDataString.put("NewTakenTime", takenTime.replace(":", ""));
-                 */
 
-                HttpPostRequest();
-                Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK, returnIntent);
-                finish();
+
+                // HttpPostRequest();
+                insertNewData(lastPillData);
             }
         }
     }
@@ -371,16 +379,19 @@ public class NewPillInfoActivity extends AppCompatActivity
     }
 
 
-    /*
-    private void setNewData(Optional<Pill> lastPillData)
+
+    private void insertNewData(Optional<Pill> lastPillData) // 복약 데이터 추가하는 함수
     {
         if (!lastPillData.isPresent())
             return;
 
-        System.out.println(lastPillData);
+        // System.out.println(lastPillData);
         Integer NewDragWeight = Integer.parseInt(lastPillData.get().DRG_WEIGHT);
         Integer NewDragBefore = Integer.parseInt(lastPillData.get().DRG_AFTER);
         Integer NewDragAfter = NewDragBefore - NewDragWeight;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
 
         newPillDataString.put("NewSubjectId", User.getInstance().getOrgnztId());
         newPillDataString.put("NewARM_TP", lastPillData.get().ARM_TP);
@@ -390,14 +401,36 @@ public class NewPillInfoActivity extends AppCompatActivity
         newPillDataString.put("NewDRG_AFTER", NewDragAfter.toString());
         newPillDataString.put("NewPAPER", lastPillData.get().PAPER);
         newPillDataString.put("NewLogId", lastPillData.get().LOG_ID + 3);
-        newPillDataString.put("NewReg_DT", LocalDateTime.now().toString());
+        newPillDataString.put("NewReg_DT", formattedDateTime);
         newPillDataString.put("NewUSE_YN", lastPillData.get().USE_YN);
 
+        /*
         Iterator<Map.Entry<String, Object>> iterator = newPillDataString.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
+         */
+
+        executor.execute(() -> {
+            if (pillHandler.insertNewPillData(newPillDataString))
+            {
+                runOnUiThread(() -> {
+                    Log.d("test","insert success");
+                    Toast.makeText(this, "성공적으로 입력되었습니다.",Toast.LENGTH_LONG).show();
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                });
+            }
+            else
+            {
+                runOnUiThread(() -> {
+                    Log.d("test","insert fail");
+                    Toast.makeText(this, "오류가 발생했습니다.",Toast.LENGTH_LONG).show();
+                    finish();
+                });
+            }
+        });
     }
-    */
 }
