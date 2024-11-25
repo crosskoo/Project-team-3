@@ -271,7 +271,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         }
     }
 
-    /*
+
     public boolean insertNewPillData(HashMap<String, Object> newPillData)
     {
         String query = "INSERT INTO tb_drug ("
@@ -282,7 +282,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                 + ":takenTm, :applcYn, :takenDt, :drgWeight, :drgBefore, :drgAfter, "
                 + ":paper, :logId, :regDt, :useYn)";
 
-        try (Connection con = client.open()) {
+        try (Connection con = client.beginTransaction()) {
             con.createQuery(query)
                     .addParameter("subjectId", newPillData.get("NewSubjectId"))
                     .addParameter("armDt", newPillData.get("NewAlarmDate"))
@@ -302,6 +302,7 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
                     .addParameter("useYn", newPillData.get("NewUSE_YN"))
                     .executeUpdate();
 
+            con.commit();
             return true;
 
         } catch (Exception e) {
@@ -309,5 +310,4 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
             return false;
         }
     }
-     */
 }
