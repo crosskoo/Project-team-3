@@ -29,7 +29,8 @@ public class User // 아이디, 비밀번호에 해당하는 orgnztId를 저장�
 
     public void setOrgnztId(String orgnztId)
     {
-        this.ORGNZT_ID = orgnztId;
+        // this.ORGNZT_ID = orgnztId;
+        this.ORGNZT_ID = "002"; // (테스트)
     }
 
     public LocalDateTime getARM_ST_TM()
