@@ -27,8 +27,8 @@
     <string name="pm_update_ok">확인</string>
     <string name="pm_update_cancel">취소</string>
     <string name="placeholder_taken_tm">복용한 시간</string>
-    <string name="increase"><![CDATA[>]]></string>
-    <string name="decrease"><![CDATA[<]]></string>
+    <string name="increase"><![CDATA[→]]></string>
+    <string name="decrease"><![CDATA[←]]></string>
     <string name="label_pill_info_list">복약 정보 목록</string>
     <string name="connect_state">연결 상태</string>
     <string name="connect_standby">기기 연결 대기중...</string>
