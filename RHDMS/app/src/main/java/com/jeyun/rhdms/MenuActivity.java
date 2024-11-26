@@ -372,15 +372,15 @@ public class MenuActivity extends AppCompatActivity {
                     String adherenceMessage;
                     int imageResId;
                     if (adherencePercentage >= 80) {
-                        adherenceMessage = String.format("주간 복약 점수: %.1f (탁월한 관리)", totalScore);
+                        adherenceMessage = String.format("주간 복약 점수 : %.1f (탁월한 관리)", totalScore);
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.good));
                         imageResId = R.drawable.good;
                     } else if (adherencePercentage >= 50) {
-                        adherenceMessage = String.format("주간 복약 점수: %.1f (준수한 관리)", totalScore);
+                        adherenceMessage = String.format("주간 복약 점수 : %.1f (준수한 관리)", totalScore);
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.common));
                         imageResId = R.drawable.common;
                     } else if (adherencePercentage >0)  {
-                        adherenceMessage = String.format("주간 복약 점수: %.1f (미흡한 관리)", totalScore);
+                        adherenceMessage = String.format("주간 복약 점수 : %.1f (미흡한 관리)", totalScore);
                         binding.adherenceTextView.setTextColor(getResources().getColor(R.color.bad));
                         imageResId = R.drawable.bad;
                     }
