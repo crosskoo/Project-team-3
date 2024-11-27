@@ -88,11 +88,11 @@ public class NotificationUtils
                 return; // 아무 것도 하지 않음
             case 1: // 약한 진동
                 pattern = new long[]{0, duration}; // 100ms 진동
-                amplitudes = new int[]{0, 1}; // 약한 강도
+                amplitudes = new int[]{0, 64}; // 약한 강도
                 break;
             case 2: // 보통 진동
                 pattern = new long[]{0, duration};
-                amplitudes = new int[]{0, 64}; // 보통 강도
+                amplitudes = new int[]{0, 128}; // 보통 강도
                 break;
             case 3: // 강한 진동
                 pattern = new long[]{0, duration};

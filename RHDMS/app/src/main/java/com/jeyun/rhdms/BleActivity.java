@@ -105,7 +105,6 @@ public class BleActivity extends AppCompatActivity {
         removeData          = binding.btnRemoveData;
         exitApp             = binding.btnExit;
 
-        Log.v("fdfsfd", "SDfsdf2244ds");
         initRegister();
         initUI();
         initEvents();
