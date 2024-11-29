@@ -102,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "환영합니다.", Toast.LENGTH_SHORT).show();
 
                 SharedPreferenceHandler handler = new SharedPreferenceHandler(this);
-                handler.saveOrgnztId(orgnztId.get()); // orgnztId 저장;
+                // 임시 id 저장
+                //handler.saveOrgnztId(orgnztId.get()); // orgnztId 저장;
+                handler.saveOrgnztId("002"); //임시 아이디 저장
+
                 User.getInstance().setOrgnztId(orgnztId.get()); // orgnztId 저장하는 싱글톤 클래스 생성
 
                 Log.d("check orgnztId", User.getInstance().getOrgnztId()); // 테스트 용

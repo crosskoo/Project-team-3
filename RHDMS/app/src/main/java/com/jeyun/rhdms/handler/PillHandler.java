@@ -193,6 +193,27 @@ public class PillHandler extends DataHandler<Pill, LocalDate>
         }
     }
 
+    public Optional<Pill> getDataByOrgnztId(String id)
+    {
+        String query_format =
+                "SELECT * FROM tb_drug " +
+                        "WHERE ARM_DT = '%s' " +
+                        "AND SUBJECT_ID = '%s';";
+
+        String query = String.format(query_format, id, orgnztId);
+
+        try(Connection con = client.open())
+        {
+            return Optional.ofNullable(con.createQuery(query).executeAndFetchFirst(Pill.class));
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
     @Override
     public boolean updateData(Pill data)
     {

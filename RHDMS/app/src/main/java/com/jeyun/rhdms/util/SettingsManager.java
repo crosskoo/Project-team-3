@@ -72,7 +72,7 @@ public class SettingsManager {
     public int increaseAlarmVibrationLevel(Context context){
         int AlarmVibrationLevel = sharedPreferences.getInt("AlarmVibrationLevel", 1);
 
-        if(AlarmVibrationLevel >= 3) AlarmVibrationLevel = 0;
+        if(AlarmVibrationLevel >= 3) AlarmVibrationLevel = 1;
         else AlarmVibrationLevel += 1;
 
         editor.putInt("AlarmVibrationLevel", AlarmVibrationLevel).apply();

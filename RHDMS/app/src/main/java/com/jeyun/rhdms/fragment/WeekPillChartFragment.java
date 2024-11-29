@@ -121,7 +121,7 @@ public class WeekPillChartFragment extends Fragment {
                 if(status.equals("TAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_light_green);
                 else if(status.equals("DELAYTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_light_sky_blue);
                 else if(status.equals("OUTTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_mustard_yellow);
-                else if(status.equals("ERRTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
+                else if(status.equals("ERRTAKEN") || status.equals("OVERTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_coral_pink);
                 else if(status.equals("UNTAKEN")) points[i].setBackgroundResource(R.drawable.ic_medication_gray);
                 else points[i].setVisibility(View.GONE);
 
