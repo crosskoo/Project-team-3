@@ -15,6 +15,7 @@ import androidx.work.WorkerParameters;
 
 import com.jeyun.rhdms.handler.DataHandler;
 import com.jeyun.rhdms.handler.PillHandler;
+import com.jeyun.rhdms.handler.SharedPreferenceHandler;
 import com.jeyun.rhdms.handler.entity.Pill;
 import com.jeyun.rhdms.util.NotificationUtils;
 import com.jeyun.rhdms.util.SettingsManager;
@@ -46,6 +47,7 @@ public class Inspector extends Worker
     @Override
     public Result doWork()
     {
+        Log.d("Inspector", "doWork실행");
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()){
             return Result.success();
@@ -68,7 +70,7 @@ public class Inspector extends Worker
             Context context = getApplicationContext();
             executor.execute(() ->
             {
-                Log.d("Inspector", "doWork실행");
+                
                 LocalDate todayDate = LocalDate.now();
                 setAlarm(todayDate, context);
                 setAlarm(todayDate.plusDays(1), context);
@@ -80,8 +82,8 @@ public class Inspector extends Worker
 
     private void setAlarm(LocalDate date, Context context){
         //오늘 Pill 객체 가져오기
-        DataHandler<Pill, LocalDate> dataHandler = new PillHandler(context);
-        Optional<Pill> optionalPill = dataHandler.getData(PillHandler.dateToString(date));
+        PillHandler pillHandler = new PillHandler(context);
+        Optional<Pill> optionalPill = pillHandler.getDataByOrgnztId(PillHandler.dateToString(date));
 
         //intent세팅
         int dateAsNumber = Integer.parseInt(date.format(DateTimeFormatter.BASIC_ISO_DATE));

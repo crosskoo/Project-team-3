@@ -24,9 +24,10 @@ public class MyWorkManager
         WorkManager.getInstance(context).enqueueUniquePeriodicWork
                 (
                         WORKER_TAG,
-                        ExistingPeriodicWorkPolicy.KEEP,
+                        ExistingPeriodicWorkPolicy.REPLACE,
                         myWork
                 );
+        Log.v("MyWorkManager", "백그라운드 반복 작업 등록");
     }
 
     public static <T extends  Worker> void OneTimeWork(Class<T> cls, Context context){
