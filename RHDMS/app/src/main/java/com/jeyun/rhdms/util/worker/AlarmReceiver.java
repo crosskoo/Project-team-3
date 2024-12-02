@@ -43,18 +43,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         Executor executor = Executors.newSingleThreadExecutor();
 
         executor.execute(() -> {
-            DataHandler<Pill, LocalDate> dataHandler = new PillHandler(context);
-            Optional<Pill> optionalPill = dataHandler.getData(PillHandler.dateToString(LocalDate.now()));
-            optionalPill.ifPresent(pill ->
-            {
-                String ST = pill.TAKEN_ST;
                 Log.d("AlarmReceiver", "복약 상태 확인");
-                //test 위해 항상 실행시킴
-                if(ST.equals("UNTAKEN") || true)
-                {
-                    NotificationUtils.sendNotificationWithAction(context, "복약 알림", "오늘의 복용 시간이 지났어요, 어서 복용하세요!", CancelTodayAlarmReceiver.class);
-                }
-            });
+
+                NotificationUtils.sendNotificationWithAction(context, "복약 알림", "복약 시간입니다! 지금 복용해 주세요.", CancelTodayAlarmReceiver.class);
         });
     }
 }

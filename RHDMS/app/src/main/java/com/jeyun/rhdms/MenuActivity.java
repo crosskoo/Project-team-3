@@ -68,6 +68,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
         MyWorkManager.schedulePeriodicWork(Inspector.class, getApplicationContext());
+        MyWorkManager.OneTimeWork(Inspector.class, getApplicationContext());
         //test
         SettingsManager.getInstance(getApplicationContext()).setDisabledAlarmDate(LocalDate.of(2000, 10, 1));
         
