@@ -389,12 +389,46 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
         return settings;
     }
-    // Show a popup with the JSON data before sending it
+
+
+    // Show a popup with the JSON data in sentence format before sending it
     private void showSendSettingsPopup(JSONObject settings) {
         try {
+            // JSON 데이터를 문장 형식으로 변환
+            StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.append("설정이 다음과 같이 구성되었습니다:\n\n");
+            if (settings.has("pillboxno")) {
+                messageBuilder.append("약상자 ID: ").append(settings.getString("pillboxno")).append("\n");
+            }
+            if (settings.has("alarmStart_1st") && settings.has("alarmEnd_1st")) {
+                messageBuilder.append("첫 번째 알람: ")
+                        .append(settings.getString("alarmStart_1st"))
+                        .append(" ~ ")
+                        .append(settings.getString("alarmEnd_1st"))
+                        .append("\n");
+            }
+            if (settings.has("alarmStart_2nd") && settings.has("alarmEnd_2nd")) {
+                messageBuilder.append("두 번째 알람: ")
+                        .append(settings.getString("alarmStart_2nd"))
+                        .append(" ~ ")
+                        .append(settings.getString("alarmEnd_2nd"))
+                        .append("\n");
+            }
+            if (settings.has("alarmStart_3rd") && settings.has("alarmEnd_3rd")) {
+                messageBuilder.append("세 번째 알람: ")
+                        .append(settings.getString("alarmStart_3rd"))
+                        .append(" ~ ")
+                        .append(settings.getString("alarmEnd_3rd"))
+                        .append("\n");
+            }
+            if (settings.has("volume")) {
+                messageBuilder.append("볼륨 설정: ").append(settings.getString("volume")).append("\n");
+            }
+
+            // AlertDialog로 표시
             new AlertDialog.Builder(this)
-                    .setTitle("Send Settings JSON")
-                    .setMessage(settings.toString(4)) // Pretty print with indentation
+                    .setTitle("알림 설정 확인")
+                    .setMessage(messageBuilder.toString())
                     .setPositiveButton(android.R.string.ok, null)
                     .show();
         } catch (Exception e) {
