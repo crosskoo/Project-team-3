@@ -30,15 +30,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         int doNotDisturbStartTime = settingsManager.getDoNotDisturbStartTime();
         int doNotDisturbEndTime = settingsManager.getDoNotDisturbEndTime();
         int currntTime = LocalTime.now().getHour() * 60 + LocalTime.now().getMinute();
-        if(doNotDisturbStartTime <= doNotDisturbEndTime){
-            if(doNotDisturbStartTime <= currntTime && currntTime <= doNotDisturbEndTime){
-                Log.d("AlarmReceiver", "알람금지시간1");
+        if(settingsManager.getIsDoNotDisturbEnabled()){
+            if(doNotDisturbStartTime <= doNotDisturbEndTime){
+                if(doNotDisturbStartTime <= currntTime && currntTime <= doNotDisturbEndTime){
+                    Log.d("AlarmReceiver", "알람금지시간1");
+                    return;
+                }
+            }else if(doNotDisturbStartTime <= currntTime || currntTime <= doNotDisturbEndTime) {
+                Log.d("AlarmReceiver", "알람금지시간2");
                 return;
             }
-        }else if(doNotDisturbStartTime <= currntTime || currntTime <= doNotDisturbEndTime) {
-            Log.d("AlarmReceiver", "알람금지시간2");
-            return;
         }
+
 
         Executor executor = Executors.newSingleThreadExecutor();
 

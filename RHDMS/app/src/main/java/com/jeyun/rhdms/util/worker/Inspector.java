@@ -50,6 +50,7 @@ public class Inspector extends Worker
         Log.d("Inspector", "doWork실행");
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()){
+            Log.d("Inspector", "정확한 알람 권한 없음");
             return Result.success();
         }
 
@@ -70,7 +71,6 @@ public class Inspector extends Worker
             Context context = getApplicationContext();
             executor.execute(() ->
             {
-                
                 LocalDate todayDate = LocalDate.now();
                 setAlarm(todayDate, context);
                 setAlarm(todayDate.plusDays(1), context);

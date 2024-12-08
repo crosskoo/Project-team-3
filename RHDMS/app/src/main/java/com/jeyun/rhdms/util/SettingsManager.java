@@ -70,19 +70,28 @@ public class SettingsManager {
     }
 
     public int increaseAlarmVibrationLevel(Context context){
-        int AlarmVibrationLevel = sharedPreferences.getInt("AlarmVibrationLevel", 1);
+        int AlarmVibrationLevel = sharedPreferences.getInt("alarmVibrationLevel", 1);
 
         if(AlarmVibrationLevel >= 3) AlarmVibrationLevel = 1;
         else AlarmVibrationLevel += 1;
 
-        editor.putInt("AlarmVibrationLevel", AlarmVibrationLevel).apply();
+        editor.putInt("alarmVibrationLevel", AlarmVibrationLevel).apply();
         NotificationUtils.vibrateWithIntensity(context, AlarmVibrationLevel, 300);
 
         return AlarmVibrationLevel;
     }
 
     public int getAlarmVibrationLevel(){
-        return sharedPreferences.getInt("AlarmVibrationLevel", 1);
+        return sharedPreferences.getInt("alarmVibrationLevel", 1);
+    }
+
+    public void toggleIsDoNotDisturbEnabled(boolean isEnabled){
+        Log.d("SettingsManager", "방해금지설정: " + isEnabled);
+        editor.putBoolean("isDoNotDisturbEnabled", isEnabled).apply();
+    }
+
+    public boolean getIsDoNotDisturbEnabled(){
+        return sharedPreferences.getBoolean("isDoNotDisturbEnabled", false);
     }
 
     public void setDoNotDisturbStartTime(int startTimeHour, int startTimeMinute){
