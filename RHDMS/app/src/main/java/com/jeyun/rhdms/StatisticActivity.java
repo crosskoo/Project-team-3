@@ -469,9 +469,9 @@ public class StatisticActivity extends AppCompatActivity {
                         endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 ));
             } else if (period.equals("30일")) {
-                // 월간: 이번 달의 시작일과 종료일 계산
-                LocalDate startDate = today.withDayOfMonth(1); // 이번 달의 첫날
-                LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth()); // 이번 달의 마지막 날
+                // 월간: 최근 30일의 시작일과 종료일 계산
+                LocalDate startDate = today.minusDays(29); // 오늘 포함 29일 전이 시작일
+                LocalDate endDate = today; // 오늘이 종료일
                 date.setText(String.format("통계 기간: %s ~ %s",
                         startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                         endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
