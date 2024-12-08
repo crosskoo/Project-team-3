@@ -456,8 +456,8 @@ public class StatisticActivity extends AppCompatActivity {
         Blood maxBloodPressureRecord = findMaxBloodPressure(bloodPressureData); // 최고 혈압 기록 찾기
 
         runOnUiThread(() -> {
-            //LocalDate today = LocalDate.now();
-            LocalDate today = LocalDate.of(2024, 8, 31);
+            LocalDate today = LocalDate.now();
+            //LocalDate today = LocalDate.of(2024, 8, 31);
 
             // 주간 또는 월간에 따라 날짜 범위를 계산하고 표시
             if (period.equals("7일")) {
