@@ -79,8 +79,8 @@ public class StatisticActivity extends AppCompatActivity {
         bloodSugarHandler = new BloodHandler("31"); // 31은 혈당(Blood Sugar)을 의미
         bloodPressureHandler = new BloodHandler("21"); // 21은 혈압(Blood Pressure)을 의미
 
-        //LocalDate today = LocalDate.now();
-        LocalDate today = LocalDate.of(2024, 8, 31);
+        LocalDate today = LocalDate.now();
+        //LocalDate today = LocalDate.of(2024, 8, 31);
 
         // date 클릭 시 이벤트 설정
         date.setOnClickListener(v -> {
