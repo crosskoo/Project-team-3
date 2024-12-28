@@ -305,9 +305,9 @@ public class StatisticActivity extends AppCompatActivity {
 
         // 6개월 동안의 데이터를 월별로 가져와서 합침
         for (int i = 0; i < 6; i++) {
-            List<Pill> monthlyPills = pillHandler.getDataInMonth(currentMonth); // 해당 월의 데이터 가져오기
+            List<Pill> monthlyPills = pillHandler.getDataIn30days(currentMonth); // 해당 월의 데이터 가져오기
             allPills.addAll(monthlyPills); // 데이터를 리스트에 추가
-            currentMonth = currentMonth.minusMonths(1); // 한 달 전으로 이동
+            currentMonth = currentMonth.minusDays(30); // 한 달 전으로 이동
         }
 
         // 가장 최근 복약 날짜 찾기
